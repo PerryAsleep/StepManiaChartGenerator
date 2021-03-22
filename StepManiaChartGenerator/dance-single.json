@@ -1,0 +1,188 @@
+{
+	"YTravelDistanceCompensation": 0.5,
+
+	"StartingPositions": [
+		[
+			[0, 3]
+		]
+	],
+
+	"ArrowData":
+	[
+		// P1L
+		{
+			"X": 0,
+			"Y": 1,
+			// A foot on P1L can move next to P1D, P1U, or P1R.
+			"ValidNextArrows": [false, true, true, true],
+			"BracketablePairingsOtherHeel": [
+				// Left foot on P1L is bracketable with the heel on other arrows on P1D.
+				[false, true, false, false],
+				// Right foot on P1L is a crossover and not bracketable.
+				[false, false, false, false],
+			],
+			"BracketablePairingsOtherToe": [
+				// Left foot on P1L is bracketable with the toes on other arrows on P1U.
+				[false, false, true, false],
+				// Right foot on P1L is a crossover and not bracketable.
+				[false, false, false, false],
+			],
+			"OtherFootPairings": [
+				// Left foot on P1L supports right foot on P1D, P1U, and P1R without crossovers.
+				[false, true, true, true],
+				// Right foot on P1L is a crossover with no normal left foot pairing.
+				[false, false, false, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverFront": [
+				// Left foot on P1L is never a crossover position.
+				[false, false, false, false],
+				// Right foot on P1L is a crossover with left in front when left is on P1U.
+				[false, false, true, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverBehind": [
+				// Left foot on P1L is never a crossover position.
+				[false, false, false, false],
+				// Right foot on P1L is a crossover with left in back when left is on P1D.
+				[false, true, false, false],
+			],
+			"OtherFootPairingsInverted": [
+				// Left foot on P1L is never inverted.
+				[false, false, false, false],
+				// Right foot on P1L is inverted with left when left is on P1R.
+				[false, false, false, true],
+			],
+		},
+
+		// P1D
+		{
+			"X": 1,
+			"Y": 2,
+			// A foot on P1L can move next to P1D, P1U, or P1R.
+			"ValidNextArrows": [true, false, true, true],
+			"BracketablePairingsOtherHeel": [
+				// Left foot on P1D uses the heel.
+				[false, false, false, false],
+				// Right foot on P1D uses the heel.
+				[false, false, false, false],
+			],
+			"BracketablePairingsOtherToe": [
+				// Left foot on P1D is bracketable with the toes on other arrows on P1L.
+				[true, false, false, false],
+				// Right foot on P1D is bracketable with the toes on other arrows on P1R.
+				[false, false, false, true],
+			],
+			"OtherFootPairings": [
+				// Left foot on P1D supports right foot on P1U and P1R without crossovers.
+				[false, false, true, true],
+				// Right foot on P1D supports Left foot on P1L and P1U without crossovers.
+				[true, false, true, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverFront": [
+				// Left foot on P1D is a crossover with right in front with right is on P1L.
+				[true, false, false, false],
+				// Right foot on P1D is a crossover with left in front when left is on P1R.
+				[false, false, false, true],
+			],
+			"OtherFootPairingsOtherFootCrossoverBehind": [
+				// None.
+				[false, false, false, false],
+				// Right foot on P1D is not a crossover with left in back.
+				[false, false, false, false],
+			],
+			"OtherFootPairingsInverted": [
+				// Left foot on P1D is never inverted.
+				[false, false, false, false],
+				// Right foot on P1D is never inverted.
+				[false, false, false, false],
+			],
+		},
+
+		// P1U
+		{
+			"X": 1,
+			"Y": 0,
+			// A foot on P1U can move next to P1L, P1D, or P1R.
+			"ValidNextArrows": [true, true, false, true],
+			"BracketablePairingsOtherHeel": [
+				// Left foot on P1U is bracketable with the heel on other arrows on P1L.
+				[true, false, false, false],
+				// Right foot on P1U is bracketable with the heel on other arrows on P1R.
+				[false, false, false, true],
+			],
+			"BracketablePairingsOtherToe": [
+				// Left foot on P1U uses the toes.
+				[false, false, false, false],
+				// Right foot on P1U uses the toes.
+				[false, false, false, false],
+			],
+			"OtherFootPairings": [
+				// Left foot on P1U supports right foot on P1D and P1R without crossovers.
+				[false, true, false, true],
+				// Right foot on P1U supports left foot on P1L and P1D without crossovers.
+				[true, true, false, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverFront": [
+				// None.
+				[false, false, false, false],
+				// None.
+				[false, false, false, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverBehind": [
+				// Left foot on P1U is a crossover with right in back when right is on P1L.
+				[true, false, false, false],
+				// Right foot on P1U is a crossover with left in back when left is on P1R.
+				[false, false, false, true],
+			],
+			"OtherFootPairingsInverted": [
+				// Left foot on P1U is never inverted.
+				[false, false, false, false],
+				// Right foot on P1U is never inverted.
+				[false, false, false, false],
+			],
+		},
+
+		// P1R
+		{
+			"X": 2,
+			"Y": 1,
+			// A foot on P1R can move next to P1L, P1D, or P1U.
+			"ValidNextArrows": [true, true, true, false],
+			"BracketablePairingsOtherHeel": [
+				// Left foot on P1R is a crossover and not bracketable.
+				[false, false, false, false],
+				// Right foot on P1R is bracketable with the heel on other arrows on P1D.
+				[false, true, false, false],
+			],
+			"BracketablePairingsOtherToe": [
+				// Left foot on P1R is a crossover and not bracketable.
+				[false, false, false, false],
+				// Right foot on P1R is bracketable with the toes on other arrows on P1U.
+				[false, false, true, false],
+			],
+			"OtherFootPairings": [
+				// Left foot on P1R is a crossover with no normal right foot pairing.
+				[false, false, false, false],
+				// Right foot on P1R supports left foot on P1L, P1D, and P1U without crossovers.
+				[true, true, true, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverFront": [
+				// Left foot on P1R is a crossover with right in front when right is on P1U.
+				[false, false, true, false],
+				// Right foot on P1R is not a crossover position.
+				[false, false, false, false],
+			],
+			"OtherFootPairingsOtherFootCrossoverBehind": [
+				// Left foot on P1R is a crossover with right in back when right is on P1D.
+				[false, true, false, false],
+				// Right foot on P1R is not a crossover position.
+				[false, false, false, false],
+			],
+			"OtherFootPairingsInverted": [
+				// Left foot on P1R is inverted with right when right is on P1L.
+				[true, false, false, false],
+				// Right foot on P1R is never inverted.
+				[false, false, false, false],
+			],
+		}
+	]
+}
