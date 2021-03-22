@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E9C2B7DC-E05D-4930-A36F-33637D726456}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ChartGenerator</RootNamespace>
-    <AssemblyName>ChartGenerator</AssemblyName>
+    <RootNamespace>StepManiaChartGenerator</RootNamespace>
+    <AssemblyName>StepManiaChartGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
