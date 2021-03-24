@@ -118,42 +118,31 @@ namespace StepManiaChartGenerator
 		{
 			ExportTime = DateTime.Now;
 
+			// Create a temporary logger for logging exceptions from loading Config.
+			Logger.StartUp(LogLevel.Error);
+
 			// Load Config.
 			var config = await Config.Load();
 			if (config == null)
-				return;
+				Exit(false);
 
 			// Create the logger as soon as possible. We need to load Config first for Logger configuration.
 			var loggerSuccess = CreateLogger();
 
 			// Validate Config, even if creating the logger failed. This will still log errors to the console.
-			if (!config.Validate())
-			{
-				Logger.Shutdown();
-				return;
-			}
-			if (!loggerSuccess)
-			{
-				Logger.Shutdown();
-				return;
-			}
+			if (!config.Validate() || !loggerSuccess)
+				Exit(false);
 
 			// Set whether we can output visualizations based on the configured StepsTypes.
 			SetCanOutputVisualizations();
 			// Create a directory for outputting visualizations.
 			if (!InitializeVisualizationDir())
-			{
-				Logger.Shutdown();
-				return;
-			}
+				Exit(false);
 
 			// Create StepGraphs.
 			var stepGraphCreationSuccess = await LoadPadDataAndCreateStepGraphs();
 			if (!stepGraphCreationSuccess)
-			{
-				Logger.Shutdown();
-				return;
-			}
+				Exit(false);
 
 			// Cache the replacement GraphLinks from the OutputStepGraph.
 			PerformedChart.CacheGraphLinks(OutputStepGraph.FindAllGraphLinks());
@@ -162,8 +151,23 @@ namespace StepManiaChartGenerator
 			await FindAndProcessCharts();
 
 			LogInfo("Done.");
+			Exit(true);
+		}
+
+		/// <summary>
+		/// Exits the application.
+		/// Will wait for input to close if configured to do so.
+		/// </summary>
+		/// <param name="bSuccess">
+		/// If true then the application will exit with a 0 status code.
+		/// If false, the application will exit with a 1 status code.
+		/// </param>
+		private static void Exit(bool bSuccess)
+		{
 			Logger.Shutdown();
-			Console.ReadLine();
+			if (!(Config.Instance?.CloseAutomaticallyWhenComplete ?? false))
+				Console.ReadLine();
+			Environment.Exit(bSuccess ? 0 : 1);
 		}
 
 		/// <summary>

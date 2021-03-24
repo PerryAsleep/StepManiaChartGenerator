@@ -264,6 +264,10 @@ namespace StepManiaChartGenerator
 		/// Timeout for regular expression matching.
 		/// </summary>
 		[JsonInclude] public double RegexTimeoutSeconds = 6.0;
+		/// <summary>
+		/// Whether the application should close automatically or wait for input when it completes.
+		/// </summary>
+		[JsonInclude] public bool CloseAutomaticallyWhenComplete = false;
 
 		/// <summary>
 		/// Directory to recursively search through for finding Charts to convert.

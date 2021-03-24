@@ -12,6 +12,7 @@ ChartConverter's behavior can be configured via the `config.json` file in the ap
 	"LogToConsole": true,
 
 	"RegexTimeoutSeconds": 10.0,
+	"CloseAutomaticallyWhenComplete": false,
 
 	"InputDirectory": "C:\\Games\\StepMania 5\\Songs",
 	"InputNameRegex": ".*\\.(sm|ssc)$",
@@ -172,8 +173,9 @@ ChartConverter's behavior can be configured via the `config.json` file in the ap
 - **OutputVisualizations**: Boolean type. If `true` then the application will generate [Visualizations](Visualizations.md) in the `VisualizationsDirectory` for each chart generated.
 - **VisualizationsDirectory**: String type. Path to directory to generate [Visualizations](Visualizations.md) to.
 
-### Regular Expression Tuning
+### Miscellaneous
 - **RegexTimeoutSeconds**: Number (double) type. Number of seconds to timeout after when testing [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) matches. Must be non-negative.
+- **CloseAutomaticallyWhenComplete**: Boolean type. If `true` then the application will close automatically when it has completed. If `false` then the application will wait for user input to exit.
 
 ## Expressed Chart Behavior Configuration
 [ExpressedChart](ExpressedChart.md) behavior is controlled through `ExpressedChartConfig` objects. A `DefaultExpressedChartConfig` must be specified. Multiple `ExpressedChartConfigs` may exist, and `ExpressedChartConfigRules` can be used to control which charts which use which `ExpressedChartConfig`.
