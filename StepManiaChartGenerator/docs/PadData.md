@@ -198,11 +198,11 @@
 The application considers X to mean left and right movement and Y to mean forward and backward movement. The provided Pad Data uses right as positive X and backwards as positive Y, but the application makes no assumptions about which directions are positive and which are negative.
 
 ### Pad Data
-- **YTravelDistanceCompensation**: Number (double) type. A value to help take into account that movements between equally spaced and equally sized panels in Y take less foot movement to travel between than movements for panels separated by the same distance in X due to the length of a foot being significantly greater than the width of a foot. This value is used when computing individual step speeds for [Individual Step Tightening](Config.md/###-individual-step-tightening). A value of 1.0 for this parameter corresponds to the length of one panel.
+- **YTravelDistanceCompensation**: Number (double) type. A value to help take into account that movements between equally spaced and equally sized panels in Y take less foot movement to travel between than movements for panels separated by the same distance in X due to the length of a foot being significantly greater than the width of a foot. This value is used when computing individual step speeds for [Individual Step Tightening](Config.md/#individual-step-tightening). A value of 1.0 for this parameter corresponds to the length of one panel.
 
 - **StartingPositions**: Array type. Each value in this array is a tier of positions with lower index tiers being preferred to higher index tiers. The value at each tier is an array of equally preferred starting positions on the pad. A position is an array of two number (integer) values with the first index corresponding the left foot and the second index corresponding to the right foot. The value at each index is in the index of the arrow for the foot to start on. When creating a [PerformedChart](PerformedChart.md) searches begin using the starting position at the first tier, and if no path could be found, the application will try using the starting positions at the next tier, and so on. When multiple positions exist at the same tier, they are considered equally preferred and will be chosen in a random order. It is required that there be at least one tier and it is required that the first tier have exactly one position in it.
 
-- **ArrowData**: Array type. Each value is an object describing each panel on the pad. See [Arrow Data](###-arrow-data) for more details.
+- **ArrowData**: Array type. Each value is an object describing each panel on the pad. See [Arrow Data](#arrow-data) for more details.
 
 ### Arrow Data
 
