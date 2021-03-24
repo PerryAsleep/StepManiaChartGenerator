@@ -6,6 +6,8 @@
 	"LogBufferSizeBytes": 10240,
 	"LogToConsole": true,
 
+	"RegexTimeoutSeconds": 10.0,
+
 	// Test Chart Settings.
 	// "InputDirectory": 			"C:\\Games\\StepMania 5\\Songs\\Fumen\\Fire",
 	// "OutputDirectory":			"C:\\Users\\perry\\Projects\\Fumen\\Exports\\",
@@ -126,7 +128,7 @@
 			"DefaultBracketParsingMethod": "Balanced",
 			"BracketParsingDetermination": "ChooseMethodDynamically",
 			"MinLevelForBrackets": 9,
-			"UseAggressiveBracketsWhenMoreSimultaneousNotesThanOneFootCanCover": true,
+			"UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets": true,
 			// Interpret charts with three brackets per minute or more as charts which should aggressively interpret bracketable jumps as brackets.
 			"BalancedBracketsPerMinuteForAggressiveBrackets": 3.0,
 			// Interpret charts with one bracket every minute and 45 seconds or less as charts which should not have brackets.
