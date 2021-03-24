@@ -906,7 +906,7 @@ namespace StepManiaChartGenerator
 			{
 				// Using a hard-coded min timeout since this is used during validation and a low 
 				// RegexTimeoutSeconds shouldn't cause validation failures here.
-				var timeout = Math.Min(5.0, RegexTimeoutSeconds);
+				var timeout = Math.Min(6.0, RegexTimeoutSeconds);
 				var _ = Regex.IsMatch("", regex, RegexOptions.Singleline, TimeSpan.FromSeconds(timeout));
 			}
 			catch (ArgumentException)
