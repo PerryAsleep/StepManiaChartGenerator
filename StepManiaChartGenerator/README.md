@@ -4,7 +4,7 @@
 The application understands most technical moves including crossovers, inverted steps (a.k.a Afronova walks), footswaps, and brackets.
 
 ## Examples
-See the [Examples](docs/Examples.md) page for visualizations of how charts are converted and some videos of generated doubles charts being played.
+See the [Examples](docs/Examples.md) page for [Visualizations](Visualizations.md) of how charts are converted and some videos of generated doubles charts being played.
 
 ## Installation
 `StepManiaChartGenerator` is available for Windows. Download the latest version from the [Releases](https://github.com/PerryAsleep/Fumen/releases) page.
@@ -17,3 +17,6 @@ Double-click `StepManiaChartGenerator.exe`.
 
 ## How it Works
 TODO
+
+## Known Issues
+See the [Known Issues](docs/KnownIssues.md) Page.
