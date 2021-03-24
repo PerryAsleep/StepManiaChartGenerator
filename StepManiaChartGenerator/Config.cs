@@ -133,9 +133,9 @@ namespace StepManiaChartGenerator
 		[JsonInclude] public int MinLevelForBrackets;
 		/// <summary>
 		/// When using the ChooseMethodDynamically BracketParsingDetermination, whether or not encountering more simultaneous
-		/// arrows than one foot can cover should result in using BracketParsingMethod Aggressive.
+		/// arrows than can be covered without brackets should result in using BracketParsingMethod Aggressive.
 		/// </summary>
-		[JsonInclude] public bool UseAggressiveBracketsWhenMoreSimultaneousNotesThanOneFootCanCover;
+		[JsonInclude] public bool UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets;
 		/// <summary>
 		/// When using the ChooseMethodDynamically BracketParsingDetermination, a Balanced bracket per minute count over which
 		/// should result in BracketParsingMethod Aggressive being used.
@@ -259,6 +259,11 @@ namespace StepManiaChartGenerator
 		/// Whether or not to log to the console.
 		/// </summary>
 		[JsonInclude] public bool LogToConsole;
+
+		/// <summary>
+		/// Timeout for regular expression matching.
+		/// </summary>
+		[JsonInclude] public double RegexTimeoutSeconds = 6.0;
 
 		/// <summary>
 		/// Directory to recursively search through for finding Charts to convert.
@@ -431,6 +436,12 @@ namespace StepManiaChartGenerator
 		public bool Validate()
 		{
 			var errors = false;
+
+			if (RegexTimeoutSeconds <= 0.0)
+			{
+				LogError($"Invalid RegexTimeoutSeconds {RegexTimeoutSeconds}. Must be greater than 0.0.");
+				errors = true;
+			}
 
 			if (string.IsNullOrEmpty(InputDirectory))
 			{
@@ -887,13 +898,16 @@ namespace StepManiaChartGenerator
 		/// </summary>
 		/// <param name="regex">Regular expression string to check.</param>
 		/// <returns>True if the given regular expression string is valid and false otherwise.</returns>
-		private static bool IsValidRegex(string regex)
+		private bool IsValidRegex(string regex)
 		{
 			if (string.IsNullOrEmpty(regex))
 				return false;
 			try
 			{
-				var _ = Regex.IsMatch("", regex, RegexOptions.Singleline, TimeSpan.FromSeconds(5));
+				// Using a hard-coded min timeout since this is used during validation and a low 
+				// RegexTimeoutSeconds shouldn't cause validation failures here.
+				var timeout = Math.Min(5.0, RegexTimeoutSeconds);
+				var _ = Regex.IsMatch("", regex, RegexOptions.Singleline, TimeSpan.FromSeconds(timeout));
 			}
 			catch (ArgumentException)
 			{
@@ -908,12 +922,12 @@ namespace StepManiaChartGenerator
 		/// <param name="regex">Regular expression string to check.</param>
 		/// <param name="input">Input string to check against the regular expression.</param>
 		/// <returns>True if the given regular expression string is valid and false otherwise.</returns>
-		private static bool Matches(string regex, string input)
+		private bool Matches(string regex, string input)
 		{
 			var matches = false;
 			try
 			{
-				matches = Regex.IsMatch(input, regex, RegexOptions.Singleline, TimeSpan.FromSeconds(5));
+				matches = Regex.IsMatch(input, regex, RegexOptions.Singleline, TimeSpan.FromSeconds(RegexTimeoutSeconds));
 			}
 			catch (Exception e)
 			{

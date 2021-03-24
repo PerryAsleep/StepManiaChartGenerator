@@ -478,8 +478,8 @@ namespace StepManiaChartGenerator
 					// If configured to use Aggressive parsing when the Chart has more simultaneous
 					// arrows than one foot can cover, scan the chart for simultaneous notes and use
 					// BracketParsingMethod Aggressive if appropriate.
-					else if (config.UseAggressiveBracketsWhenMoreSimultaneousNotesThanOneFootCanCover
-					         && expressedChart.HasMoreSimultaneousNotesThanOneFootCanCover())
+					else if (config.UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets
+							 && expressedChart.HasMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets())
 					{
 						bracketParsingMethod = BracketParsingMethod.Aggressive;
 					}
@@ -715,15 +715,15 @@ namespace StepManiaChartGenerator
 
 		/// <summary>
 		/// Determines whether the Events for this ExpressedChart include any portions
-		/// where there are more arrows being stepped on than one foot could cover.
+		/// where there are more arrows being stepped on than can be covered without using brackets.
 		/// In other words, are there completely unambiguous brackets.
 		/// O(n) time complexity.
 		/// </summary>
 		/// <returns>
 		/// True if the Events for this ExpressedChart include portions with more
-		/// simultaneous notes than one foot could cover and false otherwise.
+		/// simultaneous notes than can be covered without brackets and false otherwise.
 		/// </returns>
-		private bool HasMoreSimultaneousNotesThanOneFootCanCover()
+		private bool HasMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets()
 		{
 			var heldLanes = new bool[StepGraph.NumArrows];
 			for (var i = 0; i < Events.Count;)
@@ -757,7 +757,7 @@ namespace StepManiaChartGenerator
 						numHeld++;
 				}
 
-				if (numTaps + numHeld > NumFootPortions)
+				if (numTaps + numHeld > NumFeet)
 				{
 					return true;
 				}
