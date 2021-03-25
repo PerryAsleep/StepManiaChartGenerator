@@ -16,7 +16,7 @@ See the [Configuration](docs/Config.md) Guide.
 Double-click `StepManiaChartGenerator.exe`.
 
 ## How it Works
-TODO
+See the [How It Works](docs/HowItWorks.md) Page.
 
 ## Known Issues
 See the [Known Issues](docs/KnownIssues.md) Page.
