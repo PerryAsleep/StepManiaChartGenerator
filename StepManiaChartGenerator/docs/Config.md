@@ -178,7 +178,7 @@ ChartConverter's behavior can be configured via the `config.json` file in the ap
 - **CloseAutomaticallyWhenComplete**: Boolean type. If `true` then the application will close automatically when it has completed. If `false` then the application will wait for user input to exit.
 
 ## Expressed Chart Behavior Configuration
-[ExpressedChart](HowItWorks.md#-expressedCharts) behavior is controlled through `ExpressedChartConfig` objects. A `DefaultExpressedChartConfig` must be specified. Multiple `ExpressedChartConfigs` may exist, and `ExpressedChartConfigRules` can be used to control which charts which use which `ExpressedChartConfig`.
+[ExpressedChart](HowItWorks.md#expressedCharts) behavior is controlled through `ExpressedChartConfig` objects. A `DefaultExpressedChartConfig` must be specified. Multiple `ExpressedChartConfigs` may exist, and `ExpressedChartConfigRules` can be used to control which charts which use which `ExpressedChartConfig`.
 
 - **DefaultExpressedChartConfig**: String type. Key in `ExpressedChartConfigs` for the default object to use when no `ExpressedChartConfigRules` entry matches the chart to convert.
 - **ExpressedChartConfigRules**: Array type. Each object in the array specifies rules for matching a particular chart and mapping it to an `ExpressedChartConfig` object. If multiple matches exist, the match with the highest index in the array is used. Each object in the array has the following properties:
@@ -199,7 +199,7 @@ ChartConverter's behavior can be configured via the `config.json` file in the ap
 	- **BalancedBracketsPerMinuteForNoBrackets**: Number (double) type. When parsing using `"ChooseMethodDynamically"` and the above parameters have still not determined which `BracketParsingMethod` to use, then parse the chart using the `"Balanced"` `BracketParsingMethod` and determine the number of brackets per minute. If the brackets per minute is below this value, then switch to the `"NoBrackets"` method for the chart.
 
 ## Performed Chart Behavior Configuration
-[PerformedChart](HowItWorks.md#-performedCharts) behavior is controlled through `PerformedChartConfig` objects. A `DefaultPerformedChartConfig` must be specified. Multiple `PerformedChartConfigs` may exist, and `PerformedChartConfigRules` can be used to control which charts which use which `PerformedChartConfig`.
+[PerformedChart](HowItWorks.md#performedCharts) behavior is controlled through `PerformedChartConfig` objects. A `DefaultPerformedChartConfig` must be specified. Multiple `PerformedChartConfigs` may exist, and `PerformedChartConfigRules` can be used to control which charts which use which `PerformedChartConfig`.
 
 - **DefaultPerformedChartConfig**: String type. Key in `PerformedChartConfigs` for the default object to use when no `PerformedChartConfigRules` entry matches the chart to convert.
 - **PerformedChartConfigRules**: Array type. Each object in the array specifies rules for matching a particular chart and mapping it to an `PerformedChartConfig` object. If multiple matches exist, the match with the highest index in the array is used. Each object in the array has the following properties:
