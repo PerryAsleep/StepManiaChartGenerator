@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Fumen;
 using Fumen.ChartDefinition;
 using static StepManiaChartGenerator.Constants;
@@ -182,7 +180,7 @@ namespace StepManiaChartGenerator
 		/// ordinal value of the GraphArrowState for the given node, or -1 if that
 		/// arrow is free.
 		/// </summary>
-		/// <param name="node">Graphnode to generate state from.</param>
+		/// <param name="node">GraphNode to generate state from.</param>
 		/// <param name="numArrows">Number of arrows in the Chart or StepGraph.</param>
 		/// <returns></returns>
 		private static int[,] CreateState(GraphNode node, int numArrows)

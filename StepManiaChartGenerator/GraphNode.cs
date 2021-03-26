@@ -22,7 +22,13 @@ namespace StepManiaChartGenerator
 		/// </summary>
 		public readonly struct FootArrowState
 		{
+			/// <summary>
+			/// The arrow / lane under the foot.
+			/// </summary>
 			public readonly int Arrow;
+			/// <summary>
+			/// The state of the foot on the arrow.
+			/// </summary>
 			public readonly GraphArrowState State;
 
 			public FootArrowState(int arrow, GraphArrowState state)
@@ -31,7 +37,7 @@ namespace StepManiaChartGenerator
 				State = state;
 			}
 
-			public bool EqualsFooting(FootArrowState other)
+			public bool EqualsArrow(FootArrowState other)
 			{
 				return Arrow == other.Arrow;
 			}
@@ -113,7 +119,7 @@ namespace StepManiaChartGenerator
 				return false;
 			for (var f = 0; f < NumFeet; f++)
 				for (var p = 0; p < NumFootPortions; p++)
-					if (!State[f, p].EqualsFooting(other.State[f, p]))
+					if (!State[f, p].EqualsArrow(other.State[f, p]))
 						return false;
 			if (Orientation != other.Orientation)
 				return false;

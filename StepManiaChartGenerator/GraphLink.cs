@@ -21,18 +21,27 @@ namespace StepManiaChartGenerator
 	}
 
 	/// <summary>
-	/// Link between nodes in a StepGraph.
+	/// Link between GraphNodes in a StepGraph.
 	/// Represents what each foot does to move from one GraphNode to a set of other GraphNodes.
 	/// </summary>
 	public class GraphLink : IEquatable<GraphLink>
 	{
 		/// <summary>
-		/// The state of a foot and an arrow within a GraphLink.
+		/// The state for one FootPortion within a GraphLink.
 		/// </summary>
 		public readonly struct FootArrowState
 		{
+			/// <summary>
+			/// StepType performed with the FootPortion.
+			/// </summary>
 			public readonly StepType Step;
+			/// <summary>
+			/// FootAction performed with the FootPortion.
+			/// </summary>
 			public readonly FootAction Action;
+			/// <summary>
+			/// Whether this is a valid FootArrowState within the GraphLink's Links.
+			/// </summary>
 			public readonly bool Valid;
 
 			public FootArrowState(StepType step, FootAction action)

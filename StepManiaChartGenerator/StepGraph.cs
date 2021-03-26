@@ -275,6 +275,10 @@ namespace StepManiaChartGenerator
 		#endregion Public Search Methods
 
 		#region Fill
+		/// <summary>
+		/// Fill all the GraphLinks and GraphNodes of this StepGraph.
+		/// Iterative, breadth-first fill.
+		/// </summary>
 		private void Fill()
 		{
 			LogInfo("Generating StepGraph...");
@@ -297,28 +301,28 @@ namespace StepManiaChartGenerator
 				{
 					VisitedNodes.Add(currentNode);
 
-					// Fill node
+					// Fill node.
 					foreach (var stepType in Enum.GetValues(typeof(StepType)).Cast<StepType>())
 						FillSingleFootStep(currentNode, stepType);
 					foreach (var jump in JumpCombinations)
 						FillJump(currentNode, jump);
 
-					// Collect children
+					// Collect children.
 					foreach (var linkEntry in currentNode.Links)
 						foreach (var childNode in linkEntry.Value)
 							allChildren.Add(childNode);
 
-					// Mark node complete
+					// Mark node complete.
 					completeNodes.Add(currentNode);
 				}
 
-				// Remove all complete nodes
+				// Remove all complete nodes.
 				var previousCount = allChildren.Count;
 				allChildren.RemoveWhere(n => completeNodes.Contains(n));
 
 				LogInfo($"Level {level + 1}: Found {allChildren.Count} children (pruned from {previousCount}).");
 
-				// Search one level deeper
+				// Search one level deeper.
 				currentNodes = allChildren.ToList();
 				level++;
 			}
@@ -326,19 +330,38 @@ namespace StepManiaChartGenerator
 			LogInfo($"StepGraph generation complete. {completeNodes.Count} Nodes.");
 		}
 
+		/// <summary>
+		/// Adds the given GraphLink to the given new GraphNode to the given current
+		/// GraphNode. If the new GraphNode already exists in the StepGraph, the existing
+		/// instance will be linked to a new GraphNode will not be added.
+		/// </summary>
+		/// <param name="currentNode">GraphNode to add the link from.</param>
+		/// <param name="newNode">GraphNode to add the link to.</param>
+		/// <param name="link">GraphLink linking the two nodes.</param>
 		private void AddNode(GraphNode currentNode, GraphNode newNode, GraphLink link)
 		{
+			// If the new node already exists in the StepGraph, link to it.
 			if (VisitedNodes.TryGetValue(newNode, out var visitedNode))
 				newNode = visitedNode;
+			// Otherwise add it to the set of visited nodes so future links can
+			// link to it.
 			else
 				VisitedNodes.Add(newNode);
 
+			// Link to the new node from the current node.
 			if (!currentNode.Links.ContainsKey(link))
 				currentNode.Links[link] = new List<GraphNode>();
 			if (!currentNode.Links[link].Contains(newNode))
 				currentNode.Links[link].Add(newNode);
 		}
 
+		/// <summary>
+		/// Adds GraphLinks to the given GraphNode for single-foot steps represented by
+		/// the given StepType. Adds new GraphNodes to those GraphLinks for the resulting
+		/// states, or links to existing GraphNodes in the StepGraph if they already exist.
+		/// </summary>
+		/// <param name="currentNode">GraphNode to fill.</param>
+		/// <param name="stepType">StepType representing a single foot step to fill.</param>
 		private void FillSingleFootStep(GraphNode currentNode, StepType stepType)
 		{
 			// Get the foot portions needed for this step.
@@ -400,6 +423,17 @@ namespace StepManiaChartGenerator
 			}
 		}
 
+		/// <summary>
+		/// Adds GraphLinks to the given GraphNode for jumps represented by
+		/// the given array of StepTypes for each foot. Adds new GraphNodes to those
+		/// GraphLinks for the resulting states, or links to existing GraphNodes in
+		/// the StepGraph if they already exist.
+		/// </summary>
+		/// <param name="currentNode">GraphNode to fill.</param>
+		/// <param name="stepTypes">
+		/// StepTypes per foot, representing the jump. It is expected that this is
+		/// a valid jump combination.
+		/// </param>
 		private void FillJump(GraphNode currentNode, StepType[] stepTypes)
 		{
 			// When filling a jump we fill one foot at a time, then pass the state that has been altered by the first foot
@@ -462,6 +496,21 @@ namespace StepManiaChartGenerator
 			}
 		}
 
+		/// <summary>
+		/// Helper for FillJump. Fills one of the steps making up the jump.
+		/// </summary>
+		/// <param name="currentNode">The current GraphNode to fill from.</param>
+		/// <param name="stepType">The StepType for the given foot in this jump.</param>
+		/// <param name="foot">Which foot of the jump we are considering.</param>
+		/// <param name="otherFootReleasing">
+		/// Whether or not the other foot is releasing. Used for early outs since in a jump
+		/// all FootActions must be Release, or they must all be not Release.
+		/// </param>
+		/// <returns>
+		/// Dictionary of FootAction[] to a List of all GraphNodes to be linked to for those Actions.
+		/// The key is an array to support brackets which have multiple FootActions, one per FootPortion.
+		/// See StepData.ActionSets for more details.
+		/// </returns>
 		private Dictionary<FootAction[], List<GraphNode>> FillJumpStep(
 			GraphNode currentNode,
 			StepType stepType,
