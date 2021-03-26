@@ -6,6 +6,7 @@ using Fumen;
 using Fumen.ChartDefinition;
 using Fumen.Converters;
 using static StepManiaChartGenerator.Constants;
+using static StepManiaChartGenerator.ExpressedChartCosts;
 
 namespace StepManiaChartGenerator
 {

@@ -75,7 +75,9 @@
     <Compile Include="ArrowData.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DebugUtils.cs" />
     <Compile Include="ExpressedChart.cs" />
+    <Compile Include="ExpressedChartCosts.cs" />
     <Compile Include="GraphLink.cs" />
     <Compile Include="GraphNode.cs" />
     <Compile Include="MineUtils.cs" />
