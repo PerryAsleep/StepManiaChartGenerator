@@ -1,125 +1,41 @@
+// See the configuration guide for details:
+// https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Config.md
 {
 	// Logger configuration.
 	"LogLevel": "Info",
 	"LogToFile": true,
+	"LogDirectory": "C:\\Fumen\\Logs",
 	"LogFlushIntervalSeconds": 20,
 	"LogBufferSizeBytes": 10240,
 	"LogToConsole": true,
 
 	"RegexTimeoutSeconds": 10.0,
-	"CloseAutomaticallyWhenComplete": true,
+	"CloseAutomaticallyWhenComplete": false,
 
-	// Test Chart Settings.
-	// "InputDirectory": 			"C:\\Games\\StepMania 5\\Songs\\Fumen\\Fire",
-	// "OutputDirectory":			"C:\\Users\\perry\\Projects\\Fumen\\Exports\\",
-	// "VisualizationsDirectory":	"C:\\Users\\perry\\Projects\\Fumen\\Visualizations\\",
-	// "LogDirectory":				"C:\\Users\\perry\\Projects\\Fumen\\Logs\\",
-	// "InputNameRegex": 			".*\\.(sm|ssc)$",
-	// "InputChartType": 			"dance-single",
-	// "DifficultyRegex": 			".",
-	// "OutputChartType": 			"dance-single",
-	// "OverwriteBehavior": 		"Always",
-	// "OutputVisualizations":		true,
-	// "NonChartFileCopyBehavior":	"DoNotCopy",
+	"InputDirectory": "C:\\Games\\StepMania 5\\Songs",
+	"InputNameRegex": ".*\\.(sm|ssc)$",
+	"InputChartType": "dance-single",
+	"DifficultyRegex": ".",
 
-	// Test Specific Song Settings.
-	//"InputDirectory":			"C:\\Users\\perry\\Desktop\\DanceyBox-2021-02-06\\Songs",
-	//"OutputDirectory":			"C:\\Users\\perry\\Projects\\Fumen\\Exports\\",
-	//"VisualizationsDirectory":	"C:\\Users\\perry\\Projects\\Fumen\\Visualizations\\",
-	//"LogDirectory":				"C:\\Users\\perry\\Projects\\Fumen\\Logs\\",
-	//"InputNameRegex":			".*\\.(sm|ssc)$",
-	//"InputChartType":			"dance-single",
-	//"DifficultyRegex":			".",
-	//"OutputChartType":			"dance-double",
-	//"OverwriteBehavior":		"IfFumenGenerated",
-	//"OutputVisualizations":		true,
-	//"NonChartFileCopyBehavior":	"DoNotCopy",
+	"OutputDirectory": "C:\\Fumen\\Exports",
+	"OutputChartType": "dance-double",
+	"OverwriteBehavior": "IfFumenGenerated",
+	"NonChartFileCopyBehavior": "DoNotCopy",
 
-	// Test Pack Settings.
-	"InputDirectory":			"C:\\Games\\StepMania 5\\Songs\\FumenRealCharts",
-	"OutputDirectory":			"C:\\Users\\perry\\Projects\\Fumen\\Exports\\",
-	"VisualizationsDirectory":	"C:\\Users\\perry\\Projects\\Fumen\\Visualizations\\",
-	"LogDirectory":				"C:\\Users\\perry\\Projects\\Fumen\\Logs\\",
-	"InputNameRegex":			".*\\.(sm|ssc)$",
-	"InputChartType":			"dance-single",
-	"DifficultyRegex":			".",
-	"OutputChartType":			"dance-double",
-	"OverwriteBehavior":		"IfFumenGenerated",
-	"OutputVisualizations":		true,
-	"NonChartFileCopyBehavior":	"DoNotCopy",
-
-	// Normal Settings.
-	// "InputDirectory":			"C:\\Users\\perry\\Desktop\\DanceyBox-2021-02-06\\Songs\\",
-	// "OutputDirectory":			"C:\\Users\\perry\\Desktop\\DanceyBox-Export",
-	// "VisualizationsDirectory":	"C:\\Users\\perry\\Desktop\\DanceyBox-Export-Visualizations",
-	// "LogDirectory":				"C:\\Users\\perry\\Desktop\\DanceyBox-Export-Logs",
-	// "InputNameRegex":			".*\\.(sm|ssc)$",
-	// "InputChartType":			"dance-single",
-	// "DifficultyRegex":			".",
-	// "OutputChartType":			"dance-double",
-	// "OverwriteBehavior":		"IfFumenGenerated",
-	// "OutputVisualizations":		false,
-	// "NonChartFileCopyBehavior":	"DoNotCopy",
+	"OutputVisualizations": false,
+	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
 	"DefaultExpressedChartConfig": "BalancedDynamic",
 	"DefaultPerformedChartConfig": "Default",
 
 	"ExpressedChartConfigRules":
 	[
-		// DDR never uses brackets.
-		{"FileRegex": ".*(\\\\|/)Dance Dance Revolution.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
-		{"FileRegex": ".*(\\\\|/)Dancing Stage.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
-		{"FileRegex": ".*(\\\\|/)DDR.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+		//{"FileRegex": ".*(\\\\|/)MyPackWithNoBrackets.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
 	],
 
 	"PerformedChartConfigRules":
 	[
-		// Stamina packs. Using a lower BPM cutoff for tightening individual steps for more comfortable
-		// stream patterns at low BPMs.
-		{"FileRegex": ".*(\\\\|/)90s Dance Megamix.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)140BPM Stamina Files \\(nonstop 16ths\\).*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)BaguetteStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Bass Chasers.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)BeaTrance.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Betwixt & Between.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)chimichungus.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Comiket 95.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Cuties Party.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Dingoshi Ramen.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)DJ Myosuke.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Dragonforce.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)East Coast Stamina 3.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)ECS.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Enjoy Stamina Pack.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Eurobeat Is Fantastic.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)French Coast Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)FusionStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Happy Streamables.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Hardbass Madness.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Hardcore Streamables.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Helblinde.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Hospitality.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)I Have No Feet and I Must Stream.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)itg! Rhythm is just a step away!.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)ITGAlex's Stamina Safari.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Kevin's Stamina Charts.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Makina Marathon.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Pendulum.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Petriform's Factory.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Really Long Stuff.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Sexuality Violation.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)SHARPNELSTREAMZ v2.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Skittles Stream Collection.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)SlowStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)SOMEBODY STREEEEEAM!!!.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)The Joy of Streaming.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)The Starter Pack of Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)TranceMania.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)TranceNation.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)You're Streaming.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)yutsi-type beats.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
-		{"FileRegex": ".*(\\\\|/)Zaniel's Junts.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		//{"FileRegex": ".*(\\\\|/)MyStaminaPack.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
 	],
 
 	"ExpressedChartConfigs":
@@ -132,10 +48,10 @@
 			"UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets": true,
 			// Interpret charts with three brackets per minute or more as charts which should aggressively interpret bracketable jumps as brackets.
 			"BalancedBracketsPerMinuteForAggressiveBrackets": 3.0,
-			// Interpret charts with one bracket every minute and 45 seconds or less as charts which should not have brackets.
+			// Interpret charts with one bracket every minute or less as charts which should not have brackets.
 			// Many non-technical charts have jumps which patterns which can reasonably be done by bracketing. With balanced
 			// parsing, these charts would produce brackets. This threshold helps keeps non-technical charts bracket-free.
-			"BalancedBracketsPerMinuteForNoBrackets": 0.571,
+			"BalancedBracketsPerMinuteForNoBrackets": 1.0,
 		},
 		"NoBrackets":
 		{
@@ -185,8 +101,8 @@
 		
 			// 16ths at 170
 			"IndividualStepTighteningMinTimeSeconds": 0.176471,
-			// 16ths at 100
-			"IndividualStepTighteningMaxTimeSeconds": 0.3,
+			// 16ths at 99
+			"IndividualStepTighteningMaxTimeSeconds": 0.303,
 		
 			"LateralTighteningPatternLength": 5,
 			"LateralTighteningRelativeNPS": 1.65,
