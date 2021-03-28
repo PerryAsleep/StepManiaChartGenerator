@@ -293,6 +293,7 @@ namespace StepManiaChartGenerator
 				var config = Config.Instance;
 				if (config.LogToFile)
 				{
+					Directory.CreateDirectory(config.LogDirectory);
 					var logFileName = ExportTime.ToString("yyyy-MM-dd HH-mm-ss") + ".log";
 					var logFilePath = Fumen.Path.Combine(config.LogDirectory, logFileName);
 					Logger.StartUp(
