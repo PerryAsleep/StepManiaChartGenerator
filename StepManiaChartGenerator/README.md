@@ -18,5 +18,5 @@ Double-click `StepManiaChartGenerator.exe`.
 ## How it Works
 See the [How It Works](docs/HowItWorks.md) Page.
 
-## Known Issues
-See the [Known Issues](docs/KnownIssues.md) Page.
+## Known Issues and Unsupported Features
+See the [Known Issues and Unsupported Features](docs/KnownIssues.md) Page.
