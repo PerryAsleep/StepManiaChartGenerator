@@ -81,14 +81,15 @@ namespace StepManiaChartGenerator
 		/// <param name="events">List of IChartNodes representing the charts nodes.</param>
 		/// <param name="numArrows">Number of arrows in the Chart or StepGraph.</param>
 		/// <returns>List representing releases and List representing steps.</returns>
-		public static (List<FootActionEvent>, List<FootActionEvent>) GetReleasesAndSteps<T>(List<T> events, int numArrows) where T : IChartNode
+		public static (List<FootActionEvent>, List<FootActionEvent>) GetReleasesAndSteps<T>(List<T> events, int numArrows)
+			where T : IChartNode
 		{
 			var releases = new List<FootActionEvent>();
 			var steps = new List<FootActionEvent>();
 			var numEvents = events.Count;
 			if (numEvents == 0)
 				return (releases, steps);
-			
+
 			var eventIndex = 0;
 			var previousState = CreateState(events[0].GetGraphNode(), numArrows);
 
@@ -111,21 +112,21 @@ namespace StepManiaChartGenerator
 						var addRelease = false;
 
 						// Releasing a hold
-						if ((currentState[f, arrow] == (int)GraphArrowState.Resting || currentState[f, arrow] == -1)
-							&& previousState[f, arrow] == (int)GraphArrowState.Held)
+						if ((currentState[f, arrow] == (int) GraphArrowState.Resting || currentState[f, arrow] == -1)
+						    && previousState[f, arrow] == (int) GraphArrowState.Held)
 						{
 							addRelease = true;
 						}
 						// Tapping on a new arrow
-						else if (currentState[f, arrow] == (int)GraphArrowState.Resting
-						    && previousState[f, arrow] == -1)
+						else if (currentState[f, arrow] == (int) GraphArrowState.Resting
+						         && previousState[f, arrow] == -1)
 						{
 							addStep = true;
 							addRelease = true;
 						}
 						// Starting a hold
-						else if (currentState[f, arrow] == (int)GraphArrowState.Held
-						     && (previousState[f, arrow] == (int)GraphArrowState.Resting || previousState[f, arrow] == -1))
+						else if (currentState[f, arrow] == (int) GraphArrowState.Held
+						         && (previousState[f, arrow] == (int) GraphArrowState.Resting || previousState[f, arrow] == -1))
 						{
 							addStep = true;
 						}
@@ -165,6 +166,7 @@ namespace StepManiaChartGenerator
 						}
 					}
 				}
+
 				previousState = currentState;
 				eventIndex++;
 			}
@@ -313,6 +315,7 @@ namespace StepManiaChartGenerator
 
 					consideredArrows[events[searchIndex].Arrow] = true;
 				}
+
 				searchIndex += searchBackwards ? -1 : 1;
 			}
 
@@ -431,7 +434,8 @@ namespace StepManiaChartGenerator
 					if (currentN >= desiredN)
 					{
 						// If this arrow free then we can use it.
-						if (IsArrowFreeAtPosition(arrow, minePosition, releases, releaseIndex, steps, stepIndex, arrowsOccupiedByMines))
+						if (IsArrowFreeAtPosition(arrow, minePosition, releases, releaseIndex, steps, stepIndex,
+							arrowsOccupiedByMines))
 						{
 							// Record this arrow as the best arrow.
 							bestArrow = arrow;
@@ -464,7 +468,8 @@ namespace StepManiaChartGenerator
 				foreach (var a in randomLaneOrder)
 				{
 					if (!consideredArrows[a]
-					    && IsArrowFreeAtPosition(a, minePosition, releases, releaseIndex, steps, stepIndex, arrowsOccupiedByMines))
+					    && IsArrowFreeAtPosition(a, minePosition, releases, releaseIndex, steps, stepIndex,
+						    arrowsOccupiedByMines))
 					{
 						bestArrow = a;
 						break;
@@ -520,12 +525,13 @@ namespace StepManiaChartGenerator
 			MetricPosition precedingStepPosition = null;
 			while (precedingStepIndex >= 0)
 			{
-				if (steps[precedingStepIndex].Position <= position 
+				if (steps[precedingStepIndex].Position <= position
 				    && steps[precedingStepIndex].Arrow == arrow)
 				{
 					precedingStepPosition = steps[precedingStepIndex].Position;
 					break;
 				}
+
 				precedingStepIndex--;
 			}
 
@@ -543,7 +549,7 @@ namespace StepManiaChartGenerator
 			while (followingReleaseIndex - 1 >= 0)
 			{
 				if (releases[followingReleaseIndex].Arrow == arrow
-					&& releases[followingReleaseIndex - 1].Position < precedingStepPosition)
+				    && releases[followingReleaseIndex - 1].Position < precedingStepPosition)
 					break;
 				followingReleaseIndex--;
 			}
@@ -553,11 +559,12 @@ namespace StepManiaChartGenerator
 			while (followingReleaseIndex < releases.Count)
 			{
 				if (releases[followingReleaseIndex].Position >= precedingStepPosition
-					&& releases[followingReleaseIndex].Arrow == arrow)
+				    && releases[followingReleaseIndex].Arrow == arrow)
 				{
 					followingReleasePosition = releases[followingReleaseIndex].Position;
 					break;
 				}
+
 				followingReleaseIndex++;
 			}
 

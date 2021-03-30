@@ -47,10 +47,12 @@ namespace StepManiaChartGenerator
 			/// Position of this node in the Chart.
 			/// </summary>
 			public MetricPosition Position;
+
 			/// <summary>
 			/// Next PerformanceNode in the series.
 			/// </summary>
 			public PerformanceNode Next;
+
 			/// <summary>
 			/// Previous PerformanceNode in the series.
 			/// </summary>
@@ -66,15 +68,29 @@ namespace StepManiaChartGenerator
 			/// GraphNodeInstance representing the state at this PerformanceNode.
 			/// </summary>
 			public GraphNodeInstance GraphNodeInstance;
+
 			/// <summary>
 			/// GraphLinkInstance to the GraphNodeInstance at this PerformanceNode.
 			/// </summary>
 			public GraphLinkInstance GraphLinkInstance;
 
 			#region MineUtils.IChartNode Implementation
-			public GraphNode GetGraphNode() { return GraphNodeInstance?.Node; }
-			public GraphLink GetGraphLinkToNode() { return GraphLinkInstance?.GraphLink; }
-			public MetricPosition GetPosition() { return Position; }
+
+			public GraphNode GetGraphNode()
+			{
+				return GraphNodeInstance?.Node;
+			}
+
+			public GraphLink GetGraphLinkToNode()
+			{
+				return GraphLinkInstance?.GraphLink;
+			}
+
+			public MetricPosition GetPosition()
+			{
+				return Position;
+			}
+
 			#endregion
 		}
 
@@ -103,20 +119,23 @@ namespace StepManiaChartGenerator
 		private class SearchNode : IEquatable<SearchNode>, IComparable<SearchNode>
 		{
 			private static long IdCounter;
-			
+
 			/// <summary>
 			/// Unique identifier for preventing conflicts when storing SearchNodes in
 			/// HashSets or other data structures that rely on the IEquatable interface.
 			/// </summary>
 			private readonly long Id;
+
 			/// <summary>
 			/// The GraphNode at this SearchNode.
 			/// </summary>
 			public readonly GraphNode GraphNode;
+
 			/// <summary>
 			/// The GraphLink from the Previous SearchNode that links to this SearchNode.
 			/// </summary>
 			public readonly GraphLink GraphLinkFromPreviousNode;
+
 			/// <summary>
 			/// The depth of this SearchNode.
 			/// This depth can also index the ExpressedChart StepEvents for accessing the StepType.
@@ -133,38 +152,45 @@ namespace StepManiaChartGenerator
 			/// Used for backing up when hitting a dead end in a search.
 			/// </summary>
 			public readonly SearchNode PreviousNode;
+
 			/// <summary>
 			/// All the GraphLinks which are valid for linking out of this SearchNode and into the next SearchNodes.
 			/// This is a List and not just one GraphLink due to configurable StepType replacements.
 			/// See Config.StepTypeReplacements.
 			/// </summary>
 			public readonly List<GraphLink> GraphLinks;
+
 			/// <summary>
 			/// All the valid NextNodes out of this SearchNode.
 			/// These are added during the search and pruned so at the end there is at most one next SearchNode.
 			/// </summary>
-			public readonly Dictionary<GraphLink, HashSet<SearchNode>> NextNodes = new Dictionary<GraphLink, HashSet<SearchNode>>();
+			public readonly Dictionary<GraphLink, HashSet<SearchNode>> NextNodes =
+				new Dictionary<GraphLink, HashSet<SearchNode>>();
 
 			/// <summary>
 			/// This SearchNode's cost for using unwanted individual steps.
 			/// Higher values are worse.
 			/// </summary>
 			private readonly double TotalIndividualStepCost;
+
 			/// <summary>
 			/// This SearchNode's cost for using unwanted faster lateral movement.
 			/// Higher values are worse.
 			/// </summary>
 			private readonly double TotalLateralMovementSpeedCost;
+
 			/// <summary>
 			/// This SearchNode's cost for deviating from the configured DesiredArrowWeights.
 			/// Higher values are worse.
 			/// </summary>
 			private readonly double DistributionCost;
+
 			/// <summary>
 			/// This SearchNode's random weight for when all costs are equal.
 			/// Higher values are worse.
 			/// </summary>
 			private readonly double RandomWeight;
+
 			/// <summary>
 			/// The total number of misleading steps for the path up to and including this SearchNode.
 			/// Misleading steps are steps which any reasonable player would interpret differently
@@ -174,6 +200,7 @@ namespace StepManiaChartGenerator
 			/// orientation that they will likely need to double-step to correct from.
 			/// </summary>
 			private readonly int MisleadingStepCount;
+
 			/// <summary>
 			/// The total number of ambiguous steps for the path to to and including this SearchNode.
 			/// Ambiguous steps are steps which any reasonably player would interpret as having more
@@ -186,27 +213,32 @@ namespace StepManiaChartGenerator
 			/// Whether or not this SearchNode represents a step with either foot.
 			/// </summary>
 			private bool Stepped;
+
 			/// <summary>
 			/// The time in microseconds of the Events represented by this SearchNode.
 			/// </summary>
 			private readonly long TimeMicros;
+
 			/// <summary>
 			/// Lateral position of the body on the pads at this SearchNode.
 			/// Units are in arrows.
 			/// </summary>
 			private double LateralBodyPosition;
+
 			/// <summary>
 			/// For each foot, the last time in microseconds that it was stepped on.
 			/// During construction, these values will be updated to this SearchNode's TimeMicros
 			/// if this SearchNode represents steps on any arrows.
 			/// </summary>
 			private readonly long[] LastTimeFootStepped;
+
 			/// <summary>
 			/// For each foot, the last time in microseconds that it was released.
 			/// During construction, these values will be updated to this SearchNode's TimeMicros
 			/// if this SearchNode represents releases on any arrows.
 			/// </summary>
 			private readonly long[] LastTimeFootReleased;
+
 			/// <summary>
 			/// For each Foot and FootPortion, the last arrows that were stepped on by it.
 			/// During construction, these values will be updated based on this SearchNode's
@@ -285,12 +317,13 @@ namespace StepManiaChartGenerator
 				StepCounts = new int[Actions.Length];
 				for (var a = 0; a < Actions.Length; a++)
 				{
-					StepCounts[a] = (previousNode?.StepCounts[a] ?? 0) 
-						+ (Actions[a] == PerformanceFootAction.Tap || Actions[a] == PerformanceFootAction.Hold ? 1 : 0);
+					StepCounts[a] = (previousNode?.StepCounts[a] ?? 0)
+					                + (Actions[a] == PerformanceFootAction.Tap || Actions[a] == PerformanceFootAction.Hold ? 1 : 0);
 				}
 
 				// Get the GraphLinks to use as replacements for the original GraphLink.
-				GraphLinks = originalGraphLinkToNextNode == null ? new List<GraphLink>()
+				GraphLinks = originalGraphLinkToNextNode == null
+					? new List<GraphLink>()
 					: GraphLinkReplacementCache[originalGraphLinkToNextNode];
 
 				// Copy the previous SearchNode's last step times to this nodes last step times.
@@ -316,7 +349,8 @@ namespace StepManiaChartGenerator
 
 				double individualStepCost;
 				double lateralMovementSpeedCost;
-				(DistributionCost, individualStepCost, lateralMovementSpeedCost) = DetermineCostsAndUpdateStepTracking(stepGraph, nps, config);
+				(DistributionCost, individualStepCost, lateralMovementSpeedCost) =
+					DetermineCostsAndUpdateStepTracking(stepGraph, nps, config);
 				TotalIndividualStepCost = (PreviousNode?.TotalIndividualStepCost ?? 0.0) + individualStepCost;
 				TotalLateralMovementSpeedCost = (PreviousNode?.TotalLateralMovementSpeedCost ?? 0.0) + lateralMovementSpeedCost;
 
@@ -437,8 +471,9 @@ namespace StepManiaChartGenerator
 									continue;
 
 								var arrowBeingSteppedFrom = LastArrowsSteppedOnByFoot[f][p];
-								var travelDistance = stepGraph.PadData.ArrowData[arrowBeingSteppedTo].TravelDistanceWithArrow[arrowBeingSteppedFrom];
-								
+								var travelDistance = stepGraph.PadData.ArrowData[arrowBeingSteppedTo]
+									.TravelDistanceWithArrow[arrowBeingSteppedFrom];
+
 								// Determine the normalized speed penalty
 								double speedPenalty;
 
@@ -554,7 +589,7 @@ namespace StepManiaChartGenerator
 						var nps = config.LateralTighteningPatternLength * 1000000.0 / (TimeMicros - previousTime);
 						var speed = (Math.Abs(LateralBodyPosition - previousPosition) * 1000000.0) / (TimeMicros - previousTime);
 						if ((nps > averageNps * config.LateralTighteningRelativeNPS
-							 || nps > config.LateralTighteningAbsoluteNPS)
+						     || nps > config.LateralTighteningAbsoluteNPS)
 						    && speed > config.LateralTighteningSpeed)
 						{
 							lateralMovementSpeedCost = speed - config.LateralTighteningSpeed;
@@ -623,7 +658,7 @@ namespace StepManiaChartGenerator
 							if (!GraphLinkFromPreviousNode.Links[f, p].Valid)
 								isJump = false;
 							else if (GraphLinkFromPreviousNode.Links[f, p].Step != StepType.NewArrow
-								&& GraphLinkFromPreviousNode.Links[f, p].Step != StepType.SameArrow)
+							         && GraphLinkFromPreviousNode.Links[f, p].Step != StepType.SameArrow)
 								return (false, false);
 							if (GraphLinkFromPreviousNode.Links[f, p].Valid)
 							{
@@ -681,6 +716,7 @@ namespace StepManiaChartGenerator
 							break;
 						}
 					}
+
 					// Determine if each foot is bracketable with the arrow being stepped on.
 					var leftBracketable = false;
 					var rightBracketable = false;
@@ -693,6 +729,7 @@ namespace StepManiaChartGenerator
 								stepGraph.PadData.ArrowData[arrowBeingSteppedOn].BracketablePairingsOtherHeel[L][leftFrom]
 								|| stepGraph.PadData.ArrowData[arrowBeingSteppedOn].BracketablePairingsOtherToe[L][leftFrom];
 						}
+
 						if (!rightBracketable && PreviousNode.LastArrowsSteppedOnByFoot[R][p] != InvalidArrowIndex)
 						{
 							var rightFrom = PreviousNode.LastArrowsSteppedOnByFoot[R][p];
@@ -701,6 +738,7 @@ namespace StepManiaChartGenerator
 								|| stepGraph.PadData.ArrowData[arrowBeingSteppedOn].BracketablePairingsOtherToe[R][rightFrom];
 						}
 					}
+
 					// If one foot can bracket to this arrow and the other foot cannot, it is not ambiguous.
 					if (leftBracketable != rightBracketable)
 						return (false, false);
@@ -804,10 +842,12 @@ namespace StepManiaChartGenerator
 						return false;
 					}
 				}
+
 				return true;
 			}
 
 			#region IComparable Implementation
+
 			public int CompareTo(SearchNode other)
 			{
 				// First, consider misleading steps. These are steps which a player would
@@ -837,9 +877,11 @@ namespace StepManiaChartGenerator
 				// For example breaking up L U D R into L D U R as well.
 				return RandomWeight.CompareTo(other.RandomWeight);
 			}
+
 			#endregion IComparable Implementation
 
 			#region IEquatable Implementation
+
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -858,8 +900,9 @@ namespace StepManiaChartGenerator
 
 			public override int GetHashCode()
 			{
-				return (int)Id;
+				return (int) Id;
 			}
+
 			#endregion IEquatable Implementation
 		}
 
@@ -871,16 +914,19 @@ namespace StepManiaChartGenerator
 		/// each node of a search.
 		/// It is expected that this 
 		/// </summary>
-		private static readonly Dictionary<GraphLink, List<GraphLink>> GraphLinkReplacementCache = new Dictionary<GraphLink, List<GraphLink>>();
+		private static readonly Dictionary<GraphLink, List<GraphLink>> GraphLinkReplacementCache =
+			new Dictionary<GraphLink, List<GraphLink>>();
 
 		/// <summary>
 		/// Root PerformanceNode of the PerformedChart.
 		/// </summary>
 		private readonly PerformanceNode Root;
+
 		/// <summary>
 		/// Number of arrows in the Chart.
 		/// </summary>
 		private readonly int NumArrows;
+
 		/// <summary>
 		/// Identifier to use when logging messages about this PerformedChart.
 		/// </summary>
@@ -984,7 +1030,7 @@ namespace StepManiaChartGenerator
 							config);
 						var currentSearchNodes = new HashSet<SearchNode>();
 						currentSearchNodes.Add(rootSearchNode);
-						
+
 						while (true)
 						{
 							// Finished
@@ -1027,7 +1073,7 @@ namespace StepManiaChartGenerator
 									// the StepTypeReplacements.
 									if (!searchNode.GraphNode.Links.ContainsKey(graphLink))
 										continue;
-									
+
 									// Check every GraphNode linked to by this GraphLink.
 									var nextNodes = searchNode.GraphNode.Links[graphLink];
 									for (var n = 0; n < nextNodes.Count; n++)
@@ -1111,7 +1157,7 @@ namespace StepManiaChartGenerator
 				new StepPerformanceNode
 				{
 					Position = new MetricPosition(),
-					GraphNodeInstance = new GraphNodeInstance { Node = rootGraphNodeToUse ?? rootNodes[0][0] },
+					GraphNodeInstance = new GraphNodeInstance {Node = rootGraphNodeToUse ?? rootNodes[0][0]},
 				},
 				logIdentifier);
 
@@ -1123,14 +1169,15 @@ namespace StepManiaChartGenerator
 			{
 				// Create GraphNodeInstance.
 				var stepEventIndex = currentSearchNode.Depth - 1;
-				var graphNodeInstance = new GraphNodeInstance { Node = currentSearchNode.GraphNode };
+				var graphNodeInstance = new GraphNodeInstance {Node = currentSearchNode.GraphNode};
 				for (var f = 0; f < NumFeet; f++)
 					for (var p = 0; p < NumFootPortions; p++)
-						graphNodeInstance.InstanceTypes[f, p] = expressedChart.StepEvents[stepEventIndex].LinkInstance.InstanceTypes[f, p];
+						graphNodeInstance.InstanceTypes[f, p] =
+							expressedChart.StepEvents[stepEventIndex].LinkInstance.InstanceTypes[f, p];
 
 				// Create GraphLinkInstance.
 				var graphLink = currentSearchNode.GraphLinkFromPreviousNode;
-				GraphLinkInstance graphLinkInstance = new GraphLinkInstance { GraphLink = graphLink };
+				GraphLinkInstance graphLinkInstance = new GraphLinkInstance {GraphLink = graphLink};
 				for (var f = 0; f < NumFeet; f++)
 				{
 					for (var p = 0; p < NumFootPortions; p++)
@@ -1152,6 +1199,7 @@ namespace StepManiaChartGenerator
 				currentPerformanceNode = newNode;
 				currentSearchNode = currentSearchNode.GetNextNode();
 			}
+
 			var lastPerformanceNode = currentPerformanceNode;
 
 			// Add Mines
@@ -1232,8 +1280,10 @@ namespace StepManiaChartGenerator
 				{
 					currentNode = node;
 				}
+
 				bestNodes[currentNode.GraphNode] = currentNode;
 			}
+
 			return bestNodes.Values.ToHashSet();
 		}
 
@@ -1290,6 +1340,7 @@ namespace StepManiaChartGenerator
 				    node.Actions[a] != PerformanceFootAction.None && node.Actions[a] != PerformanceFootAction.Release)
 					return true;
 			}
+
 			return false;
 		}
 
@@ -1338,9 +1389,11 @@ namespace StepManiaChartGenerator
 							}
 						}
 					}
+
 					if (numLanesWithArrows == stepGraph.NumArrows)
 						break;
 				}
+
 				currentPerformanceNode = currentPerformanceNode.Next;
 			}
 
@@ -1363,6 +1416,7 @@ namespace StepManiaChartGenerator
 					stepEvents.Add(stepNode);
 				currentPerformanceNode = currentPerformanceNode.Next;
 			}
+
 			var (releases, steps) = MineUtils.GetReleasesAndSteps(stepEvents, stepGraph.NumArrows);
 
 			// Add the MinePerformanceNodes to the PerformedChart.
@@ -1387,6 +1441,7 @@ namespace StepManiaChartGenerator
 					for (var a = 0; a < stepGraph.NumArrows; a++)
 						arrowsOccupiedByMines[a] = false;
 				}
+
 				previousMinePosition = mineEvent.Position;
 
 				switch (mineEvent.Type)
@@ -1422,8 +1477,10 @@ namespace StepManiaChartGenerator
 						}
 						else
 						{
-							performedChart.LogWarn($"Skipping {mineEvent.Type:G} mine event at {mineEvent.Position}. Unable to determine best arrow to associate with this mine.");
+							performedChart.LogWarn(
+								$"Skipping {mineEvent.Type:G} mine event at {mineEvent.Position}. Unable to determine best arrow to associate with this mine.");
 						}
+
 						break;
 					}
 					case MineType.NoArrow:
@@ -1445,8 +1502,10 @@ namespace StepManiaChartGenerator
 						}
 						else
 						{
-							performedChart.LogWarn($"Skipping {mineEvent.Type:G} mine event at {mineEvent.Position}. No empty lanes.");
+							performedChart.LogWarn(
+								$"Skipping {mineEvent.Type:G} mine event at {mineEvent.Position}. No empty lanes.");
 						}
+
 						break;
 					}
 				}
@@ -1480,7 +1539,7 @@ namespace StepManiaChartGenerator
 					if (graphLinkToNode.GraphLink.Links[f, p].Valid)
 					{
 						var arrow = graphNode.Node.State[f, p].Arrow;
-						switch(graphLinkToNode.GraphLink.Links[f, p].Action)
+						switch (graphLinkToNode.GraphLink.Links[f, p].Action)
 						{
 							case FootAction.Release:
 								actions[arrow] = PerformanceFootAction.Release;
@@ -1607,7 +1666,7 @@ namespace StepManiaChartGenerator
 									Position = stepNode.Position,
 									Lane = arrow,
 									Player = 0,
-									SourceType = SMCommon.NoteChars[(int)instanceAction].ToString()
+									SourceType = SMCommon.NoteChars[(int) instanceAction].ToString()
 								});
 								break;
 							}
@@ -1623,7 +1682,7 @@ namespace StepManiaChartGenerator
 									Position = stepNode.Position,
 									Lane = arrow,
 									Player = 0,
-									SourceType = SMCommon.NoteChars[(int)holdRollType].ToString()
+									SourceType = SMCommon.NoteChars[(int) holdRollType].ToString()
 								});
 								break;
 							}
@@ -1639,7 +1698,7 @@ namespace StepManiaChartGenerator
 						Position = mineNode.Position,
 						Lane = mineNode.Arrow,
 						Player = 0,
-						SourceType = SMCommon.NoteChars[(int)SMCommon.NoteType.Mine].ToString()
+						SourceType = SMCommon.NoteChars[(int) SMCommon.NoteType.Mine].ToString()
 					});
 				}
 
@@ -1651,6 +1710,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region GraphLink Cache
+
 		/// <summary>
 		/// Determines and caches all replacement GraphLinks for the given GraphLinks.
 		/// Caches into GraphLinkReplacementCache.
@@ -1723,9 +1783,9 @@ namespace StepManiaChartGenerator
 								// Don't create invalid brackets. In a bracket, both FootPortions
 								// must use the same StepType.
 								if (p > 0
-									&& tempState[f, 0].Valid
-									&& StepData.Steps[(int)tempState[f, 0].Step].IsBracket
-									&& stepType != tempState[f, 0].Step)
+								    && tempState[f, 0].Valid
+								    && StepData.Steps[(int) tempState[f, 0].Step].IsBracket
+								    && stepType != tempState[f, 0].Step)
 								{
 									continue;
 								}
@@ -1759,9 +1819,11 @@ namespace StepManiaChartGenerator
 
 			return acceptableLinks;
 		}
+
 		#endregion GraphLink Cache
 
 		#region Logging
+
 		private static void LogError(string message, string logIdentifier)
 		{
 			Logger.Error($"[{LogTag}] {logIdentifier} {message}");
@@ -1791,6 +1853,7 @@ namespace StepManiaChartGenerator
 		{
 			LogInfo(message, LogIdentifier);
 		}
+
 		#endregion Logging
 	}
 }

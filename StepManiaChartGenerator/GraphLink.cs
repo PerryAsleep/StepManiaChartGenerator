@@ -35,10 +35,12 @@ namespace StepManiaChartGenerator
 			/// StepType performed with the FootPortion.
 			/// </summary>
 			public readonly StepType Step;
+
 			/// <summary>
 			/// FootAction performed with the FootPortion.
 			/// </summary>
 			public readonly FootAction Action;
+
 			/// <summary>
 			/// Whether this is a valid FootArrowState within the GraphLink's Links.
 			/// </summary>
@@ -52,6 +54,7 @@ namespace StepManiaChartGenerator
 			}
 
 			#region IEquatable Implementation
+
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -64,11 +67,12 @@ namespace StepManiaChartGenerator
 			public override int GetHashCode()
 			{
 				var hash = 17;
-				hash = unchecked(hash * 31 + (int)Step);
-				hash = unchecked(hash * 31 + (int)Action);
+				hash = unchecked(hash * 31 + (int) Step);
+				hash = unchecked(hash * 31 + (int) Action);
 				hash = unchecked(hash * 31 + (Valid ? 1 : 0));
 				return hash;
 			}
+
 			#endregion
 		}
 
@@ -99,6 +103,7 @@ namespace StepManiaChartGenerator
 						break;
 					}
 				}
+
 				if (!footHasStep)
 					return false;
 			}
@@ -120,6 +125,7 @@ namespace StepManiaChartGenerator
 						return true;
 				}
 			}
+
 			return false;
 		}
 
@@ -141,6 +147,7 @@ namespace StepManiaChartGenerator
 					break;
 				}
 			}
+
 			if (!thisFootSteps)
 				return false;
 
@@ -179,11 +186,13 @@ namespace StepManiaChartGenerator
 					if (!Links[f, p].Valid || Links[f, p].Action == FootAction.Release)
 						allPortionsStep = false;
 				}
+
 				if (allPortionsStep)
 					bracketFound = true;
 				if (anyValid)
 					numFeetWithSteps++;
 			}
+
 			return numFeetWithSteps == 1 && bracketFound;
 		}
 
@@ -206,7 +215,7 @@ namespace StepManiaChartGenerator
 			{
 				for (var p = 0; p < NumFootPortions; p++)
 				{
-					if (Links[f, p].Valid && StepData.Steps[(int)Links[f, p].Step].IsFootSwap[p])
+					if (Links[f, p].Valid && StepData.Steps[(int) Links[f, p].Step].IsFootSwap[p])
 					{
 						foot = f;
 						portion = p;
@@ -214,6 +223,7 @@ namespace StepManiaChartGenerator
 					}
 				}
 			}
+
 			return false;
 		}
 
@@ -232,10 +242,12 @@ namespace StepManiaChartGenerator
 						return true;
 				}
 			}
+
 			return false;
 		}
 
 		#region IEquatable Implementation
+
 		public bool Equals(GraphLink other)
 		{
 			if (other == null)
@@ -264,6 +276,7 @@ namespace StepManiaChartGenerator
 					hash = unchecked(hash * 31 + Links[f, p].GetHashCode());
 			return hash;
 		}
+
 		#endregion
 	}
 

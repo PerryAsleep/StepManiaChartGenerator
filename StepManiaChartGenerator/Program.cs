@@ -24,10 +24,12 @@ namespace StepManiaChartGenerator
 		/// Version number. Recorded into a Chart's Description field using FumenGeneratedFormattedVersion.
 		/// </summary>
 		private const double Version = 0.41;
+
 		/// <summary>
 		/// Format for recording the Version into a Chart's Description field.
 		/// </summary>
 		private const string FumenGeneratedFormattedVersion = "[FG v{0:0.00}]";
+
 		/// <summary>
 		/// Regular expression for parsing the Version out of a Chart's Description field.
 		/// </summary>
@@ -42,10 +44,12 @@ namespace StepManiaChartGenerator
 		/// StepGraph to use for parsing input Charts.
 		/// </summary>
 		private static StepGraph InputStepGraph;
+
 		/// <summary>
 		/// StepGraph to use for generating output Charts.
 		/// </summary>
 		private static StepGraph OutputStepGraph;
+
 		/// <summary>
 		/// GraphNodes to use as roots for trying to write output Charts.
 		/// Outer List is sorted by preference of Nodes at that level. Level 0 contains the most preferable root GraphNodes.
@@ -60,7 +64,8 @@ namespace StepManiaChartGenerator
 		/// <summary>
 		/// Supported file formats for reading and writing.
 		/// </summary>
-		private static readonly List<FileFormatType> SupportedFileFormats = new List<FileFormatType> { FileFormatType.SM, FileFormatType.SSC };
+		private static readonly List<FileFormatType> SupportedFileFormats = new List<FileFormatType>
+			{FileFormatType.SM, FileFormatType.SSC};
 
 		/// <summary>
 		/// Time of the start of the export.
@@ -96,14 +101,17 @@ namespace StepManiaChartGenerator
 			/// FileInfo for the Song file.
 			/// </summary>
 			public FileInfo FileInfo;
+
 			/// <summary>
 			/// String path of directory containing the Song file.
 			/// </summary>
 			public string CurrentDir;
+
 			/// <summary>
 			/// String path to the Song file relative to the Config InputDirectory.
 			/// </summary>
 			public string RelativePath;
+
 			/// <summary>
 			/// String path to the directory to save the Song file to.
 			/// </summary>
@@ -188,7 +196,8 @@ namespace StepManiaChartGenerator
 
 				// Create the StepGraph and use it for both the InputStepGraph and the OutputStepGraph.
 				LogInfo("Creating StepGraph.");
-				InputStepGraph = StepGraph.CreateStepGraph(padData, padData.StartingPositions[0][0][L], padData.StartingPositions[0][0][R]);
+				InputStepGraph = StepGraph.CreateStepGraph(padData, padData.StartingPositions[0][0][L],
+					padData.StartingPositions[0][0][R]);
 				OutputStepGraph = InputStepGraph;
 				if (!CreateOutputStartNodes())
 					return false;
@@ -260,7 +269,7 @@ namespace StepManiaChartGenerator
 		private static bool CreateOutputStartNodes()
 		{
 			// Add the root node as the first tier.
-			OutputStartNodes.Add(new List<GraphNode> { OutputStepGraph.Root });
+			OutputStartNodes.Add(new List<GraphNode> {OutputStepGraph.Root});
 
 			// Loop over the remaining tiers.
 			for (var tier = 1; tier < OutputStepGraph.PadData.StartingPositions.Length; tier++)
@@ -271,14 +280,18 @@ namespace StepManiaChartGenerator
 					var node = OutputStepGraph.FindGraphNode(pos[L], GraphArrowState.Resting, pos[R], GraphArrowState.Resting);
 					if (node == null)
 					{
-						LogError($"Could not find a node in the {Config.Instance.OutputChartType} StepGraph for StartingPosition with"
-								 + $" left on {pos[L]} and right on {pos[R]}.");
+						LogError(
+							$"Could not find a node in the {Config.Instance.OutputChartType} StepGraph for StartingPosition with"
+							+ $" left on {pos[L]} and right on {pos[R]}.");
 						return false;
 					}
+
 					nodesAtTier.Add(node);
 				}
+
 				OutputStartNodes.Add(nodesAtTier);
 			}
+
 			return true;
 		}
 
@@ -336,7 +349,7 @@ namespace StepManiaChartGenerator
 				         && !Visualizer.IsStepsTypeSupported(Config.Instance.OutputChartType))
 				{
 					LogWarn($"{Config.Instance.InputChartType} is not currently supported for outputting visualizations."
-						+ " Visualization output will be skipped.");
+					        + " Visualization output will be skipped.");
 					CanOutputVisualizations = false;
 				}
 			}
@@ -464,7 +477,7 @@ namespace StepManiaChartGenerator
 					}
 
 					// Process the song.
-					songTasks.Add(ProcessSong(new SongArgs 
+					songTasks.Add(ProcessSong(new SongArgs
 					{
 						FileInfo = fi,
 						CurrentDir = currentDir,
@@ -500,8 +513,8 @@ namespace StepManiaChartGenerator
 					LogError("Unsupported file format. Cannot parse.", songArgs.FileInfo, songArgs.RelativePath);
 					return;
 				}
+
 				song = await reader.Load();
-				
 			}
 			catch (Exception e)
 			{
@@ -551,13 +564,14 @@ namespace StepManiaChartGenerator
 			var fileNameNoExtension = songArgs.FileInfo.Name;
 			if (!string.IsNullOrEmpty(songArgs.FileInfo.Extension))
 			{
-				fileNameNoExtension = fileNameNoExtension.Substring(0, songArgs.FileInfo.Name.Length - songArgs.FileInfo.Extension.Length);
+				fileNameNoExtension =
+					fileNameNoExtension.Substring(0, songArgs.FileInfo.Name.Length - songArgs.FileInfo.Extension.Length);
 			}
 
 			var extension = songArgs.FileInfo.Extension.ToLower();
 			if (extension.StartsWith("."))
 				extension = extension.Substring(1);
-			
+
 			var newCharts = new List<Chart>();
 			var chartsIndicesToRemove = new List<int>();
 			foreach (var chart in song.Charts)
@@ -638,7 +652,7 @@ namespace StepManiaChartGenerator
 					// Sanity check on note counts.
 					if (events.Count != chart.Layers[0].Events.Count)
 					{
-						var mineString = NoteChars[(int)NoteType.Mine].ToString();
+						var mineString = NoteChars[(int) NoteType.Mine].ToString();
 						// Disregard discrepancies in mine counts
 						var newChartNonMineEventCount = 0;
 						foreach (var newEvent in events)
@@ -666,10 +680,12 @@ namespace StepManiaChartGenerator
 									firstDiscrepancyPosition = chart.Layers[0].Events[i].Position;
 									break;
 								}
+
 								i++;
 							}
+
 							LogError(
-								"Programmer error. Discrepancy in non-mine Event counts." 
+								"Programmer error. Discrepancy in non-mine Event counts."
 								+ $" Old: {oldChartNonMineEventCount}, New: {newChartNonMineEventCount}."
 								+ $" First discrepancy position: {firstDiscrepancyPosition}.",
 								songArgs.FileInfo, songArgs.RelativePath, song, chart);
@@ -700,7 +716,8 @@ namespace StepManiaChartGenerator
 					newChart.Layers.Add(new Layer {Events = events});
 					newCharts.Add(newChart);
 
-					LogInfo($"Generated new {newChart.Type} {newChart.DifficultyType} Chart from {chart.Type} {chart.DifficultyType} Chart"
+					LogInfo(
+						$"Generated new {newChart.Type} {newChart.DifficultyType} Chart from {chart.Type} {chart.DifficultyType} Chart"
 						+ $" using ExpressedChartConfig \"{eccName}\" (BracketParsingMethod {expressedChart.GetBracketParsingMethod():G})"
 						+ $" and PerformedChartConfig \"{pccName}\".",
 						songArgs.FileInfo, songArgs.RelativePath, song, newChart);
@@ -716,7 +733,7 @@ namespace StepManiaChartGenerator
 
 						try
 						{
-							var renderer = new Visualizer(
+							var visualizer = new Visualizer(
 								songArgs.CurrentDir,
 								saveFile,
 								song,
@@ -727,7 +744,7 @@ namespace StepManiaChartGenerator
 								pccName,
 								newChart
 							);
-							renderer.Write();
+							visualizer.Write();
 						}
 						catch (Exception e)
 						{
@@ -738,7 +755,8 @@ namespace StepManiaChartGenerator
 				}
 			}
 
-			LogInfo($"Generated {newCharts.Count} new {Config.Instance.OutputChartType} Charts (replaced {chartsIndicesToRemove.Count}).",
+			LogInfo(
+				$"Generated {newCharts.Count} new {Config.Instance.OutputChartType} Charts (replaced {chartsIndicesToRemove.Count}).",
 				songArgs.FileInfo, songArgs.RelativePath, song);
 
 			// Remove overwritten charts.
@@ -875,7 +893,7 @@ namespace StepManiaChartGenerator
 			version = 0.0;
 			if (string.IsNullOrEmpty(chart.Description))
 				return false;
-			
+
 			var match = Regex.Match(chart.Description, FumenGeneratedFormattedVersionRegexPattern, RegexOptions.IgnoreCase);
 			if (match.Success && match.Groups.Count == 1 && match.Groups[0].Captures.Count == 1)
 				return double.TryParse(match.Groups[0].Captures[0].Value, out version);
@@ -900,12 +918,13 @@ namespace StepManiaChartGenerator
 			{
 				if (chart.Layers.Count == 1
 				    && chart.Type == chartType
-					&& chart.NumPlayers == 1
+				    && chart.NumPlayers == 1
 				    && chart.NumInputs == numArrows
-					&& chart.DifficultyType == difficultyType)
+				    && chart.DifficultyType == difficultyType)
 				{
 					return (chart, index);
 				}
+
 				index++;
 			}
 
@@ -940,6 +959,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Logging
+
 		private static string GetLogIdentifier(FileInfo fi, string relativePath, Song song = null, Chart chart = null)
 		{
 			if (chart != null && song != null)
@@ -948,7 +968,7 @@ namespace StepManiaChartGenerator
 				return $"[{relativePath}{fi.Name} \"{song.Title}\"]";
 			return $"[{relativePath}{fi.Name}]";
 		}
-		
+
 		private static void LogError(string message)
 		{
 			Logger.Error($"[{LogTag}] {message}");
@@ -978,6 +998,7 @@ namespace StepManiaChartGenerator
 		{
 			LogInfo($"{GetLogIdentifier(fi, relativePath, song, chart)} {message}");
 		}
+
 		#endregion Logging
 	}
 }

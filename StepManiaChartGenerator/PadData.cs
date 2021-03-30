@@ -83,7 +83,8 @@ namespace StepManiaChartGenerator
 				var fileFileName = Fumen.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
 				if (!File.Exists(fileFileName))
 				{
-					LogErrorStatic($"[{stepsType}] Could not find PadData file {fileName}. Please create a PadData file for {stepsType}.");
+					LogErrorStatic(
+						$"[{stepsType}] Could not find PadData file {fileName}. Please create a PadData file for {stepsType}.");
 					return null;
 				}
 
@@ -137,7 +138,8 @@ namespace StepManiaChartGenerator
 
 				if (arrowData.ValidNextArrows == null || arrowData.ValidNextArrows.Length != NumArrows)
 				{
-					LogError($"Lane {lane}: {arrowData.ValidNextArrows?.Length ?? 0} ValidNextArrows entries found. Expected {NumArrows}.");
+					LogError(
+						$"Lane {lane}: {arrowData.ValidNextArrows?.Length ?? 0} ValidNextArrows entries found. Expected {NumArrows}.");
 					errors = true;
 				}
 
@@ -177,7 +179,8 @@ namespace StepManiaChartGenerator
 						{
 							if (position == null || position.Length != NumFeet)
 							{
-								LogError($"StartingPositions[{tierIndex}][{positionIndex}] {position?.Length ?? 0} entries found. Expected {NumFeet}, one for each foot.");
+								LogError(
+									$"StartingPositions[{tierIndex}][{positionIndex}] {position?.Length ?? 0} entries found. Expected {NumFeet}, one for each foot.");
 								errors = true;
 							}
 							else
@@ -187,15 +190,19 @@ namespace StepManiaChartGenerator
 								{
 									if (spLane < 0 || spLane >= NumArrows)
 									{
-										LogError($"StartingPositions[{tierIndex}][{positionIndex}][{laneIndex}] lane {spLane} out of bounds Must be within [0, {NumArrows-1}].");
+										LogError(
+											$"StartingPositions[{tierIndex}][{positionIndex}][{laneIndex}] lane {spLane} out of bounds Must be within [0, {NumArrows - 1}].");
 										errors = true;
 									}
+
 									laneIndex++;
 								}
 							}
+
 							positionIndex++;
 						}
 					}
+
 					tierIndex++;
 				}
 			}
@@ -215,7 +222,8 @@ namespace StepManiaChartGenerator
 			var errors = false;
 			if (arrowDataArray == null || arrowDataArray.Length != NumFeet)
 			{
-				LogError($"Lane {lane}: {arrowDataArray?.Length ?? 0} {name} entries found. Expected {NumFeet} arrays, one for each foot.");
+				LogError(
+					$"Lane {lane}: {arrowDataArray?.Length ?? 0} {name} entries found. Expected {NumFeet} arrays, one for each foot.");
 				errors = true;
 			}
 			else
@@ -224,11 +232,13 @@ namespace StepManiaChartGenerator
 				{
 					if (arrowDataArray[f] == null || arrowDataArray[f].Length != NumArrows)
 					{
-						LogError($"Lane {lane}: {name}[{f}] {arrowDataArray[f]?.Length ?? 0} entries found. Expected {NumArrows}.");
+						LogError(
+							$"Lane {lane}: {name}[{f}] {arrowDataArray[f]?.Length ?? 0} entries found. Expected {NumArrows}.");
 						errors = true;
 					}
 				}
 			}
+
 			return !errors;
 		}
 
@@ -268,7 +278,7 @@ namespace StepManiaChartGenerator
 					for (var f = 0; f < NumFeet; f++)
 					{
 						if (ArrowData[a].BracketablePairingsOtherHeel[f][a2]
-							|| ArrowData[a].BracketablePairingsOtherToe[f][a2])
+						    || ArrowData[a].BracketablePairingsOtherToe[f][a2])
 							MaxBracketSeparation = Math.Max(MaxBracketSeparation, Math.Abs(a2 - a));
 					}
 				}
@@ -276,6 +286,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Logging
+
 		private void LogError(string message)
 		{
 			LogErrorStatic($"[{LogTag}] [{StepsType}] {message}");
@@ -305,6 +316,7 @@ namespace StepManiaChartGenerator
 		{
 			Logger.Info($"[{LogTag}] {message}");
 		}
+
 		#endregion Logging
 	}
 }

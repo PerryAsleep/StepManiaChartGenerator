@@ -67,6 +67,7 @@ namespace StepManiaChartGenerator
 			/// MetricPosition of this event.
 			/// </summary>
 			public MetricPosition Position;
+
 			/// <summary>
 			/// Time in microseconds of this event.
 			/// </summary>
@@ -151,44 +152,55 @@ namespace StepManiaChartGenerator
 			/// HashSets or other data structures that rely on the IEquatable interface.
 			/// </summary>
 			private readonly long Id;
+
 			/// <summary>
 			/// Corresponding GraphNode.
 			/// </summary>
 			public readonly GraphNode GraphNode;
+
 			/// <summary>
 			/// InstanceStepTypes for each arrow at this node.
 			/// </summary>
 			public readonly InstanceStepType[] InstanceTypes;
+
 			/// <summary>
 			/// Position in the Chart of this ChartSearchNode.
 			/// </summary>
 			public readonly MetricPosition Position;
+
 			/// <summary>
 			/// Time in microseconds in the Chart of this ChartSearchNode.
 			/// </summary>
 			public readonly long TimeMicros;
+
 			/// <summary>
 			/// Cumulative Cost to reach this ChartSearchNode.
 			/// </summary>
 			public int TotalCost;
+
 			/// <summary>
 			/// Cost to reach this ChartSearchNode from the previous node.
 			/// </summary>
 			public int Cost;
+
 			/// <summary>
 			/// Previous ChartSearchNode.
 			/// </summary>
 			public readonly ChartSearchNode PreviousNode;
+
 			/// <summary>
 			/// The GraphLink from the previous ChartSearchNode that results in this ChartSearchNode.
 			/// </summary>
 			public readonly GraphLinkInstance PreviousLink;
+
 			/// <summary>
 			/// All possible next ChartSearchNodes.
 			/// Key is the GraphLink leading out of the GraphNode.
 			/// Value is set of all ChartSearchNodes possible from that GraphLink.
 			/// </summary>
-			public readonly Dictionary<GraphLink, HashSet<ChartSearchNode>> NextNodes = new Dictionary<GraphLink, HashSet<ChartSearchNode>>();
+			public readonly Dictionary<GraphLink, HashSet<ChartSearchNode>> NextNodes =
+				new Dictionary<GraphLink, HashSet<ChartSearchNode>>();
+
 			/// <summary>
 			/// For each arrow/lane, the last foot which stepped on it. Updated with this
 			/// ChartSearchNode's state during construction.
@@ -282,12 +294,15 @@ namespace StepManiaChartGenerator
 							}
 						}
 					}
+
 					node = node.PreviousNode;
 				}
+
 				return null;
 			}
 
 			#region IEquatable Implementation
+
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -306,14 +321,28 @@ namespace StepManiaChartGenerator
 
 			public override int GetHashCode()
 			{
-				return (int)Id;
+				return (int) Id;
 			}
+
 			#endregion
 
 			#region MineUtils.IChartNode Implementation
-			public GraphNode GetGraphNode() { return GraphNode; }
-			public GraphLink GetGraphLinkToNode() { return PreviousLink?.GraphLink; }
-			public MetricPosition GetPosition() { return Position; }
+
+			public GraphNode GetGraphNode()
+			{
+				return GraphNode;
+			}
+
+			public GraphLink GetGraphLinkToNode()
+			{
+				return PreviousLink?.GraphLink;
+			}
+
+			public MetricPosition GetPosition()
+			{
+				return Position;
+			}
+
 			#endregion
 		}
 
@@ -326,6 +355,7 @@ namespace StepManiaChartGenerator
 		/// StepType and a Tap FootAction.
 		/// </summary>
 		public List<StepEvent> StepEvents = new List<StepEvent>();
+
 		/// <summary>
 		/// All the MineEvents which make up this chart.
 		/// </summary>
@@ -335,24 +365,28 @@ namespace StepManiaChartGenerator
 		/// How to parse brackets when encountering steps which could be brackets or jumps.
 		/// </summary>
 		private BracketParsingMethod BracketParsingMethod;
+
 		/// <summary>
 		/// Identifier to use in log messages.
 		/// </summary>
 		private readonly string LogIdentifier;
+
 		/// <summary>
 		/// StepGraph to use for parsing the Chart's Events.
 		/// </summary>
 		private readonly StepGraph StepGraph;
+
 		/// <summary>
 		/// Root ChartSearchNode of the ExpressedChart.
 		/// </summary>
 		private ChartSearchNode Root;
-		
+
 		/// <summary>
 		/// Cached Events from the Chart to express.
 		/// Unneeded and set to null after search is complete.
 		/// </summary>
 		private List<Event> Events;
+
 		/// <summary>
 		/// Cached LaneNotes representing Mines from the Chart's Events.
 		/// Unneeded and set to null after search is complete.
@@ -451,7 +485,7 @@ namespace StepManiaChartGenerator
 		{
 			// Set up a new ExpressedChart.
 			ExpressedChart expressedChart = new ExpressedChart(events, logIdentifier, stepGraph);
-			
+
 			// Log Lift and Fake information.
 			expressedChart.LogLiftAndFakeInformation();
 
@@ -480,7 +514,7 @@ namespace StepManiaChartGenerator
 					// arrows than one foot can cover, scan the chart for simultaneous notes and use
 					// BracketParsingMethod Aggressive if appropriate.
 					else if (config.UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets
-							 && expressedChart.HasMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets())
+					         && expressedChart.HasMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets())
 					{
 						bracketParsingMethod = BracketParsingMethod.Aggressive;
 					}
@@ -517,6 +551,7 @@ namespace StepManiaChartGenerator
 							}
 						}
 					}
+
 					break;
 				}
 			}
@@ -538,7 +573,7 @@ namespace StepManiaChartGenerator
 			// We no longer need to maintain references to the Chart data.
 			expressedChart.Events = null;
 			expressedChart.MineNotes = null;
-			
+
 			return expressedChart;
 		}
 
@@ -571,7 +606,7 @@ namespace StepManiaChartGenerator
 			MineNotes = new List<LaneNote>();
 			var eventIndex = 0;
 			var numEvents = Events.Count;
-			var currentSearchNodes = new HashSet<ChartSearchNode> { Root };
+			var currentSearchNodes = new HashSet<ChartSearchNode> {Root};
 
 			// Performance optimization.
 			// Keep one array for generating SearchStates to use for GetLinkInstanceIfStateMatches.
@@ -645,16 +680,16 @@ namespace StepManiaChartGenerator
 						var stepEvent = steps[s];
 						if (stepEvent is LaneTapNote)
 						{
-							if (stepEvent.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Fake].ToString())
+							if (stepEvent.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Fake].ToString())
 								currentState[stepEvent.Lane] = SearchState.Fake;
-							else if (stepEvent.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Lift].ToString())
+							else if (stepEvent.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Lift].ToString())
 								currentState[stepEvent.Lane] = SearchState.Lift;
 							else
 								currentState[stepEvent.Lane] = SearchState.Tap;
 						}
 						else if (stepEvent is LaneHoldStartNote lhsn)
 						{
-							if (lhsn.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.RollStart].ToString())
+							if (lhsn.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.RollStart].ToString())
 								currentState[stepEvent.Lane] = SearchState.Roll;
 							else
 								currentState[stepEvent.Lane] = SearchState.Hold;
@@ -670,8 +705,8 @@ namespace StepManiaChartGenerator
 				for (var a = 0; a < numArrows; a++)
 				{
 					if (currentState[a] == SearchState.Tap
-						|| currentState[a] == SearchState.Fake
-						|| currentState[a] == SearchState.Lift)
+					    || currentState[a] == SearchState.Fake
+					    || currentState[a] == SearchState.Lift)
 					{
 						currentState[a] = SearchState.Empty;
 						lastReleases[a] = steps[0].Position;
@@ -702,12 +737,13 @@ namespace StepManiaChartGenerator
 				var smEvent = Events[i];
 				if (smEvent is LaneTapNote ltn)
 				{
-					if (ltn.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Lift].ToString())
+					if (ltn.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Lift].ToString())
 						hasLifts = true;
-					else if (ltn.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Fake].ToString())
+					else if (ltn.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Fake].ToString())
 						hasFakes = true;
 				}
 			}
+
 			if (hasLifts)
 				LogWarn("Chart has lifts. These will be treated as taps for ExpressedChart generation.", LogIdentifier);
 			if (hasFakes)
@@ -742,10 +778,12 @@ namespace StepManiaChartGenerator
 					{
 						heldLanes[lhen.Lane] = false;
 					}
+
 					if (smEvent is LaneTapNote)
 					{
 						numTaps++;
 					}
+
 					i++;
 				}
 				// Continue looping if the next event is at the same position.
@@ -783,6 +821,7 @@ namespace StepManiaChartGenerator
 					bracketCount++;
 				node = node.GetNextNode();
 			}
+
 			return bracketCount;
 		}
 
@@ -818,7 +857,7 @@ namespace StepManiaChartGenerator
 				if (Events[eventIndex] is LaneHoldEndNote lhen)
 					releases.Add(lhen);
 				else if (Events[eventIndex] is LaneNote ln
-				         && ln.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Mine].ToString())
+				         && ln.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Mine].ToString())
 					mines.Add(ln);
 				else if (Events[eventIndex] is LaneHoldStartNote lhsn)
 					steps.Add(lhsn);
@@ -874,7 +913,7 @@ namespace StepManiaChartGenerator
 					for (var childNodeIndex = 0; childNodeIndex < l.Value.Count; childNodeIndex++)
 					{
 						var childNode = l.Value[childNodeIndex];
-						
+
 						// Most children will not match the new state. Ignore them.
 						var linkInstance = GetLinkInstanceIfStateMatches(currentState, generatedStateBuffer, childNode, l.Key);
 						if (linkInstance == null)
@@ -895,7 +934,7 @@ namespace StepManiaChartGenerator
 
 						// Record the result as a new ChartSearchNode to be checked for pruning once
 						// all children have been determined.
-						
+
 						AddChildSearchNode(searchNode, l.Key, childSearchNode, childSearchNodes);
 
 						deadEnd = false;
@@ -944,7 +983,8 @@ namespace StepManiaChartGenerator
 						continue;
 
 					// What was the step into
-					if (link.Links[f, p].Valid && node.State[f, p].State == StepData.StateAfterAction[(int)link.Links[f, p].Action])
+					if (link.Links[f, p].Valid &&
+					    node.State[f, p].State == StepData.StateAfterAction[(int) link.Links[f, p].Action])
 					{
 						switch (node.State[f, p].State)
 						{
@@ -989,7 +1029,7 @@ namespace StepManiaChartGenerator
 			}
 
 			// Apply InstanceStepTypes.
-			var instance = new GraphLinkInstance{ GraphLink = link };
+			var instance = new GraphLinkInstance {GraphLink = link};
 			for (var s = 0; s < searchState.Length; s++)
 			{
 				if (searchState[s] == SearchState.Fake)
@@ -1038,6 +1078,7 @@ namespace StepManiaChartGenerator
 					}
 				}
 			}
+
 			return instance;
 		}
 
@@ -1061,6 +1102,7 @@ namespace StepManiaChartGenerator
 				childNodes = new HashSet<ChartSearchNode>();
 				parent.NextNodes[link] = childNodes;
 			}
+
 			childNodes.Add(child);
 			childSearchNodes.Add(child);
 		}
@@ -1099,8 +1141,10 @@ namespace StepManiaChartGenerator
 				{
 					currentNode = node;
 				}
+
 				bestNodes[currentNode.GraphNode] = currentNode;
 			}
+
 			return bestNodes.Values.ToHashSet();
 		}
 
@@ -1124,6 +1168,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Cost Evaluation
+
 		/// <summary>
 		/// Determine the cost of arriving to the ChartSearchNode from its parent.
 		/// The cost represents how unlikely it is that this step is the best step
@@ -1164,7 +1209,7 @@ namespace StepManiaChartGenerator
 				if (state[a] == SearchState.Tap
 				    || state[a] == SearchState.Fake
 				    || state[a] == SearchState.Lift
-					|| state[a] == SearchState.Hold
+				    || state[a] == SearchState.Hold
 				    || state[a] == SearchState.Roll)
 				{
 					numSteps++;
@@ -1178,552 +1223,556 @@ namespace StepManiaChartGenerator
 			switch (numSteps)
 			{
 				case 1:
+				{
+					var thisArrow = lastArrowStep;
+					GetSingleStepStepAndFoot(link, out var step, out var thisFoot);
+					var otherFoot = OtherFoot(thisFoot);
+					var previousState = searchNode.PreviousNode.GraphNode.State;
+					GetOneArrowStepInfo(thisFoot, thisArrow, lastMines, lastReleases, padData, previousState,
+						out var thisAnyHeld,
+						out var thisAllHeld,
+						out var thisCanStepToNewArrow,
+						out var thisCanStepToNewArrowWithoutCrossover,
+						out var thisCanBracketToNewArrow,
+						out var thisCanCrossoverToNewArrow,
+						out var thisMinePositionFollowingPreviousStep,
+						out var thisReleasePositionOfPreviousStep,
+						out var thisFootPreviousArrows,
+						out var thisFootInBracketPosture);
+					GetOneArrowStepInfo(otherFoot, thisArrow, lastMines, lastReleases, padData, previousState,
+						out var otherAnyHeld,
+						out var otherAllHeld,
+						out var otherCanStepToNewArrow,
+						out var otherCanStepToNewArrowWithoutCrossover,
+						out var otherCanBracketToNewArrow,
+						out var otherCanCrossoverToNewArrow,
+						out var otherMinePositionFollowingPreviousStep,
+						out var otherReleasePositionOfPreviousStep,
+						out var otherFootPreviousArrows,
+						out var otherFootInBracketPosture);
+
+					var doubleStep = previousStepLink != null && previousStepLink.IsStepWithFoot(thisFoot) && !otherAnyHeld;
+					var doubleStepOtherFootReleasedAtSameTime = false;
+					var doubleStepOtherFootReleasedAfterThisFoot = false;
+					if (otherReleasePositionOfPreviousStep == position)
 					{
-						var thisArrow = lastArrowStep;
-						GetSingleStepStepAndFoot(link, out var step, out var thisFoot);
-						var otherFoot = OtherFoot(thisFoot);
-						var previousState = searchNode.PreviousNode.GraphNode.State;
-						GetOneArrowStepInfo(thisFoot, thisArrow, lastMines, lastReleases, padData, previousState,
-							out var thisAnyHeld,
-							out var thisAllHeld,
-							out var thisCanStepToNewArrow,
-							out var thisCanStepToNewArrowWithoutCrossover,
-							out var thisCanBracketToNewArrow,
-							out var thisCanCrossoverToNewArrow,
-							out var thisMinePositionFollowingPreviousStep,
-							out var thisReleasePositionOfPreviousStep,
-							out var thisFootPreviousArrows,
-							out var thisFootInBracketPosture);
-						GetOneArrowStepInfo(otherFoot, thisArrow, lastMines, lastReleases, padData, previousState,
-							out var otherAnyHeld,
-							out var otherAllHeld,
-							out var otherCanStepToNewArrow,
-							out var otherCanStepToNewArrowWithoutCrossover,
-							out var otherCanBracketToNewArrow,
-							out var otherCanCrossoverToNewArrow,
-							out var otherMinePositionFollowingPreviousStep,
-							out var otherReleasePositionOfPreviousStep,
-							out var otherFootPreviousArrows,
-							out var otherFootInBracketPosture);
+						doubleStepOtherFootReleasedAtSameTime = true;
+						doubleStepOtherFootReleasedAfterThisFoot = true;
+					}
+					else if (otherReleasePositionOfPreviousStep < position &&
+					         otherReleasePositionOfPreviousStep > thisReleasePositionOfPreviousStep)
+					{
+						doubleStepOtherFootReleasedAfterThisFoot = true;
+					}
 
-						var doubleStep = previousStepLink != null && previousStepLink.IsStepWithFoot(thisFoot) && !otherAnyHeld;
-						var doubleStepOtherFootReleasedAtSameTime = false;
-						var doubleStepOtherFootReleasedAfterThisFoot = false;
-						if (otherReleasePositionOfPreviousStep == position)
+					var tripleStep = doubleStep && previousPreviousStepLink != null &&
+					                 previousPreviousStepLink.IsStepWithFoot(thisFoot);
+					var mostRecentRelease = thisReleasePositionOfPreviousStep;
+					if ((mostRecentRelease == null && otherReleasePositionOfPreviousStep != null)
+					    || (mostRecentRelease != null
+					        && otherReleasePositionOfPreviousStep != null
+					        && otherReleasePositionOfPreviousStep > thisReleasePositionOfPreviousStep))
+						mostRecentRelease = otherReleasePositionOfPreviousStep;
+
+					// I think in all cases we should consider an arrow held if it released at this time.
+					thisAnyHeld |= thisReleasePositionOfPreviousStep == position;
+					otherAnyHeld |= otherReleasePositionOfPreviousStep == position;
+
+					if (BracketParsingMethod == BracketParsingMethod.NoBrackets
+					    && (step == StepType.BracketOneArrowHeelSame
+					        || step == StepType.BracketOneArrowToeSame
+					        || step == StepType.BracketOneArrowHeelNew
+					        || step == StepType.BracketOneArrowToeNew))
+					{
+						return NoBrackets_CostBracket;
+					}
+
+					switch (step)
+					{
+						case StepType.SameArrow:
+						case StepType.BracketOneArrowHeelSame:
+						case StepType.BracketOneArrowToeSame:
 						{
-							doubleStepOtherFootReleasedAtSameTime = true;
-							doubleStepOtherFootReleasedAfterThisFoot = true;
+							if (thisAnyHeld && !otherAnyHeld && otherCanStepToNewArrow)
+								return CostSameArrow_OtherHoldingNone_ThisHeld_OtherCanStep;
+							return CostSameArrow;
 						}
-						else if (otherReleasePositionOfPreviousStep < position &&
-						         otherReleasePositionOfPreviousStep > thisReleasePositionOfPreviousStep)
+						case StepType.NewArrow:
+						case StepType.BracketOneArrowHeelNew:
+						case StepType.BracketOneArrowToeNew:
 						{
-							doubleStepOtherFootReleasedAfterThisFoot = true;
+							// TODO: give preference to alternating in long patters
+							// For example,		LR, U, LR, D, LR, U, LR D
+							// Should not be all L or all R on the single steps
+
+							if (otherAnyHeld)
+							{
+								// This foot must make this step
+								if (otherAllHeld)
+								{
+									// Slightly better to step on a closer arrow.
+									if (thisCanBracketToNewArrow)
+										return CostNewArrow_AllOtherHeld_ThisFootCanBracketToNewArrow;
+									else
+										return CostNewArrow_AllOtherHeld_ThisFootCannotBracketToNewArrow;
+								}
+
+								// Both feet are holding one arrow.
+								// One foot needs to bracket.
+								if (thisAnyHeld)
+								{
+									// Ambiguous bracket
+									if (otherCanBracketToNewArrow)
+									{
+										// Alternating step bracket.
+										if (previousStepLink.IsStepWithFoot(otherFoot))
+										{
+											return CostNewArrow_BothFeetHolding_OtherCanBracket_AlternatingStep;
+										}
+
+										if (previousStepLink.IsJump())
+										{
+											return GetCostNewArrowStepFromJump(
+												otherCanStepToNewArrow,
+												otherCanCrossoverToNewArrow,
+												otherCanBracketToNewArrow,
+												thisCanCrossoverToNewArrow,
+												thisCanBracketToNewArrow,
+												otherMinePositionFollowingPreviousStep,
+												thisMinePositionFollowingPreviousStep,
+												otherReleasePositionOfPreviousStep,
+												thisReleasePositionOfPreviousStep);
+										}
+
+										// Double step bracket.
+										return CostNewArrow_BothFeetHolding_OtherCanBracket_DoubleStep;
+									}
+
+									// Only this foot can bracket.
+									return CostNewArrow_BothFeetHolding_OtherCannotBracket;
+								}
+
+								// The other foot is holding but this foot is not holding
+								else
+								{
+									if (previousStepLink.IsStepWithFoot(otherFoot))
+										return CostNewArrow_Alternating;
+
+									// TODO: There could be patterns where you roll two feet
+									// while one foot holds a bracket. This isn't considering that.
+									return CostNewArrow_OtherHoldingOne;
+								}
+							}
+
+							// Bracket step with the other foot not holding
+							if (thisAnyHeld)
+							{
+								if (!thisCanBracketToNewArrow)
+									return CostNewArrow_OtherHoldingNone_ThisHeld_ThisCannotBracket;
+
+								// The other foot could make this step.
+								if (otherCanStepToNewArrow)
+								{
+									if (doubleStep)
+										return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCanStep_DoubleStep;
+									return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCanStep;
+								}
+
+								// The other foot cannot hit this arrow.
+								if (doubleStep)
+									return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCannotStep_DoubleStep;
+								return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCannotStep;
+							}
+
+							// No bracketing or holds
+
+							if (doubleStep)
+							{
+								// If the other foot released later than this one then we are double-stepping
+								// out of a pattern where the author likely intended it.
+								if (doubleStepOtherFootReleasedAtSameTime)
+									return CostNewArrow_OtherHoldingOne;
+								if (doubleStepOtherFootReleasedAfterThisFoot)
+									return CostNewArrow_DoubleStepOtherFootReleasedLater;
+
+								// When there are lots of double steps we want to promote alternating.
+								// It is better to hit two double steps with two feet rather than two with
+								// one foot.
+								if (tripleStep)
+									return CostNewArrow_TripleStep;
+
+								// Mine indicated
+								if (thisMinePositionFollowingPreviousStep != null)
+									return CostNewArrow_DoubleStepMineIndicated;
+
+								// No indication
+								return CostNewArrow_DoubleStep;
+							}
+
+							// No previous step.
+							if (previousStepLink == null)
+							{
+								// The other foot is bracketable to this arrow and this foot is not.
+								if (otherCanBracketToNewArrow && !thisCanBracketToNewArrow)
+									return CostNewArrow_FirstStep_OtherIsBracketable_ThisIsNotBracketable;
+								// This foot is bracketable to this arrow and the other foot is not.
+								if (!otherCanBracketToNewArrow && thisCanBracketToNewArrow)
+									return CostNewArrow_FirstStep_OtherIsNotBracketable_ThisIsBracketable;
+								// Only this foot can make the step.
+								if (!otherCanStepToNewArrow)
+									return CostNewArrow_FirstStep_OtherCannotStep;
+								// Ambiguous.
+								return CostNewArrow_FirstStep_Ambiguous;
+							}
+
+							// Previous step was with the other foot.
+							if (previousStepLink.IsStepWithFoot(otherFoot))
+							{
+								return CostNewArrow_Alternating;
+							}
+
+							// Jump into a new arrow. This could be done with either foot.
+							// Rank by which is more natural
+							if (previousStepLink.IsJump())
+							{
+								return GetCostNewArrowStepFromJump(
+									otherCanStepToNewArrow,
+									otherCanCrossoverToNewArrow,
+									otherCanBracketToNewArrow,
+									thisCanCrossoverToNewArrow,
+									thisCanBracketToNewArrow,
+									otherMinePositionFollowingPreviousStep,
+									thisMinePositionFollowingPreviousStep,
+									otherReleasePositionOfPreviousStep,
+									thisReleasePositionOfPreviousStep);
+							}
+
+							// Unreachable? step with same foot that is not a double step or a same arrow step
+							return CostUnknown;
 						}
+						case StepType.CrossoverFront:
+						case StepType.CrossoverBehind:
+						{
+							if ((previousStepLink?.IsJump() ?? false) && !otherAnyHeld)
+								return CostNewArrow_Crossover_AfterJump;
 
-						var tripleStep = doubleStep && previousPreviousStepLink != null && previousPreviousStepLink.IsStepWithFoot(thisFoot);
-						var mostRecentRelease = thisReleasePositionOfPreviousStep;
-						if ((mostRecentRelease == null && otherReleasePositionOfPreviousStep != null)
-						    || (mostRecentRelease != null
-						        && otherReleasePositionOfPreviousStep != null
-						        && otherReleasePositionOfPreviousStep > thisReleasePositionOfPreviousStep))
-							mostRecentRelease = otherReleasePositionOfPreviousStep;
+							if (otherAnyHeld)
+								return CostNewArrow_Crossover_OtherHeld;
 
-						// I think in all cases we should consider an arrow held if it released at this time.
-						thisAnyHeld |= thisReleasePositionOfPreviousStep == position;
-						otherAnyHeld |= otherReleasePositionOfPreviousStep == position;
+							if (doubleStep)
+							{
+								// Mine indicated
+								if (thisMinePositionFollowingPreviousStep != null)
+									return CostNewArrow_Crossover_OtherFree_DoubleStep_MineIndicated;
 
-						if (BracketParsingMethod == BracketParsingMethod.NoBrackets
-							&& (step == StepType.BracketOneArrowHeelSame
-							|| step == StepType.BracketOneArrowToeSame
-							|| step == StepType.BracketOneArrowHeelNew
-							|| step == StepType.BracketOneArrowToeNew))
+								// No indication
+								return CostNewArrow_Crossover_OtherFree_DoubleStep_NoIndication;
+							}
+
+							return CostNewArrow_Crossover;
+						}
+						case StepType.FootSwap:
+						{
+							var mineIndicatedOnThisFootsArrow = thisMinePositionFollowingPreviousStep != null;
+
+							if (doubleStep)
+							{
+								if (mineIndicatedOnThisFootsArrow)
+									return CostNewArrow_FootSwap_DoubleStep_MineIndication;
+								return CostNewArrow_FootSwap_DoubleStep_NoMineIndication;
+							}
+
+							// If the other foot is holding this swap becomes more unlikely as it may
+							// mean a previous bracket should have been a jump.
+							if (otherAnyHeld && !thisAnyHeld)
+								return CostNewArrow_FootSwap_OtherHolding;
+
+							// Determine if there was a mine on another free lane.
+							// Some chart authors use this to signal a footswap.
+							var mineIndicatedOnFreeLaneArrow = false;
+							for (var arrow = 0; arrow < padData.NumArrows; arrow++)
+							{
+								// Skip this arrow if it was hit by the other foot.
+								var thisArrowIsForOtherFoot = false;
+								for (var p = 0; p < NumFootPortions; p++)
+								{
+									if (otherFootPreviousArrows[p] == arrow)
+									{
+										thisArrowIsForOtherFoot = true;
+										break;
+									}
+								}
+
+								if (thisArrowIsForOtherFoot)
+									continue;
+
+								// Check if the last mine for this arrow was at or after the last
+								// release.
+								if (lastMines[arrow] == null)
+									continue;
+								if (lastMines[arrow] >= mostRecentRelease)
+								{
+									mineIndicatedOnFreeLaneArrow = true;
+									break;
+								}
+							}
+
+							// Swapping after a bracket. Usually this means the previous bracket should have been a jump,
+							// but if it is mine indicated then lower the cost to prefer the bracket. We want to avoid
+							// this cost when using aggressive bracket parsing though because it can result in choosing
+							// awkward paths in order to set up the jump/bracket to be only jump eligible (e.g. crossover
+							// into a jump).
+							if (otherFootInBracketPosture
+							    && !thisAnyHeld
+							    && !mineIndicatedOnThisFootsArrow
+							    && !mineIndicatedOnFreeLaneArrow
+							    && BracketParsingMethod != BracketParsingMethod.Aggressive)
+								return CostNewArrow_FootSwap_OtherInBracketPosture;
+
+							// Mine indicated
+							if (mineIndicatedOnThisFootsArrow)
+								return CostNewArrow_FootSwap_MineIndicationOnThisFootsArrow;
+							if (mineIndicatedOnFreeLaneArrow)
+								return CostNewArrow_FootSwap_MineIndicationOnFreeLaneArrow;
+
+							// If previous was swap
+							if (previousStepLink?.IsFootSwap(out _, out _) ?? false)
+								return CostNewArrow_FootSwap_SubsequentSwap;
+
+							// No indication and bracketable.
+							if (thisCanBracketToNewArrow)
+								return CostNewArrow_FootSwap_NoIndication_Bracketable;
+
+							// No indication and not bracketable
+							return CostNewArrow_FootSwap_NoIndication_NotBracketable;
+						}
+						case StepType.InvertFront:
+						case StepType.InvertBehind:
+						{
+							// Inversion from a foot swap
+							if (previousStepLink?.IsFootSwap(out _, out _) ?? false)
+								return CostNewArrow_Invert_FromSwap;
+
+							if (otherAnyHeld)
+								return CostNewArrow_Invert_OtherHeld;
+
+							if (doubleStep)
+							{
+								// Mine indicated
+								if (thisMinePositionFollowingPreviousStep != null)
+									return CostNewArrow_Invert_OtherFree_DoubleStep_MineIndicated;
+
+								// No indication
+								return CostNewArrow_Invert_OtherFree_DoubleStep_NoIndication;
+							}
+
+							return CostNewArrow_Invert;
+						}
+						default:
+						{
+							LogError($"[Cost Determination] Unexpected StepType {step:G} for {numSteps} step at {position}.",
+								LogIdentifier);
+							return CostUnknown;
+						}
+					}
+				}
+
+				case 2:
+				{
+					var couldBeBracketed = new bool[NumFeet];
+					var holdingAny = new bool[NumFeet];
+					var holdingAll = new bool[NumFeet];
+					var newArrowIfThisFootSteps = new bool[NumFeet];
+					var bracketableDistanceIfThisFootSteps = new bool[NumFeet];
+					var involvesSwapIfBracketed = new bool[NumFeet];
+					for (var f = 0; f < NumFeet; f++)
+					{
+						GetTwoArrowStepInfo(
+							searchNode,
+							state,
+							f,
+							padData,
+							lastReleases,
+							out couldBeBracketed[f],
+							out holdingAny[f],
+							out holdingAll[f],
+							out newArrowIfThisFootSteps[f],
+							out bracketableDistanceIfThisFootSteps[f],
+							out involvesSwapIfBracketed[f]);
+					}
+
+					// If previous was step with other foot and that other foot would need to move to reach one
+					// of the new arrows, and the new set of arrows is bracketable by this foot, we should
+					// prefer the bracket.
+					var preferBracketDueToAmountOfMovement = new bool[NumFeet];
+					var atLeastOneFootPrefersBracket = false;
+					if (previousStepLink != null)
+					{
+						for (var f = 0; f < NumFeet; f++)
+						{
+							if (previousStepLink.IsStepWithFoot(OtherFoot(f))
+							    && couldBeBracketed[f]
+							    && newArrowIfThisFootSteps[OtherFoot(f)])
+							{
+								preferBracketDueToAmountOfMovement[f] = true;
+								atLeastOneFootPrefersBracket = true;
+							}
+						}
+					}
+
+					// Evaluate Bracket
+					if (GetBracketStepAndFoot(link, out var step, out var foot))
+					{
+						if (BracketParsingMethod == BracketParsingMethod.NoBrackets)
 						{
 							return NoBrackets_CostBracket;
 						}
 
-						switch (step)
+						var otherFoot = OtherFoot(foot);
+
+						// If the other foot is holding all possible arrows, there is no choice.
+						if (holdingAll[otherFoot])
+							return CostTwoArrows_Bracket_OtherFootHoldingBoth;
+
+						// If this is a double step we should prefer the jump
+						// A double step is fairly normal into a jump, but less normal into a bracket
+						var doubleStep = previousStepLink != null
+						                 && previousStepLink.IsStepWithFoot(foot)
+						                 && !holdingAny[otherFoot]
+						                 && step != StepType.BracketHeelSameToeSame;
+						if (doubleStep)
 						{
-							case StepType.SameArrow:
-							case StepType.BracketOneArrowHeelSame:
-							case StepType.BracketOneArrowToeSame:
-							{
-								if (thisAnyHeld && !otherAnyHeld && otherCanStepToNewArrow)
-									return CostSameArrow_OtherHoldingNone_ThisHeld_OtherCanStep;
-								return CostSameArrow;
-							}
-							case StepType.NewArrow:
-							case StepType.BracketOneArrowHeelNew:
-							case StepType.BracketOneArrowToeNew:
-								{
-									// TODO: give preference to alternating in long patters
-									// For example,		LR, U, LR, D, LR, U, LR D
-									// Should not be all L or all R on the single steps
-
-									if (otherAnyHeld)
-									{
-										// This foot must make this step
-										if (otherAllHeld)
-										{
-											// Slightly better to step on a closer arrow.
-											if (thisCanBracketToNewArrow)
-												return CostNewArrow_AllOtherHeld_ThisFootCanBracketToNewArrow;
-											else
-												return CostNewArrow_AllOtherHeld_ThisFootCannotBracketToNewArrow;
-										}
-
-										// Both feet are holding one arrow.
-										// One foot needs to bracket.
-										if (thisAnyHeld)
-										{
-											// Ambiguous bracket
-											if (otherCanBracketToNewArrow)
-											{
-												// Alternating step bracket.
-												if (previousStepLink.IsStepWithFoot(otherFoot))
-												{
-													return CostNewArrow_BothFeetHolding_OtherCanBracket_AlternatingStep;
-												}
-
-												if (previousStepLink.IsJump())
-												{
-													return GetCostNewArrowStepFromJump(
-														otherCanStepToNewArrow,
-														otherCanCrossoverToNewArrow,
-														otherCanBracketToNewArrow,
-														thisCanCrossoverToNewArrow,
-														thisCanBracketToNewArrow,
-														otherMinePositionFollowingPreviousStep,
-														thisMinePositionFollowingPreviousStep,
-														otherReleasePositionOfPreviousStep,
-														thisReleasePositionOfPreviousStep);
-												}
-
-												// Double step bracket.
-												return CostNewArrow_BothFeetHolding_OtherCanBracket_DoubleStep;
-											}
-
-											// Only this foot can bracket.
-											return CostNewArrow_BothFeetHolding_OtherCannotBracket;
-										}
-
-										// The other foot is holding but this foot is not holding
-										else
-										{
-											if (previousStepLink.IsStepWithFoot(otherFoot))
-												return CostNewArrow_Alternating;
-
-											// TODO: There could be patterns where you roll two feet
-											// while one foot holds a bracket. This isn't considering that.
-											return CostNewArrow_OtherHoldingOne;
-										}
-									}
-
-									// Bracket step with the other foot not holding
-									if (thisAnyHeld)
-									{
-										if (!thisCanBracketToNewArrow)
-											return CostNewArrow_OtherHoldingNone_ThisHeld_ThisCannotBracket;
-
-										// The other foot could make this step.
-										if (otherCanStepToNewArrow)
-										{
-											if (doubleStep)
-												return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCanStep_DoubleStep;
-											return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCanStep;
-										}
-
-										// The other foot cannot hit this arrow.
-										if (doubleStep)
-											return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCannotStep_DoubleStep;
-										return CostNewArrow_OtherHoldingNone_ThisHeld_OtherCannotStep;
-									}
-
-									// No bracketing or holds
-
-									if (doubleStep)
-									{
-										// If the other foot released later than this one then we are double-stepping
-										// out of a pattern where the author likely intended it.
-										if (doubleStepOtherFootReleasedAtSameTime)
-											return CostNewArrow_OtherHoldingOne;
-										if (doubleStepOtherFootReleasedAfterThisFoot)
-											return CostNewArrow_DoubleStepOtherFootReleasedLater;
-
-										// When there are lots of double steps we want to promote alternating.
-										// It is better to hit two double steps with two feet rather than two with
-										// one foot.
-										if (tripleStep)
-											return CostNewArrow_TripleStep;
-
-										// Mine indicated
-										if (thisMinePositionFollowingPreviousStep != null)
-											return CostNewArrow_DoubleStepMineIndicated;
-
-										// No indication
-										return CostNewArrow_DoubleStep;
-									}
-
-									// No previous step.
-									if (previousStepLink == null)
-									{
-										// The other foot is bracketable to this arrow and this foot is not.
-										if (otherCanBracketToNewArrow && !thisCanBracketToNewArrow)
-											return CostNewArrow_FirstStep_OtherIsBracketable_ThisIsNotBracketable;
-										// This foot is bracketable to this arrow and the other foot is not.
-										if (!otherCanBracketToNewArrow && thisCanBracketToNewArrow)
-											return CostNewArrow_FirstStep_OtherIsNotBracketable_ThisIsBracketable;
-										// Only this foot can make the step.
-										if (!otherCanStepToNewArrow)
-											return CostNewArrow_FirstStep_OtherCannotStep;
-										// Ambiguous.
-										return CostNewArrow_FirstStep_Ambiguous;
-									}
-
-									// Previous step was with the other foot.
-									if (previousStepLink.IsStepWithFoot(otherFoot))
-									{
-										return CostNewArrow_Alternating;
-									}
-
-									// Jump into a new arrow. This could be done with either foot.
-									// Rank by which is more natural
-									if (previousStepLink.IsJump())
-									{
-										return GetCostNewArrowStepFromJump(
-											otherCanStepToNewArrow,
-											otherCanCrossoverToNewArrow,
-											otherCanBracketToNewArrow,
-											thisCanCrossoverToNewArrow,
-											thisCanBracketToNewArrow,
-											otherMinePositionFollowingPreviousStep,
-											thisMinePositionFollowingPreviousStep,
-											otherReleasePositionOfPreviousStep,
-											thisReleasePositionOfPreviousStep);
-									}
-
-									// Unreachable? step with same foot that is not a double step or a same arrow step
-									return CostUnknown;
-								}
-							case StepType.CrossoverFront:
-							case StepType.CrossoverBehind:
-								{
-									if ((previousStepLink?.IsJump() ?? false) && !otherAnyHeld)
-										return CostNewArrow_Crossover_AfterJump;
-
-									if (otherAnyHeld)
-										return CostNewArrow_Crossover_OtherHeld;
-
-									if (doubleStep)
-									{
-										// Mine indicated
-										if (thisMinePositionFollowingPreviousStep != null)
-											return CostNewArrow_Crossover_OtherFree_DoubleStep_MineIndicated;
-
-										// No indication
-										return CostNewArrow_Crossover_OtherFree_DoubleStep_NoIndication;
-									}
-
-									return CostNewArrow_Crossover;
-								}
-							case StepType.FootSwap:
-								{
-									var mineIndicatedOnThisFootsArrow = thisMinePositionFollowingPreviousStep != null;
-
-									if (doubleStep)
-									{
-										if (mineIndicatedOnThisFootsArrow) 
-											return CostNewArrow_FootSwap_DoubleStep_MineIndication;
-										return CostNewArrow_FootSwap_DoubleStep_NoMineIndication;
-									}
-
-									// If the other foot is holding this swap becomes more unlikely as it may
-									// mean a previous bracket should have been a jump.
-									if (otherAnyHeld && !thisAnyHeld)
-										return CostNewArrow_FootSwap_OtherHolding;
-
-									// Determine if there was a mine on another free lane.
-									// Some chart authors use this to signal a footswap.
-									var mineIndicatedOnFreeLaneArrow = false;
-									for (var arrow = 0; arrow < padData.NumArrows; arrow++)
-									{
-										// Skip this arrow if it was hit by the other foot.
-										var thisArrowIsForOtherFoot = false;
-										for (var p = 0; p < NumFootPortions; p++)
-										{
-											if (otherFootPreviousArrows[p] == arrow)
-											{
-												thisArrowIsForOtherFoot = true;
-												break;
-											}
-										}
-										if (thisArrowIsForOtherFoot)
-											continue;
-
-										// Check if the last mine for this arrow was at or after the last
-										// release.
-										if (lastMines[arrow] == null)
-											continue;
-										if (lastMines[arrow] >= mostRecentRelease)
-										{
-											mineIndicatedOnFreeLaneArrow = true;
-											break;
-										}
-									}
-
-									// Swapping after a bracket. Usually this means the previous bracket should have been a jump,
-									// but if it is mine indicated then lower the cost to prefer the bracket. We want to avoid
-									// this cost when using aggressive bracket parsing though because it can result in choosing
-									// awkward paths in order to set up the jump/bracket to be only jump eligible (e.g. crossover
-									// into a jump).
-									if (otherFootInBracketPosture
-										&& !thisAnyHeld
-										&& !mineIndicatedOnThisFootsArrow
-										&& !mineIndicatedOnFreeLaneArrow
-										&& BracketParsingMethod != BracketParsingMethod.Aggressive)
-										return CostNewArrow_FootSwap_OtherInBracketPosture;
-
-									// Mine indicated
-									if (mineIndicatedOnThisFootsArrow)
-										return CostNewArrow_FootSwap_MineIndicationOnThisFootsArrow;
-									if (mineIndicatedOnFreeLaneArrow)
-										return CostNewArrow_FootSwap_MineIndicationOnFreeLaneArrow;
-
-									// If previous was swap
-									if (previousStepLink?.IsFootSwap(out _, out _) ?? false)
-										return CostNewArrow_FootSwap_SubsequentSwap;
-
-									// No indication and bracketable.
-									if (thisCanBracketToNewArrow)
-										return CostNewArrow_FootSwap_NoIndication_Bracketable;
-
-									// No indication and not bracketable
-									return CostNewArrow_FootSwap_NoIndication_NotBracketable;
-								}
-							case StepType.InvertFront:
-							case StepType.InvertBehind:
-							{
-								// Inversion from a foot swap
-								if (previousStepLink?.IsFootSwap(out _, out _) ?? false)
-									return CostNewArrow_Invert_FromSwap;
-
-								if (otherAnyHeld)
-									return CostNewArrow_Invert_OtherHeld;
-
-								if (doubleStep)
-								{
-									// Mine indicated
-									if (thisMinePositionFollowingPreviousStep != null)
-										return CostNewArrow_Invert_OtherFree_DoubleStep_MineIndicated;
-
-									// No indication
-									return CostNewArrow_Invert_OtherFree_DoubleStep_NoIndication;
-								}
-
-								return CostNewArrow_Invert;
-							}
-							default:
-							{
-								LogError($"[Cost Determination] Unexpected StepType {step:G} for {numSteps} step at {position}.", LogIdentifier);
-								return CostUnknown;
-							}
+							// We may want to differentiate here between a double step that involves the same
+							// arrow and one that does not involve any of the same arrows or is a swap.
+							return CostTwoArrows_Bracket_DoubleStep;
 						}
+
+						var swap = StepData.Steps[(int) step].IsFootSwapWithAnyPortion;
+
+						if (step == StepType.BracketHeelSameToeSame)
+							return CostTwoArrows_Bracket_BothSame;
+						if (preferBracketDueToAmountOfMovement[foot])
+						{
+							if (swap)
+								return CostTwoArrows_Bracket_PreferredDueToMovement_Swap;
+							return CostTwoArrows_Bracket_PreferredDueToMovement;
+						}
+
+						if (swap)
+							return CostTwoArrows_Bracket_Swap;
+						return CostTwoArrows_Bracket;
 					}
 
-				case 2:
+					// Evaluate Jump
+					if (link.IsJump())
 					{
-						var couldBeBracketed = new bool[NumFeet];
-						var holdingAny = new bool[NumFeet];
-						var holdingAll = new bool[NumFeet];
-						var newArrowIfThisFootSteps = new bool[NumFeet];
-						var bracketableDistanceIfThisFootSteps = new bool[NumFeet];
-						var involvesSwapIfBracketed = new bool[NumFeet];
+						if (BracketParsingMethod == BracketParsingMethod.Aggressive)
+						{
+							for (var f = 0; f < NumFeet; f++)
+							{
+								if (preferBracketDueToAmountOfMovement[f] && !involvesSwapIfBracketed[f])
+								{
+									return AggressiveBrackets_CostJump_BracketPreferredDueToMovement;
+								}
+							}
+						}
+
+						var onlyFootHoldingOne = InvalidFoot;
 						for (var f = 0; f < NumFeet; f++)
 						{
-							GetTwoArrowStepInfo(
-								searchNode,
-								state,
-								f,
-								padData,
-								lastReleases,
-								out couldBeBracketed[f],
-								out holdingAny[f],
-								out holdingAll[f],
-								out newArrowIfThisFootSteps[f],
-								out bracketableDistanceIfThisFootSteps[f],
-								out involvesSwapIfBracketed[f]);
-						}
-
-						// If previous was step with other foot and that other foot would need to move to reach one
-						// of the new arrows, and the new set of arrows is bracketable by this foot, we should
-						// prefer the bracket.
-						var preferBracketDueToAmountOfMovement = new bool[NumFeet];
-						var atLeastOneFootPrefersBracket = false;
-						if (previousStepLink != null)
-						{
-							for (var f = 0; f < NumFeet; f++)
+							if (holdingAny[f] && !holdingAll[f])
 							{
-								if (previousStepLink.IsStepWithFoot(OtherFoot(f))
-									&& couldBeBracketed[f]
-									&& newArrowIfThisFootSteps[OtherFoot(f)])
+								if (onlyFootHoldingOne == InvalidFoot)
+									onlyFootHoldingOne = f;
+								else
 								{
-									preferBracketDueToAmountOfMovement[f] = true;
-									atLeastOneFootPrefersBracket = true;
+									onlyFootHoldingOne = InvalidFoot;
+									break;
 								}
 							}
 						}
 
-						// Evaluate Bracket
-						if (GetBracketStepAndFoot(link, out var step, out var foot))
+						if (BracketParsingMethod == BracketParsingMethod.Aggressive)
 						{
-							if (BracketParsingMethod == BracketParsingMethod.NoBrackets)
-							{
-								return NoBrackets_CostBracket;
-							}
-
-							var otherFoot = OtherFoot(foot);
-
-							// If the other foot is holding all possible arrows, there is no choice.
-							if (holdingAll[otherFoot])
-								return CostTwoArrows_Bracket_OtherFootHoldingBoth;
-
-							// If this is a double step we should prefer the jump
-							// A double step is fairly normal into a jump, but less normal into a bracket
-							var doubleStep = previousStepLink != null
-											 && previousStepLink.IsStepWithFoot(foot)
-											 && !holdingAny[otherFoot]
-											 && step != StepType.BracketHeelSameToeSame;
-							if (doubleStep)
-							{
-								// We may want to differentiate here between a double step that involves the same
-								// arrow and one that does not involve any of the same arrows or is a swap.
-								return CostTwoArrows_Bracket_DoubleStep;
-							}
-
-							var swap = StepData.Steps[(int) step].IsFootSwapWithAnyPortion;
-
-							if (step == StepType.BracketHeelSameToeSame)
-								return CostTwoArrows_Bracket_BothSame;
-							if (preferBracketDueToAmountOfMovement[foot])
-							{
-								if (swap)
-									return CostTwoArrows_Bracket_PreferredDueToMovement_Swap;
-								return CostTwoArrows_Bracket_PreferredDueToMovement;
-							}
-							if (swap)
-								return CostTwoArrows_Bracket_Swap;
-							return CostTwoArrows_Bracket;
-						}
-
-						// Evaluate Jump
-						if (link.IsJump())
-						{
-							if (BracketParsingMethod == BracketParsingMethod.Aggressive)
-							{
-								for (var f = 0; f < NumFeet; f++)
-								{
-									if (preferBracketDueToAmountOfMovement[f] && !involvesSwapIfBracketed[f])
-									{
-										return AggressiveBrackets_CostJump_BracketPreferredDueToMovement;
-									}
-								}
-							}
-
-							var onlyFootHoldingOne = InvalidFoot;
-							for (var f = 0; f < NumFeet; f++)
-							{
-								if (holdingAny[f] && !holdingAll[f])
-								{
-									if (onlyFootHoldingOne == InvalidFoot)
-										onlyFootHoldingOne = f;
-									else
-									{
-										onlyFootHoldingOne = InvalidFoot;
-										break;
-									}
-								}
-							}
-
-							if (BracketParsingMethod == BracketParsingMethod.Aggressive)
-							{
-								if (onlyFootHoldingOne != InvalidFoot && couldBeBracketed[OtherFoot(onlyFootHoldingOne)])
-								{
-									return AggressiveBrackets_CostJump_OtherFootHoldingOne_ThisFootCouldBracket;
-								}
-							}
-
-							// If only one foot is holding one, we should prefer a bracket if the two arrows
-							// are bracketable by the other foot.
 							if (onlyFootHoldingOne != InvalidFoot && couldBeBracketed[OtherFoot(onlyFootHoldingOne)])
-								return CostTwoArrows_Jump_OtherFootHoldingOne_ThisFootCouldBracket;
-							// If only one foot is holding one and the two new arrows are not bracketable
-							// by the other foot, we should prefer the jump.
-							if (onlyFootHoldingOne != InvalidFoot && !couldBeBracketed[OtherFoot(onlyFootHoldingOne)])
-								return CostTwoArrows_Jump_OtherFootHoldingOne_NotBracketable;
-
-							// No hold or both feet holding
-
-							if (atLeastOneFootPrefersBracket)
-								return CostTwoArrows_Jump_OneFootPrefersBracketToDueMovement;
-
-							var inverted = searchNode.GraphNode.Orientation == BodyOrientation.InvertedLeftOverRight
-							               || searchNode.GraphNode.Orientation == BodyOrientation.InvertedRightOverLeft;
-							if (inverted)
-								return CostTwoArrows_Jump_Inverted;
-
-							var bothNew = true;
-							var bothSame = true;
-							var lArrow = InvalidArrowIndex;
-							var rArrow = InvalidArrowIndex;
-							for (var f = 0; f < NumFeet; f++)
 							{
-								for (var p = 0; p < NumFootPortions; p++)
-								{
-									if (!link.Links[f, p].Valid)
-										continue;
-									if (f == L)
-										lArrow = searchNode.GraphNode.State[f, p].Arrow;
-									if (f == R)
-										rArrow = searchNode.GraphNode.State[f, p].Arrow;
-									if (link.Links[f, p].Step == StepType.NewArrow)
-										bothSame = false;
-									if (link.Links[f, p].Step == StepType.SameArrow)
-										bothNew = false;
-								}
+								return AggressiveBrackets_CostJump_OtherFootHoldingOne_ThisFootCouldBracket;
 							}
-
-							var crossedOver = false;
-							if (!holdingAny[L] && !holdingAny[R])
-							{
-								if (padData.ArrowData[lArrow].OtherFootPairingsOtherFootCrossoverBehind[L][rArrow]
-								    || padData.ArrowData[lArrow].OtherFootPairingsOtherFootCrossoverFront[L][rArrow]
-								    || padData.ArrowData[rArrow].OtherFootPairingsOtherFootCrossoverBehind[R][lArrow]
-								    || padData.ArrowData[rArrow].OtherFootPairingsOtherFootCrossoverFront[R][lArrow])
-								{
-									crossedOver = true;
-								}
-							}
-
-							if (crossedOver)
-								return CostTwoArrows_Jump_CrossedOver;
-
-							if (bothSame)
-								return CostTwoArrows_Jump_BothSame;
-							if (bothNew)
-							{
-								if (!bracketableDistanceIfThisFootSteps[L] && !bracketableDistanceIfThisFootSteps[R])
-									return CostTwoArrows_Jump_BothNewAndNeitherBracketable;
-								if (!bracketableDistanceIfThisFootSteps[L] || !bracketableDistanceIfThisFootSteps[R])
-									return CostTwoArrows_Jump_BothNewAndOneBracketable;
-
-								return CostTwoArrows_Jump_BothNew;
-							}
-
-							return CostTwoArrows_Jump_OneNew;
 						}
 
-						LogError($"[Cost Determination] Unexpected behavior for {numSteps} steps at {position}.", LogIdentifier);
-						return CostUnknown;
+						// If only one foot is holding one, we should prefer a bracket if the two arrows
+						// are bracketable by the other foot.
+						if (onlyFootHoldingOne != InvalidFoot && couldBeBracketed[OtherFoot(onlyFootHoldingOne)])
+							return CostTwoArrows_Jump_OtherFootHoldingOne_ThisFootCouldBracket;
+						// If only one foot is holding one and the two new arrows are not bracketable
+						// by the other foot, we should prefer the jump.
+						if (onlyFootHoldingOne != InvalidFoot && !couldBeBracketed[OtherFoot(onlyFootHoldingOne)])
+							return CostTwoArrows_Jump_OtherFootHoldingOne_NotBracketable;
+
+						// No hold or both feet holding
+
+						if (atLeastOneFootPrefersBracket)
+							return CostTwoArrows_Jump_OneFootPrefersBracketToDueMovement;
+
+						var inverted = searchNode.GraphNode.Orientation == BodyOrientation.InvertedLeftOverRight
+						               || searchNode.GraphNode.Orientation == BodyOrientation.InvertedRightOverLeft;
+						if (inverted)
+							return CostTwoArrows_Jump_Inverted;
+
+						var bothNew = true;
+						var bothSame = true;
+						var lArrow = InvalidArrowIndex;
+						var rArrow = InvalidArrowIndex;
+						for (var f = 0; f < NumFeet; f++)
+						{
+							for (var p = 0; p < NumFootPortions; p++)
+							{
+								if (!link.Links[f, p].Valid)
+									continue;
+								if (f == L)
+									lArrow = searchNode.GraphNode.State[f, p].Arrow;
+								if (f == R)
+									rArrow = searchNode.GraphNode.State[f, p].Arrow;
+								if (link.Links[f, p].Step == StepType.NewArrow)
+									bothSame = false;
+								if (link.Links[f, p].Step == StepType.SameArrow)
+									bothNew = false;
+							}
+						}
+
+						var crossedOver = false;
+						if (!holdingAny[L] && !holdingAny[R])
+						{
+							if (padData.ArrowData[lArrow].OtherFootPairingsOtherFootCrossoverBehind[L][rArrow]
+							    || padData.ArrowData[lArrow].OtherFootPairingsOtherFootCrossoverFront[L][rArrow]
+							    || padData.ArrowData[rArrow].OtherFootPairingsOtherFootCrossoverBehind[R][lArrow]
+							    || padData.ArrowData[rArrow].OtherFootPairingsOtherFootCrossoverFront[R][lArrow])
+							{
+								crossedOver = true;
+							}
+						}
+
+						if (crossedOver)
+							return CostTwoArrows_Jump_CrossedOver;
+
+						if (bothSame)
+							return CostTwoArrows_Jump_BothSame;
+						if (bothNew)
+						{
+							if (!bracketableDistanceIfThisFootSteps[L] && !bracketableDistanceIfThisFootSteps[R])
+								return CostTwoArrows_Jump_BothNewAndNeitherBracketable;
+							if (!bracketableDistanceIfThisFootSteps[L] || !bracketableDistanceIfThisFootSteps[R])
+								return CostTwoArrows_Jump_BothNewAndOneBracketable;
+
+							return CostTwoArrows_Jump_BothNew;
+						}
+
+						return CostTwoArrows_Jump_OneNew;
 					}
+
+					LogError($"[Cost Determination] Unexpected behavior for {numSteps} steps at {position}.", LogIdentifier);
+					return CostUnknown;
+				}
 
 				case 3:
 					return CostThreeArrows;
@@ -1789,7 +1838,8 @@ namespace StepManiaChartGenerator
 					if (previousState[foot, p].State == GraphArrowState.Held)
 					{
 						anyHeld = true;
-						canBracketToNewArrow = arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherHeel[foot][arrow]
+						canBracketToNewArrow =
+							arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherHeel[foot][arrow]
 							|| arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherToe[foot][arrow];
 					}
 					else
@@ -1799,12 +1849,13 @@ namespace StepManiaChartGenerator
 						{
 							if (!anyHeld)
 							{
-								canBracketToNewArrow = arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherHeel[foot][arrow]
+								canBracketToNewArrow =
+									arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherHeel[foot][arrow]
 									|| arrowData[previousState[foot, p].Arrow].BracketablePairingsOtherToe[foot][arrow];
 							}
 
 							if (lastMines[previousState[foot, p].Arrow] != null
-								&& lastMines[previousState[foot, p].Arrow] > lastReleases[previousState[foot, p].Arrow])
+							    && lastMines[previousState[foot, p].Arrow] > lastReleases[previousState[foot, p].Arrow])
 								minePositionFollowingPreviousStep = lastMines[previousState[foot, p].Arrow];
 
 							// A foot could be coming from a bracket with multiple releases. In this case we want to
@@ -1825,6 +1876,7 @@ namespace StepManiaChartGenerator
 			{
 				canCrossoverToNewArrow = false;
 			}
+
 			if (allHeld)
 			{
 				canStepToNewArrowWithoutCrossover = false;
@@ -1851,6 +1903,7 @@ namespace StepManiaChartGenerator
 					}
 				}
 			}
+
 			return numValid == 1;
 		}
 
@@ -1861,13 +1914,14 @@ namespace StepManiaChartGenerator
 			var numValid = 0;
 			for (var f = 0; f < NumFeet; f++)
 			{
-				if (link.Links[f, 0].Valid && StepData.Steps[(int)link.Links[f, 0].Step].IsBracket)
+				if (link.Links[f, 0].Valid && StepData.Steps[(int) link.Links[f, 0].Step].IsBracket)
 				{
 					step = link.Links[f, 0].Step;
 					foot = f;
 					numValid++;
 				}
 			}
+
 			return numValid == 1;
 		}
 
@@ -1903,7 +1957,8 @@ namespace StepManiaChartGenerator
 				var previousState = parentSearchNode.GraphNode.State;
 				for (var p = 0; p < NumFootPortions; p++)
 				{
-					if (previousState[foot, p].Arrow != InvalidArrowIndex && previousState[foot, p].State == GraphArrowState.Resting)
+					if (previousState[foot, p].Arrow != InvalidArrowIndex
+					    && previousState[foot, p].State == GraphArrowState.Resting)
 					{
 						// A foot could be coming from a bracket with multiple releases. In this case we want to
 						// choose the latest.
@@ -1933,8 +1988,9 @@ namespace StepManiaChartGenerator
 						{
 							holdingAll = false;
 						}
+
 						if (parentSearchNode.GraphNode.State[foot, p].State == GraphArrowState.Resting
-							&& state[previousArrow] == SearchState.Empty)
+						    && state[previousArrow] == SearchState.Empty)
 						{
 							newArrowIfThisFootSteps = true;
 						}
@@ -1948,9 +2004,10 @@ namespace StepManiaChartGenerator
 							if (newArrowBeingSteppedOnByThisFoot != InvalidArrowIndex)
 								break;
 						}
-						if (newArrowBeingSteppedOnByThisFoot != InvalidArrowIndex 
+
+						if (newArrowBeingSteppedOnByThisFoot != InvalidArrowIndex
 						    && (arrowData[previousArrow].BracketablePairingsOtherHeel[foot][newArrowBeingSteppedOnByThisFoot]
-						    || arrowData[previousArrow].BracketablePairingsOtherToe[foot][newArrowBeingSteppedOnByThisFoot]))
+						        || arrowData[previousArrow].BracketablePairingsOtherToe[foot][newArrowBeingSteppedOnByThisFoot]))
 						{
 							bracketableDistanceIfThisFootSteps = true;
 						}
@@ -1972,17 +2029,17 @@ namespace StepManiaChartGenerator
 				for (var a = 0; a < state.Length; a++)
 				{
 					if (state[a] == SearchState.Tap
-						|| state[a] == SearchState.Fake
-						|| state[a] == SearchState.Lift
-						|| state[a] == SearchState.Hold
-						|| state[a] == SearchState.Roll)
+					    || state[a] == SearchState.Fake
+					    || state[a] == SearchState.Lift
+					    || state[a] == SearchState.Hold
+					    || state[a] == SearchState.Roll)
 					{
 						numSteps++;
 						if (steppedArrow != InvalidArrowIndex)
 						{
 							var bracketable =
 								(arrowData[a].BracketablePairingsOtherHeel[foot][steppedArrow]
-								&& arrowData[steppedArrow].BracketablePairingsOtherToe[foot][a])
+								 && arrowData[steppedArrow].BracketablePairingsOtherToe[foot][a])
 								|| (arrowData[a].BracketablePairingsOtherToe[foot][steppedArrow]
 								    && arrowData[steppedArrow].BracketablePairingsOtherHeel[foot][a]);
 							if (!bracketable)
@@ -2004,6 +2061,7 @@ namespace StepManiaChartGenerator
 						steppedArrow = a;
 					}
 				}
+
 				if (numSteps != NumFootPortions)
 					couldBeBracketed = false;
 			}
@@ -2035,14 +2093,14 @@ namespace StepManiaChartGenerator
 
 			// Mine indication for both but other foot is sooner
 			if (otherMinePositionFollowingPreviousStep != null
-				&& thisMinePositionFollowingPreviousStep != null
-				&& otherMinePositionFollowingPreviousStep > thisMinePositionFollowingPreviousStep)
+			    && thisMinePositionFollowingPreviousStep != null
+			    && otherMinePositionFollowingPreviousStep > thisMinePositionFollowingPreviousStep)
 				return CostNewArrow_StepFromJump_BothMineIndicated_ThisSooner;
 
 			// Mine indication for both but this foot is sooner
 			if (otherMinePositionFollowingPreviousStep != null
-				&& thisMinePositionFollowingPreviousStep != null
-				&& thisMinePositionFollowingPreviousStep > otherMinePositionFollowingPreviousStep)
+			    && thisMinePositionFollowingPreviousStep != null
+			    && thisMinePositionFollowingPreviousStep > otherMinePositionFollowingPreviousStep)
 				return CostNewArrow_StepFromJump_BothMineIndicated_OtherSooner;
 
 			// Mine indication for only this foot to make this step.
@@ -2068,6 +2126,7 @@ namespace StepManiaChartGenerator
 			// Equal choice
 			return CostNewArrow_StepFromJump_Ambiguous;
 		}
+
 		#endregion
 
 		/// <summary>
@@ -2114,11 +2173,12 @@ namespace StepManiaChartGenerator
 				stepEvents.Add(chartSearchNode);
 				chartSearchNode = chartSearchNode.GetNextNode();
 			}
+
 			var (releases, steps) = MineUtils.GetReleasesAndSteps(stepEvents, StepGraph.NumArrows);
 
 			var stepIndex = 0;
 			var releaseIndex = InvalidArrowIndex;
-			for(var i = 0; i < MineNotes.Count; i++)
+			for (var i = 0; i < MineNotes.Count; i++)
 			{
 				var smMineEvent = MineNotes[i];
 				// Advance the step and release indices to follow and precede the event respectively.
@@ -2137,6 +2197,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Logging
+
 		static void LogError(string message, string logIdentifier)
 		{
 			if (!string.IsNullOrEmpty(logIdentifier))
@@ -2160,6 +2221,7 @@ namespace StepManiaChartGenerator
 			else
 				Logger.Info($"[{LogTag}] {message}");
 		}
+
 		#endregion Logging
 	}
 }

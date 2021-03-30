@@ -24,6 +24,7 @@ namespace StepManiaChartGenerator
 		/// Second index is foot for that combination.
 		/// </summary>
 		private static readonly StepType[][] JumpCombinations;
+
 		/// <summary>
 		/// Static cached Foot order to use when filling jumps.
 		/// First index is the index of the order to use when looping over all orders.
@@ -35,6 +36,7 @@ namespace StepManiaChartGenerator
 		/// Cached array of all arrow indices.
 		/// </summary>
 		private readonly int[] AllArrows;
+
 		/// <summary>
 		/// Functions to call per StepType to fill steps.
 		/// </summary>
@@ -75,15 +77,16 @@ namespace StepManiaChartGenerator
 			for (var stepType = 0; stepType < StepData.Steps.Length; stepType++)
 			{
 				if (StepData.Steps[stepType].CanBeUsedInJump)
-					jumpSingleSteps.Add((StepType)stepType);
+					jumpSingleSteps.Add((StepType) stepType);
 			}
+
 			JumpCombinations = Combinations.CreateCombinations(jumpSingleSteps, NumFeet).ToArray();
 
 			// Initialize JumpFootOrder.
 			JumpFootOrder = new[]
 			{
-				new []{L, R},
-				new []{R, L}
+				new[] {L, R},
+				new[] {R, L}
 			};
 		}
 
@@ -165,6 +168,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Public Search Methods
+
 		/// <summary>
 		/// Searches the StepGraph for a GraphNode matching the given left and right
 		/// foot states using DefaultFootPortions.
@@ -245,7 +249,7 @@ namespace StepManiaChartGenerator
 		{
 			var allLinks = new HashSet<GraphLink>();
 			var trackedNodes = new HashSet<GraphNode>();
-			var nodes = new HashSet<GraphNode> { Root };
+			var nodes = new HashSet<GraphNode> {Root};
 			trackedNodes.Add(Root);
 			while (true)
 			{
@@ -270,11 +274,14 @@ namespace StepManiaChartGenerator
 				if (nodes.Count == 0)
 					break;
 			}
+
 			return allLinks;
 		}
+
 		#endregion Public Search Methods
 
 		#region Fill
+
 		/// <summary>
 		/// Fill all the GraphLinks and GraphNodes of this StepGraph.
 		/// Iterative, breadth-first fill.
@@ -285,7 +292,7 @@ namespace StepManiaChartGenerator
 
 			VisitedNodes = new HashSet<GraphNode>();
 			var completeNodes = new HashSet<GraphNode>();
-			var currentNodes = new List<GraphNode> { Root };
+			var currentNodes = new List<GraphNode> {Root};
 			var level = 0;
 
 			var allArrows = new int[NumArrows];
@@ -368,15 +375,15 @@ namespace StepManiaChartGenerator
 			// For brackets this is two portions and for other steps it is one.
 			// We do not need to exhaust combinations here since we will do it for
 			// ActionCombinations.
-			var footPortions = StepData.Steps[(int)stepType].FootPortionsForStep;
+			var footPortions = StepData.Steps[(int) stepType].FootPortionsForStep;
 			// Get the appropriate function to use for filling this StepType.
-			var fillFunc = FillFuncs[(int)stepType];
+			var fillFunc = FillFuncs[(int) stepType];
 			// Get the list of combinations of FootActions for the number arrows used by this StepType.
 			// If this StepType uses two arrows then this actionSets array will include
 			// arrays for every combination of FootActions for two feet.
 			// This includes, for example, Tap then Hold and Hold then Tap.
-			var actionSets = StepData.Steps[(int)stepType].ActionSets;
-			var onlyConsiderCurrent = StepData.Steps[(int)stepType].OnlyConsiderCurrentArrowsWhenFilling;
+			var actionSets = StepData.Steps[(int) stepType].ActionSets;
+			var onlyConsiderCurrent = StepData.Steps[(int) stepType].OnlyConsiderCurrentArrowsWhenFilling;
 
 			var arrows = onlyConsiderCurrent ? new int[1] : AllArrows;
 
@@ -412,7 +419,8 @@ namespace StepManiaChartGenerator
 								var actionIndex = 0;
 								foreach (var footPortion in footPortions)
 								{
-									link.Links[foot, footPortion] = new GraphLink.FootArrowState(stepType, actions[actionIndex++]);
+									link.Links[foot, footPortion] =
+										new GraphLink.FootArrowState(stepType, actions[actionIndex++]);
 								}
 
 								AddNode(currentNode, newNode, link);
@@ -450,8 +458,8 @@ namespace StepManiaChartGenerator
 				// For brackets this is two portions and for other steps it is one.
 				// We do not need to exhaust combinations here since we will do it for
 				// ActionCombinations.
-				var footPortionsF1 = StepData.Steps[(int)stepTypes[f1]].FootPortionsForStep;
-				var footPortionsF2 = StepData.Steps[(int)stepTypes[f2]].FootPortionsForStep;
+				var footPortionsF1 = StepData.Steps[(int) stepTypes[f1]].FootPortionsForStep;
+				var footPortionsF2 = StepData.Steps[(int) stepTypes[f2]].FootPortionsForStep;
 
 				// Find all the states from moving the first foot.
 				var actionsToNodesF1 = FillJumpStep(currentNode, stepTypes[f1], f1, null);
@@ -480,12 +488,15 @@ namespace StepManiaChartGenerator
 								var actionIndex = 0;
 								foreach (var footPortion in footPortionsF1)
 								{
-									link.Links[f1, footPortion] = new GraphLink.FootArrowState(stepTypes[f1], actionNodeF1.Key[actionIndex++]);
+									link.Links[f1, footPortion] =
+										new GraphLink.FootArrowState(stepTypes[f1], actionNodeF1.Key[actionIndex++]);
 								}
+
 								actionIndex = 0;
 								foreach (var footPortion in footPortionsF2)
 								{
-									link.Links[f2, footPortion] = new GraphLink.FootArrowState(stepTypes[f2], actionNodeF2.Key[actionIndex++]);
+									link.Links[f2, footPortion] =
+										new GraphLink.FootArrowState(stepTypes[f2], actionNodeF2.Key[actionIndex++]);
 								}
 
 								AddNode(currentNode, newNodeF2, link);
@@ -520,13 +531,13 @@ namespace StepManiaChartGenerator
 			var result = new Dictionary<FootAction[], List<GraphNode>>();
 
 			// Get the appropriate function to use for filling this StepType.
-			var fillFunc = FillFuncs[(int)stepType];
+			var fillFunc = FillFuncs[(int) stepType];
 			// Get the list of combinations of FootActions for the number arrows used by this StepType.
 			// If this StepType uses two arrows then this actionSets array will include
 			// arrays for every combination of FootActions for two feet.
 			// This includes, for example, Tap then Hold and Hold then Tap.
-			var actionSets = StepData.Steps[(int)stepType].ActionSets;
-			var onlyConsiderCurrent = StepData.Steps[(int)stepType].OnlyConsiderCurrentArrowsWhenFilling;
+			var actionSets = StepData.Steps[(int) stepType].ActionSets;
+			var onlyConsiderCurrent = StepData.Steps[(int) stepType].OnlyConsiderCurrentArrowsWhenFilling;
 
 			var arrows = onlyConsiderCurrent ? new int[1] : AllArrows;
 
@@ -567,6 +578,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region Fill Single Step
+
 		private List<GraphNode> FillNewArrow(
 			GraphNode currentNode,
 			int foot,
@@ -655,6 +667,7 @@ namespace StepManiaChartGenerator
 				if (AnyHeld(currentState, foot))
 					return null;
 			}
+
 			// Skip if the new arrow is occupied.
 			if (!IsFree(currentState, newArrow))
 				return null;
@@ -690,10 +703,11 @@ namespace StepManiaChartGenerator
 				newState[foot, OtherFootPortion(destinationFootPortion)] = currentState[foot, destinationFootPortion];
 			}
 
-			newState[foot, destinationFootPortion] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int)footAction]);
+			newState[foot, destinationFootPortion] =
+				new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int) footAction]);
 
 			// Stepping on a new arrow implies a normal orientation.
-			return new List<GraphNode> { new GraphNode(newState, BodyOrientation.Normal) };
+			return new List<GraphNode> {new GraphNode(newState, BodyOrientation.Normal)};
 		}
 
 		private List<GraphNode> FillSameArrow(
@@ -840,7 +854,7 @@ namespace StepManiaChartGenerator
 				newState[otherFoot, p] = currentState[otherFoot, p];
 
 				if (p == destinationFootPortion)
-					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int)footAction]);
+					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int) footAction]);
 				// When stepping is is necessary to lift all resting portions.
 				else if (!release && IsStateRestingAtIndex(currentState, p, foot))
 					newState[foot, p] = GraphNode.InvalidFootArrowState;
@@ -849,7 +863,7 @@ namespace StepManiaChartGenerator
 			}
 
 			// Stepping on the same arrow maintains the previous state's orientation.
-			return new List<GraphNode> { new GraphNode(newState, currentNode.Orientation) };
+			return new List<GraphNode> {new GraphNode(newState, currentNode.Orientation)};
 		}
 
 		private List<GraphNode> FillFootSwap(
@@ -893,17 +907,19 @@ namespace StepManiaChartGenerator
 			for (var p = 0; p < NumFootPortions; p++)
 			{
 				if (p == DefaultFootPortion)
-					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int)footAction]);
+					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int) footAction]);
 				else
 					newState[foot, p] = GraphNode.InvalidFootArrowState;
 			}
 
 			// Footswaps correct inverted orientation.
-			return new List<GraphNode> { new GraphNode(newState, BodyOrientation.Normal) };
+			return new List<GraphNode> {new GraphNode(newState, BodyOrientation.Normal)};
 		}
+
 		#endregion Fill Single Step
 
 		#region Fill Crossover
+
 		private List<GraphNode> FillCrossoverFront(
 			GraphNode currentNode,
 			int foot,
@@ -975,7 +991,7 @@ namespace StepManiaChartGenerator
 			    && ((front && foot == L) || (!front && foot == R)))
 				return null;
 			if (currentNode.Orientation == BodyOrientation.InvertedLeftOverRight
-				&& ((front && foot == R) || (!front && foot == L)))
+			    && ((front && foot == R) || (!front && foot == L)))
 				return null;
 
 			// Set up the state for a new node.
@@ -986,7 +1002,7 @@ namespace StepManiaChartGenerator
 				newState[otherFoot, p] = currentState[otherFoot, p];
 
 				if (p == DefaultFootPortion)
-					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int)footAction]);
+					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int) footAction]);
 				// Lift any resting arrows for the given foot.
 				else if (IsStateRestingAtIndex(currentState, p, foot))
 					newState[foot, p] = GraphNode.InvalidFootArrowState;
@@ -995,11 +1011,13 @@ namespace StepManiaChartGenerator
 			}
 
 			// Crossovers are not inverted.
-			return new List<GraphNode> { new GraphNode(newState, BodyOrientation.Normal) };
+			return new List<GraphNode> {new GraphNode(newState, BodyOrientation.Normal)};
 		}
+
 		#endregion Fill Crossover
 
 		#region Fill Invert
+
 		private List<GraphNode> FillInvertFront(
 			GraphNode currentNode,
 			int foot,
@@ -1055,8 +1073,9 @@ namespace StepManiaChartGenerator
 
 			// Determine the orientation this inversion will result in.
 			var otherFoot = OtherFoot(foot);
-			var orientation = ((front && foot == R) || (!front && foot == L)) ?
-				BodyOrientation.InvertedRightOverLeft : BodyOrientation.InvertedLeftOverRight;
+			var orientation = ((front && foot == R) || (!front && foot == L))
+				? BodyOrientation.InvertedRightOverLeft
+				: BodyOrientation.InvertedLeftOverRight;
 
 			// If the current state is already inverted in the opposite orientation, skip.
 			// The player needs to right themselves first.
@@ -1079,7 +1098,7 @@ namespace StepManiaChartGenerator
 				newState[otherFoot, p] = currentState[otherFoot, p];
 
 				if (p == DefaultFootPortion)
-					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int)footAction]);
+					newState[foot, p] = new GraphNode.FootArrowState(newArrow, StepData.StateAfterAction[(int) footAction]);
 				// Lift any resting arrows for the given foot.
 				else if (IsStateRestingAtIndex(currentState, p, foot))
 					newState[foot, p] = GraphNode.InvalidFootArrowState;
@@ -1087,11 +1106,13 @@ namespace StepManiaChartGenerator
 					newState[foot, p] = currentState[foot, p];
 			}
 
-			return new List<GraphNode> { new GraphNode(newState, orientation) };
+			return new List<GraphNode> {new GraphNode(newState, orientation)};
 		}
+
 		#endregion Fill Invert
 
 		#region Bracket Fill Functions
+
 		private List<GraphNode> FillBracketHeelNewToeNew(
 			GraphNode currentNode,
 			int foot,
@@ -1129,8 +1150,8 @@ namespace StepManiaChartGenerator
 					foot,
 					currentFootPortion,
 					newArrow,
-					new[] { Heel, Toe },
-					new[] { heelAction, toeAction },
+					new[] {Heel, Toe},
+					new[] {heelAction, toeAction},
 					firstNewArrowIsValidPlacement,
 					firstArrowOtherFootValidPairings);
 				if (results != null && results.Count > 0)
@@ -1139,7 +1160,6 @@ namespace StepManiaChartGenerator
 
 			if (IsValidNewArrowForBracket(currentState, foot, Toe, newArrow))
 			{
-
 				// Fill steps where the toe arrow precedes the heel arrow.
 				var results = FillBracketInternalSecondArrowNew(
 					currentNode,
@@ -1152,7 +1172,6 @@ namespace StepManiaChartGenerator
 					firstArrowOtherFootValidPairings);
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
-
 			}
 
 			return allResults;
@@ -1182,7 +1201,7 @@ namespace StepManiaChartGenerator
 				out var firstNewArrowIsValidPlacement))
 			{
 				var results = FillBracketInternalSecondArrowSame(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions,
 					firstNewArrowIsValidPlacement,
 					firstArrowOtherFootValidPairings);
@@ -1196,8 +1215,8 @@ namespace StepManiaChartGenerator
 				out firstNewArrowIsValidPlacement))
 			{
 				var results = FillBracketInternalSecondArrowNew(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] },
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]},
 					firstNewArrowIsValidPlacement,
 					firstArrowOtherFootValidPairings);
 				if (results != null && results.Count > 0)
@@ -1231,8 +1250,8 @@ namespace StepManiaChartGenerator
 				out var firstNewArrowIsValidPlacement))
 			{
 				var results = FillBracketInternalSecondArrowSame(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] },
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]},
 					firstNewArrowIsValidPlacement,
 					firstArrowOtherFootValidPairings);
 				if (results != null && results.Count > 0)
@@ -1245,7 +1264,7 @@ namespace StepManiaChartGenerator
 				out firstNewArrowIsValidPlacement))
 			{
 				var results = FillBracketInternalSecondArrowNew(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions,
 					firstNewArrowIsValidPlacement,
 					firstArrowOtherFootValidPairings);
@@ -1273,8 +1292,8 @@ namespace StepManiaChartGenerator
 				foot,
 				currentFootPortion,
 				newArrow,
-				new[] { Heel, Toe },
-				new[] { heelAction, toeAction });
+				new[] {Heel, Toe},
+				new[] {heelAction, toeAction});
 			if (results != null && results.Count > 0)
 				allResults.AddRange(results);
 
@@ -1283,8 +1302,8 @@ namespace StepManiaChartGenerator
 				foot,
 				currentFootPortion,
 				newArrow,
-				new[] { Toe, Heel },
-				new[] { toeAction, heelAction });
+				new[] {Toe, Heel},
+				new[] {toeAction, heelAction});
 			if (results != null && results.Count > 0)
 				allResults.AddRange(results);
 
@@ -1313,7 +1332,7 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSame(currentNode, foot, currentFootPortion, newArrow, out _, out _))
 			{
 				var results = FillBracketInternalSecondArrowSwap(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions);
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
@@ -1323,8 +1342,8 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSwap(currentNode, foot, currentFootPortion, newArrow))
 			{
 				var results = FillBracketInternalSecondArrowSame(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] },
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]},
 					true, null, true);
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
@@ -1355,7 +1374,7 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowNew(currentNode, foot, currentFootPortion, newArrow, Heel, out _, out _))
 			{
 				var results = FillBracketInternalSecondArrowSwap(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions);
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
@@ -1365,8 +1384,8 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSwap(currentNode, foot, currentFootPortion, newArrow))
 			{
 				var results = FillBracketInternalSecondArrowNew(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] },
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]},
 					true, null, true);
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
@@ -1397,7 +1416,7 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSwap(currentNode, foot, currentFootPortion, newArrow))
 			{
 				var results = FillBracketInternalSecondArrowSame(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions,
 					true, null, true);
 				if (results != null && results.Count > 0)
@@ -1408,8 +1427,8 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSame(currentNode, foot, currentFootPortion, newArrow, out _, out _))
 			{
 				var results = FillBracketInternalSecondArrowSwap(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] });
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]});
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
 			}
@@ -1439,7 +1458,7 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowSwap(currentNode, foot, currentFootPortion, newArrow))
 			{
 				var results = FillBracketInternalSecondArrowNew(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Heel, Toe },
+					new[] {Heel, Toe},
 					footActions,
 					true, null, true);
 				if (results != null && results.Count > 0)
@@ -1450,17 +1469,19 @@ namespace StepManiaChartGenerator
 			if (FillBracketInternalFirstArrowNew(currentNode, foot, currentFootPortion, newArrow, Toe, out _, out _))
 			{
 				var results = FillBracketInternalSecondArrowSwap(currentNode, foot, currentFootPortion, newArrow,
-					new[] { Toe, Heel },
-					new[] { footActions[Toe], footActions[Heel] });
+					new[] {Toe, Heel},
+					new[] {footActions[Toe], footActions[Heel]});
 				if (results != null && results.Count > 0)
 					allResults.AddRange(results);
 			}
 
 			return allResults;
 		}
+
 		#endregion Bracket Fill Functions
 
 		#region Internal Bracket Fill Functions
+
 		private bool FillBracketInternalFirstArrowNew(
 			GraphNode currentNode,
 			int foot,
@@ -1476,7 +1497,7 @@ namespace StepManiaChartGenerator
 
 			// Skip this check as a performance optimization if no foot portion is provided.
 			if (firstNewFootPortion != InvalidFootPortion
-				&& !IsValidNewArrowForBracket(currentState, foot, firstNewFootPortion, firstNewArrow))
+			    && !IsValidNewArrowForBracket(currentState, foot, firstNewFootPortion, firstNewArrow))
 				return false;
 
 			// Skip if the first new arrow is a crossover with any other foot pairing.
@@ -1511,9 +1532,11 @@ namespace StepManiaChartGenerator
 			for (var secondNewArrow = firstNewArrow + 1; secondNewArrow <= lastSecondArrowIndexToCheck; secondNewArrow++)
 			{
 				// Skip if this is not a valid bracketable pairing.
-				if (newFootPortions[1] == Heel && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
+				if (newFootPortions[1] == Heel
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
 					continue;
-				if (newFootPortions[1] == Toe && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
+				if (newFootPortions[1] == Toe
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
 					continue;
 				// Skip if this next arrow is not a valid new arrow for this step.
 				if (!IsValidNewArrowForBracket(currentState, foot, newFootPortions[1], secondNewArrow))
@@ -1567,6 +1590,7 @@ namespace StepManiaChartGenerator
 				{
 					return false;
 				}
+
 				if (currentState[foot, p].Arrow == newArrow)
 				{
 					numResting++;
@@ -1713,9 +1737,11 @@ namespace StepManiaChartGenerator
 			for (var secondNewArrow = firstNewArrow + 1; secondNewArrow <= lastSecondArrowIndexToCheck; secondNewArrow++)
 			{
 				// Skip if this is not a valid bracketable pairing.
-				if (newFootPortions[1] == Heel && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
+				if (newFootPortions[1] == Heel
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
 					continue;
-				if (newFootPortions[1] == Toe && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
+				if (newFootPortions[1] == Toe
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
 					continue;
 				// The second new arrow must be a step on the same arrow.
 				if (!IsResting(currentState, secondNewArrow, foot))
@@ -1802,9 +1828,11 @@ namespace StepManiaChartGenerator
 			for (var secondNewArrow = firstNewArrow + 1; secondNewArrow <= lastSecondArrowIndexToCheck; secondNewArrow++)
 			{
 				// Skip if this is not a valid bracketable pairing.
-				if (newFootPortions[1] == Heel && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
+				if (newFootPortions[1] == Heel
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherHeel[foot][secondNewArrow])
 					continue;
-				if (newFootPortions[1] == Toe && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
+				if (newFootPortions[1] == Toe
+				    && !PadData.ArrowData[firstNewArrow].BracketablePairingsOtherToe[foot][secondNewArrow])
 					continue;
 
 				// Must be new arrow.
@@ -1820,7 +1848,7 @@ namespace StepManiaChartGenerator
 
 				// Set up the state for a new node.
 				results.Add(CreateNewBracketNode(
-					currentState,foot, firstNewArrow, secondNewArrow, newFootPortions, footActions, secondNewArrow));
+					currentState, foot, firstNewArrow, secondNewArrow, newFootPortions, footActions, secondNewArrow));
 			}
 
 			return results;
@@ -1850,17 +1878,21 @@ namespace StepManiaChartGenerator
 				for (var p = 0; p < NumFootPortions; p++)
 					newState[otherFoot, p] = currentState[otherFoot, p];
 			}
-			
+
 			// The given foot brackets the two new arrows.
-			newState[foot, footPortions[0]] = new GraphNode.FootArrowState(firstArrow, StepData.StateAfterAction[(int)footActions[0]]);
-			newState[foot, footPortions[1]] = new GraphNode.FootArrowState(secondArrow, StepData.StateAfterAction[(int)footActions[1]]);
+			newState[foot, footPortions[0]] =
+				new GraphNode.FootArrowState(firstArrow, StepData.StateAfterAction[(int) footActions[0]]);
+			newState[foot, footPortions[1]] =
+				new GraphNode.FootArrowState(secondArrow, StepData.StateAfterAction[(int) footActions[1]]);
 
 			// Brackets are not inverted.
 			return new GraphNode(newState, BodyOrientation.Normal);
 		}
+
 		#endregion Internal Bracket Fill Functions
 
 		#region Fill Helpers
+
 		private static void UpdateOtherFootNewStateAfterSwapToArrow(
 			GraphNode.FootArrowState[,] currentState,
 			GraphNode.FootArrowState[,] newState,
@@ -1911,6 +1943,7 @@ namespace StepManiaChartGenerator
 				    && PadData.ArrowData[otherFootArrowIndex].OtherFootPairings[otherFoot][arrow])
 					return true;
 			}
+
 			return false;
 		}
 
@@ -1925,6 +1958,7 @@ namespace StepManiaChartGenerator
 				    && PadData.ArrowData[otherFootArrowIndex].OtherFootPairings[otherFoot][arrow])
 					result.Add(otherFootArrowIndex);
 			}
+
 			return result;
 		}
 
@@ -1937,6 +1971,7 @@ namespace StepManiaChartGenerator
 				    && FootCrossesOverInFrontWithAnyOtherFoot(state, foot, footArrowIndex))
 					return true;
 			}
+
 			return false;
 		}
 
@@ -1949,6 +1984,7 @@ namespace StepManiaChartGenerator
 				    && FootCrossesOverInBackWithAnyOtherFoot(state, foot, footArrowIndex))
 					return true;
 			}
+
 			return false;
 		}
 
@@ -2071,14 +2107,18 @@ namespace StepManiaChartGenerator
 				return true;
 			return false;
 		}
+
 		#endregion Fill Helpers
+
 		#endregion Fill
 
 		#region Logging
+
 		private void LogInfo(string message)
 		{
 			Logger.Info($"[StepGraph] [{LogIdentifier} ({NumArrows})] {message}");
 		}
+
 		#endregion Logging
 	}
 }

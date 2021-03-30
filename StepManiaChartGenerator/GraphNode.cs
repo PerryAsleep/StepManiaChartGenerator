@@ -26,6 +26,7 @@ namespace StepManiaChartGenerator
 			/// The arrow / lane under the foot.
 			/// </summary>
 			public readonly int Arrow;
+
 			/// <summary>
 			/// The state of the foot on the arrow.
 			/// </summary>
@@ -43,6 +44,7 @@ namespace StepManiaChartGenerator
 			}
 
 			#region IEquatable Implementation
+
 			public override bool Equals(object obj)
 			{
 				if (obj == null)
@@ -56,9 +58,10 @@ namespace StepManiaChartGenerator
 			{
 				var hash = 17;
 				hash = unchecked(hash * 31 + Arrow);
-				hash = unchecked(hash * 31 + (int)State);
+				hash = unchecked(hash * 31 + (int) State);
 				return hash;
 			}
+
 			#endregion
 		}
 
@@ -66,6 +69,7 @@ namespace StepManiaChartGenerator
 		/// Static FootArrowState instance for ease of setting up an invalid state in lue of null.
 		/// </summary>
 		public static readonly FootArrowState InvalidFootArrowState;
+
 		static GraphNode()
 		{
 			InvalidFootArrowState = new FootArrowState(InvalidArrowIndex, GraphArrowState.Resting);
@@ -127,6 +131,7 @@ namespace StepManiaChartGenerator
 		}
 
 		#region IEquatable Implementation
+
 		public bool Equals(GraphNode other)
 		{
 			if (other == null)
@@ -160,6 +165,7 @@ namespace StepManiaChartGenerator
 			hash = unchecked(hash * 31 + Orientation.GetHashCode());
 			return hash;
 		}
+
 		#endregion
 	}
 

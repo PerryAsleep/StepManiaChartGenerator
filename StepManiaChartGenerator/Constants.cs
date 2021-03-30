@@ -20,7 +20,7 @@
 
 		// Arrows
 		public const int InvalidArrowIndex = -1;
-		
+
 		/// <summary>
 		/// Gets the other Foot for the given Foot.
 		/// </summary>
