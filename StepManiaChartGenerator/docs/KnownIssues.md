@@ -11,6 +11,7 @@ In general this program has only been thoroughly exercised when converting `danc
 	- This hasn't been an issue when converting `dance-single` to `dance-double` charts since all `dance-single` patterns can be reached from the first tier of `StartingPositions`.
 - [Visualizations](Visualizations.md) are only supported for `dance-single` and `dance-double` StepsTypes.
 - Certain technical patterns like bracketing in crossover positioning are not supported.
+- When generating [PerformedCharts](HowItWorks.md#performedCharts) the application will always try to avoid misleading and ambiguous steps regardles of if the original chart had ambiguous or misleading steps.
 - There is no way to specify *tiers* of acceptable replacements for [StepTypes](StepTypes.md) when creating a [PerformedChart](HowItWorks.md#-performedCharts).
 	- This hasn't been an issue when converting `dance-single` to `dance-double` charts as all patterns in `dance-single` can be performed in `dance-double`, but this is not true the other way around. For example, a run from 1-8 run from P1 L to P2 R has a momentary invert on the middles. There is no singles pattern which satisfies that expression, so a mechanism to replace `InvertFront` and `InvertBehind` with acceptable fallbacks when searches fail would be needed to convert such a chart.
 - Small diffs to sm and ssc files beyond the expected diffs from chart generation may occur.
