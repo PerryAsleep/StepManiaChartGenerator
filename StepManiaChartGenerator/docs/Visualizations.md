@@ -6,3 +6,5 @@ See the [Configuration](Config.md) guide for controlling Visualization behavior.
 See the [Examples](Examples.md) page for example charts and their Visualizations.
 
 ![Visualizations](visualization-example.png)
+
+With the exception of [l.png](..\html\src\l.png) and [r.png](..\html\src\r.png) all assets used in Visualizations are taken from [StepMania](https://github.com/stepmania/stepmania). Most assets are from the [dance default NoteSkin](https://github.com/stepmania/stepmania/tree/5_1-new/NoteSkins/dance/default).
