@@ -694,15 +694,14 @@ namespace StepManiaChartGenerator
 					}
 
 					// Create a new Chart for these Events.
-					var formattedVersion = GetFormattedVersionStringForChart();
 					var newChart = new Chart
 					{
 						Artist = chart.Artist,
 						ArtistTransliteration = chart.ArtistTransliteration,
 						Genre = chart.Genre,
 						GenreTransliteration = chart.GenreTransliteration,
-						Author = $"{formattedVersion} {chart.Author}",
-						Description = $"{formattedVersion} {chart.Description}",
+						Author = FormatWithVersion(chart.Author),
+						Description = FormatWithVersion(chart.Description),
 						MusicFile = chart.MusicFile,
 						ChartOffsetFromMusic = chart.ChartOffsetFromMusic,
 						Tempo = chart.Tempo,
@@ -868,6 +867,18 @@ namespace StepManiaChartGenerator
 					LogWarn($"Failed to copy \"{fi.FullName}\" to \"{destFilePath}\". {e}");
 				}
 			}
+		}
+
+		/// <summary>
+		/// Formats a string from a Chart by prepending the formatted version number.
+		/// </summary>
+		/// <returns>Formatted string with version.</returns>
+		private static string FormatWithVersion(string originalStr)
+		{
+			var formattedVersion = GetFormattedVersionStringForChart();
+			if (string.IsNullOrEmpty(originalStr))
+				return formattedVersion;
+			return $"{formattedVersion} {originalStr}";
 		}
 
 		/// <summary>
