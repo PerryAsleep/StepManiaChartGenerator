@@ -41,7 +41,7 @@ The original chart is authored by Rems. This is the Medium chart.
 
 ## Simple Charts
 
-### [Come & Get It](http://htmlpreview.github.io/?https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Visualizations/Come%20%26%20Get%20It/Come%20%26%20Get%20It-Challenge-sm.html) [10] (Mudkup 7th Gen)
+### [Come & Get It](http://htmlpreview.github.io/?https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Visualizations/Come%20%26%20Get%20It/Come%20%26%20Get%20It-Challenge-sm.html) [10] (Mudkyp 7th Gen)
 The original chart is authored by Mudkyp.
 
 [![](Images/Preview-Come%20%26%20Get%20It.png)](https://youtu.be/0afe4iEodKs)

@@ -12,18 +12,18 @@ The application understands the following StepTypes. Jumps are represented inter
 
 ### Brackets: Stepping on two arrows with one foot
 - **BracketHeelNewToeNew**: The foot steps on two arrows where both the heel and toe portion of the foot move to unoccupied new arrows.
-- **BracketHeelNewToeSame**: The foot steps on two arrows where the heel portion steps on an unoccuppied new arrow and the toe portion steps on an arrow that the foot was already resting on.
-- **BracketHeelSameToeNew**: The foot steps on two arrows where the heel portion steps on an arrow that the foot was already resting on and the toe portion steps on an unoccuppied new arrow.
+- **BracketHeelNewToeSame**: The foot steps on two arrows where the heel portion steps on an unoccupied new arrow and the toe portion steps on an arrow that the foot was already resting on.
+- **BracketHeelSameToeNew**: The foot steps on two arrows where the heel portion steps on an arrow that the foot was already resting on and the toe portion steps on an unoccupied new arrow.
 - **BracketHeelSameToeSame**: The foot steps on two arrows where both the heel and toe portion of the foot step on arrows that the foot was already resting on.
 
 ### Brackets: Stepping on two arrows with one foot while performing a FootSwap
 - **BracketHeelSameToeSwap**: The foot steps on two arrows where the heel portion steps on an arrow that the foot was already resting on and the toe portion steps on an arrow that the other foot was resting on.
-- **BracketHeelNewToeSwap**: The foot steps on two arrows where the heel portion steps on an unoccuppied new arrow and the toe portion steps on an arrow that the other foot was resting on.
+- **BracketHeelNewToeSwap**: The foot steps on two arrows where the heel portion steps on an unoccupied new arrow and the toe portion steps on an arrow that the other foot was resting on.
 - **BracketHeelSwapToeSame**: The foot steps on two arrows where the heel portion steps on an arrow that the other foot was resting on and the toe portion steps on an arrow that the foot was already resting on.
-- **BracketHeelSwapToeNew**: The foot steps on two arrows where the heel portion steps on an arrow that the other foot was resting on and the toe portion steps on an unoccuppied new arrow.
+- **BracketHeelSwapToeNew**: The foot steps on two arrows where the heel portion steps on an arrow that the other foot was resting on and the toe portion steps on an unoccupied new arrow.
 
 ### Brackets: Stepping on one arrow with a foot that is already holding another on another arrow
 - **BracketOneArrowHeelSame**: While the toe portion of the foot is holding, the heel portion steps on an arrow that the foot was already resting on.
-- **BracketOneArrowHeelNew**: While the toe portion of the foot is holding, the heel portion steps on an unoccuppied new arrow.
+- **BracketOneArrowHeelNew**: While the toe portion of the foot is holding, the heel portion steps on an unoccupied new arrow.
 - **BracketOneArrowToeSame**: While the heel portion of the foot is holding, the toe portion steps on an arrow that the foot was already resting on.
-- **BracketOneArrowToeNew**: While the heel portion of the foot is holding, the toe portion steps on an unoccuppied new arrow.
+- **BracketOneArrowToeNew**: While the heel portion of the foot is holding, the toe portion steps on an unoccupied new arrow.
