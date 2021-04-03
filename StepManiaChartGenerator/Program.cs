@@ -23,7 +23,7 @@ namespace StepManiaChartGenerator
 		/// <summary>
 		/// Version number. Recorded into a Chart's Description field using FumenGeneratedFormattedVersion.
 		/// </summary>
-		private const double Version = 0.41;
+		private const double Version = 1.0;
 
 		/// <summary>
 		/// Format for recording the Version into a Chart's Description field.
