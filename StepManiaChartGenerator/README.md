@@ -7,7 +7,7 @@ The application understands most technical moves including crossovers, inverted 
 See the [Examples](docs/Examples.md) page for [Visualizations](docs/Visualizations.md) of how charts are converted and some videos of generated doubles charts being played.
 
 ## Installation
-`StepManiaChartGenerator` is available for Windows. Download the latest version from the [Releases](https://github.com/PerryAsleep/Fumen/releases) page.
+`StepManiaChartGenerator` is available for Windows. Download the latest version of `StepManiaChartGenerator.zip` from the [Releases](https://github.com/PerryAsleep/Fumen/releases) page and extract it to a desired location.
 
 ## Configuration
 See the [Configuration](docs/Config.md) Guide.
