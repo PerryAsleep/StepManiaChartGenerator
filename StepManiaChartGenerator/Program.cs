@@ -590,7 +590,7 @@ namespace StepManiaChartGenerator
 						OutputStepGraph.NumArrows);
 					if (currentChart != null)
 					{
-						var fumenGenerated = GetFumenGeneratedVersion(chart, out var version);
+						var fumenGenerated = GetFumenGeneratedVersion(currentChart, out var version);
 
 						// Check if we should skip or overwrite the chart.
 						switch (Config.Instance.OverwriteBehavior)
@@ -906,8 +906,8 @@ namespace StepManiaChartGenerator
 				return false;
 
 			var match = Regex.Match(chart.Description, FumenGeneratedFormattedVersionRegexPattern, RegexOptions.IgnoreCase);
-			if (match.Success && match.Groups.Count == 1 && match.Groups[0].Captures.Count == 1)
-				return double.TryParse(match.Groups[0].Captures[0].Value, out version);
+			if (match.Success && match.Groups.Count == 2 && match.Groups[1].Captures.Count == 1)
+				return double.TryParse(match.Groups[1].Captures[0].Value, out version);
 			return false;
 		}
 
