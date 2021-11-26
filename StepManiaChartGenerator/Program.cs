@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using static StepManiaChartGenerator.Constants;
+using static StepManiaLibrary.Constants;
 using static Fumen.Converters.SMCommon;
 using Fumen;
 using Fumen.Converters;
@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Fumen.ChartDefinition;
+using StepManiaLibrary;
 
 namespace StepManiaChartGenerator
 {
@@ -153,7 +154,7 @@ namespace StepManiaChartGenerator
 				Exit(false);
 
 			// Cache the replacement GraphLinks from the OutputStepGraph.
-			PerformedChart.CacheGraphLinks(OutputStepGraph.FindAllGraphLinks());
+			PerformedChart.CacheGraphLinks(OutputStepGraph.FindAllGraphLinks(), Config.Instance.StepTypeReplacements);
 
 			// Find and process all charts.
 			await FindAndProcessCharts();
@@ -204,7 +205,7 @@ namespace StepManiaChartGenerator
 				LogInfo("Finished creating StepGraph.");
 			}
 
-			// If the types are separate, create two graphs.
+			// If the types are separate, create two graphLs.
 			else
 			{
 				// Load the PadData for both the input and output type.
@@ -303,11 +304,11 @@ namespace StepManiaChartGenerator
 		{
 			try
 			{
-				var config = Config.Instance;
+				var config = Config.Instance.LoggerConfig;
 				if (config.LogToFile)
 				{
 					Directory.CreateDirectory(config.LogDirectory);
-					var logFileName = ExportTime.ToString("yyyy-MM-dd HH-mm-ss") + ".log";
+					var logFileName = "StepManiaChartGenerator " + ExportTime.ToString("yyyy-MM-dd HH-mm-ss") + ".log";
 					var logFilePath = Fumen.Path.Combine(config.LogDirectory, logFileName);
 					Logger.StartUp(
 						config.LogLevel,

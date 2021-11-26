@@ -1,4 +1,5 @@
-﻿using static StepManiaChartGenerator.Constants;
+﻿using StepManiaLibrary;
+using static StepManiaLibrary.Constants;
 
 namespace StepManiaChartGenerator
 {

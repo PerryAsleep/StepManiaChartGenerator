@@ -1,0 +1,220 @@
+// See the configuration guide for details:
+// https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Config.md
+{
+	// Logger configuration.
+	"LoggerConfig":
+	{
+		"LogLevel": "Info",
+		"LogToFile": true,
+		"LogFlushIntervalSeconds": 20,
+		"LogBufferSizeBytes": 10240,
+		"LogToConsole": true,
+		"LogDirectory": "C:\\Users\\perry\\Desktop\\DanceyBox-Export-Logs",
+		// "LogDirectory":				"C:\\Users\\perry\\Projects\\Fumen\\Logs\\",
+	},
+
+	"RegexTimeoutSeconds": 10.0,
+	"CloseAutomaticallyWhenComplete": false,
+
+	// Test Chart Settings.
+	// "InputDirectory": 			"C:\\Games\\StepMania 5\\Songs\\StepMania 5",
+	// "OutputDirectory":			"C:\\Users\\perry\\Projects\\Fumen\\Exports\\",
+	// "VisualizationsDirectory":	"C:\\Users\\perry\\Projects\\Fumen\\Visualizations\\",
+	// "InputNameRegex": 			".*\\.(sm|ssc)$",
+	// "InputChartType": 			"dance-single",
+	// "DifficultyRegex": 			".",
+	// "OutputChartType": 			"dance-double",
+	// "OverwriteBehavior": 		"Always",
+	// "OutputVisualizations":		true,
+	// "NonChartFileCopyBehavior":	"DoNotCopy",
+
+	//Normal Settings.
+	"InputDirectory":			"C:\\Users\\perry\\Desktop\\Songs",
+	"OutputDirectory":			"C:\\Users\\perry\\Desktop\\Songs-Export",
+	"VisualizationsDirectory":	"C:\\Users\\perry\\Desktop\\DanceyBox-Export-Visualizations",
+	"InputNameRegex":			".*\\.(sm|ssc)$",
+	"InputChartType":			"dance-single",
+	"DifficultyRegex":			".",
+	"OutputChartType":			"dance-double",
+	"OverwriteBehavior":		"IfFumenGenerated",
+	"OutputVisualizations":		false,
+	"NonChartFileCopyBehavior":	"DoNotCopy",
+
+	"DefaultExpressedChartConfig": "BalancedDynamic",
+	"DefaultPerformedChartConfig": "Default",
+
+	"ExpressedChartConfigRules":
+	[
+		// DDR never uses brackets.
+		{"FileRegex": ".*(\\\\|/)Dance Dance Revolution.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+		{"FileRegex": ".*(\\\\|/)Dancing Stage.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+		{"FileRegex": ".*(\\\\|/)DDR.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+
+		{"FileRegex": ".*(\\\\|/)Mudkyp.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+		{"FileRegex": ".*(\\\\|/)The Legend of Zim.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
+	],
+
+	"PerformedChartConfigRules":
+	[
+		// Stamina packs. Using a lower BPM cutoff for tightening individual steps for more comfortable
+		// stream patterns at low BPMs.
+		{"FileRegex": ".*(\\\\|/)90s Dance Megamix.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)140BPM Stamina Files \\(nonstop 16ths\\).*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)BaguetteStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Bass Chasers.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)BeaTrance.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Betwixt & Between.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Chase.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)chimichungus.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Chipzanity.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Comiket 95.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Cuties Party.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Dingoshi Ramen.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)DJ Myosuke.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Dragonforce.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)East Coast Stamina 3.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)ECS.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Enjoy Stamina Pack.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)epic.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Eurobeat Is Fantastic.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)French Coast Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)FusionStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Girls Coast.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Happy Streamables.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Hardbass Madness.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Hardcore Streamables.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Helblinde.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Hospitality.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)I Have No Feet and I Must Stream.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)itg! Rhythm is just a step away!.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)ITGAlex's Stamina Safari.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Kevin's Stamina Charts.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Makina Marathon.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/).*MONEY MiNiPACK.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Pendulum.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Petriform's Factory.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Really Long Stuff.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Saitama.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Sexuality Violation.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)SHARPNELSTREAMZ v2.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Skittles Stream Collection.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)SlowStreamz.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)SOMEBODY STREEEEEAM!!!.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Stam .*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Stepper's Delight.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Takao.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)The Joy of Streaming.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)The Starter Pack of Stamina.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)TranceMania.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)TranceNation.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)You're Streaming.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)yutsi-type beats.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)yutsi B-sides.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+		{"FileRegex": ".*(\\\\|/)Zaniel's Junts.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
+	],
+
+	"ExpressedChartConfigs":
+	{
+		"BalancedDynamic":
+		{
+			"DefaultBracketParsingMethod": "Balanced",
+			"BracketParsingDetermination": "ChooseMethodDynamically",
+			"MinLevelForBrackets": 7,
+			"UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets": true,
+			// Interpret charts with three brackets per minute or more as charts which should aggressively interpret bracketable jumps as brackets.
+			"BalancedBracketsPerMinuteForAggressiveBrackets": 3.0,
+			// Interpret charts with one bracket every minute or less as charts which should not have brackets.
+			// Many non-technical charts have jumps which patterns which can reasonably be done by bracketing. With balanced
+			// parsing, these charts would produce brackets. This threshold helps keeps non-technical charts bracket-free.
+			"BalancedBracketsPerMinuteForNoBrackets": 1.0,
+		},
+		"NoBrackets":
+		{
+			"DefaultBracketParsingMethod": "NoBrackets",
+			"BracketParsingDetermination": "UseDefaultMethod",
+		},
+		"AggressiveBrackets":
+		{
+			"DefaultBracketParsingMethod": "Aggressive",
+			"BracketParsingDetermination": "UseDefaultMethod",
+		}
+	},
+
+	"PerformedChartConfigs":
+	{
+		// Balanced default settings.
+		"Default":
+		{
+			"DesiredArrowWeights": {
+				"dance-single": [25, 25, 25, 25],
+				// This distribution was determined by parsing doubles charts from many packs.
+				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6]
+			},
+		
+			// 16ths at 170
+			"IndividualStepTighteningMinTimeSeconds": 0.176471,
+			// 16ths at 125
+			"IndividualStepTighteningMaxTimeSeconds": 0.24,
+		
+			"LateralTighteningPatternLength": 5,
+			"LateralTighteningRelativeNPS": 1.65,
+			"LateralTighteningAbsoluteNPS": 12.0,
+			"LateralTighteningSpeed": 3.0,
+		},
+
+		// Stamina settings are the same as default settings with a lower threshold for
+		// IndividualStepTighteningMinTimeSeconds. This lower threshold would tighten up
+		// normal charts too aggressively but for stamina charts it is better to err on
+		// tight steps, especially for doubles. Even bpms in the low 110s feel bad when
+		// streaming 16ths and having to move more than a bracket distance.
+		"Stamina":
+		{
+			"DesiredArrowWeights": {
+				"dance-single": [25, 25, 25, 25],
+				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6]
+			},
+		
+			// 16ths at 170
+			"IndividualStepTighteningMinTimeSeconds": 0.176471,
+			// 16ths at 99
+			"IndividualStepTighteningMaxTimeSeconds": 0.303,
+		
+			"LateralTighteningPatternLength": 5,
+			"LateralTighteningRelativeNPS": 1.65,
+			"LateralTighteningAbsoluteNPS": 12.0,
+			"LateralTighteningSpeed": 3.0,
+		}
+	},
+
+	"StepTypeReplacements" :
+	{
+		"SameArrow": [ "SameArrow" ],
+		"NewArrow": [ "NewArrow" ],
+		"CrossoverFront": [ "CrossoverFront" ],
+		"CrossoverBehind": [ "CrossoverBehind" ],
+		"InvertFront": [ "InvertFront" ],
+		"InvertBehind": [ "InvertBehind" ],
+		"FootSwap": [ "FootSwap" ],
+
+		"BracketHeelNewToeNew":[ "BracketHeelNewToeNew" ],
+		// Allow Toes to be performed as Heels and vice versa with brackets involving one new portion and one same portion.
+		"BracketHeelNewToeSame":[ "BracketHeelNewToeSame", "BracketHeelSameToeNew" ],
+		// Allow Toes to be performed as Heels and vice versa with brackets involving one new portion and one same portion.
+		"BracketHeelSameToeNew":[ "BracketHeelSameToeNew", "BracketHeelNewToeSame" ],
+		"BracketHeelSameToeSame":[ "BracketHeelSameToeSame" ],
+
+		// Allow Toes to be performed as Heels and vice versa with swap brackets.
+		"BracketHeelSameToeSwap":[ "BracketHeelSameToeSwap", "BracketHeelSwapToeSame" ],
+		"BracketHeelNewToeSwap":[ "BracketHeelNewToeSwap", "BracketHeelSwapToeNew" ],
+		"BracketHeelSwapToeSame":[ "BracketHeelSwapToeSame", "BracketHeelSameToeSwap" ],
+		"BracketHeelSwapToeNew":[ "BracketHeelSwapToeNew", "BracketHeelNewToeSwap" ],
+		
+		"BracketOneArrowHeelSame":[ "BracketOneArrowHeelSame" ],
+		// Allow Toes to be performed has Heels and vice versa with new bracket steps.
+		"BracketOneArrowHeelNew":[ "BracketOneArrowHeelNew", "BracketOneArrowToeNew" ],
+		"BracketOneArrowToeSame":[ "BracketOneArrowToeSame" ],
+		// Allow Toes to be performed has Heels and vice versa with new bracket steps.
+		"BracketOneArrowToeNew":[ "BracketOneArrowToeNew", "BracketOneArrowHeelNew" ],
+	},
+}

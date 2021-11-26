@@ -2,12 +2,15 @@
 // https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Config.md
 {
 	// Logger configuration.
-	"LogLevel": "Info",
-	"LogToFile": true,
-	"LogDirectory": "C:\\Fumen\\Logs",
-	"LogFlushIntervalSeconds": 20,
-	"LogBufferSizeBytes": 10240,
-	"LogToConsole": true,
+	"LoggerConfig":
+	{
+		"LogLevel": "Info",
+		"LogToFile": true,
+		"LogDirectory": "C:\\Fumen\\Logs",
+		"LogFlushIntervalSeconds": 20,
+		"LogBufferSizeBytes": 10240,
+		"LogToConsole": true,
+	}
 
 	"RegexTimeoutSeconds": 10.0,
 	"CloseAutomaticallyWhenComplete": false,

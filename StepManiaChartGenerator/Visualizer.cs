@@ -6,7 +6,8 @@ using System.Text;
 using Fumen;
 using Fumen.ChartDefinition;
 using Fumen.Converters;
-using static StepManiaChartGenerator.Constants;
+using StepManiaLibrary;
+using static StepManiaLibrary.Constants;
 
 namespace StepManiaChartGenerator
 {
@@ -567,7 +568,7 @@ $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; heigh
 			var lastHoldWasRoll = new bool[chart.NumInputs];
 
 			var currentExpressedChartSearchNode = ExpressedChart.GetRootSearchNode();
-			var currentPerformedChartNode = PerformedChart.GetRootPerformanceNode();
+			var currentPerformedChartNode = PerformedChart.GetRootNodes()[0];
 			var currentExpressedMineIndex = 0;
 
 			foreach (var chartEvent in chart.Layers[0].Events)

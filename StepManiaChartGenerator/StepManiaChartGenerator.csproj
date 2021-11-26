@@ -67,22 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrowData.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="DebugUtils.cs" />
-    <Compile Include="ExpressedChart.cs" />
-    <Compile Include="ExpressedChartCosts.cs" />
-    <Compile Include="GraphLink.cs" />
-    <Compile Include="GraphNode.cs" />
-    <Compile Include="MineUtils.cs" />
-    <Compile Include="PadData.cs" />
-    <Compile Include="PerformedChart.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visualizer.cs" />
-    <Compile Include="StepData.cs" />
-    <Compile Include="StepGraph.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="html\src\1_12.png">
@@ -131,13 +120,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="App.config" />
-    <Content Include="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dance-double.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dance-single.json">
+    <Content Include="StepManiaChartGeneratorConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\src\README.md">
@@ -149,6 +132,10 @@
     <ProjectReference Include="..\Fumen\Fumen.csproj">
       <Project>{3829baad-4cd4-45d0-812f-efdf3b733ae9}</Project>
       <Name>Fumen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StepManiaLibrary\StepManiaLibrary.csproj">
+      <Project>{0442a9a8-0ad1-4275-9575-b30e71f2a57e}</Project>
+      <Name>StepManiaLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
