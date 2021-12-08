@@ -8,6 +8,7 @@ using Fumen.Converters;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Fumen.ChartDefinition;
 using StepManiaLibrary;
@@ -128,7 +129,11 @@ namespace StepManiaChartGenerator
 			ExportTime = DateTime.Now;
 
 			// Create a temporary logger for logging exceptions from loading Config.
-			Logger.StartUp(LogLevel.Error);
+			Logger.StartUp(new Logger.Config
+			{
+				WriteToConsole = true,
+				LogLevel = LogLevel.Error
+			});
 
 			// Load Config.
 			var config = await Config.Load();
@@ -310,16 +315,26 @@ namespace StepManiaChartGenerator
 					Directory.CreateDirectory(config.LogDirectory);
 					var logFileName = "StepManiaChartGenerator " + ExportTime.ToString("yyyy-MM-dd HH-mm-ss") + ".log";
 					var logFilePath = Fumen.Path.Combine(config.LogDirectory, logFileName);
-					Logger.StartUp(
-						config.LogLevel,
-						logFilePath,
-						config.LogFlushIntervalSeconds,
-						config.LogBufferSizeBytes,
-						config.LogToConsole);
+					Logger.StartUp(new Logger.Config
+					{
+						LogLevel = config.LogLevel,
+						WriteToConsole = config.LogToConsole,
+						WriteToFile = config.LogToFile,
+						LogFilePath = logFilePath,
+						LogFileFlushIntervalSeconds = config.LogFlushIntervalSeconds,
+						LogFileBufferSizeBytes = config.LogBufferSizeBytes,
+						WriteToBuffer = false
+					});
 				}
 				else if (config.LogToConsole)
 				{
-					Logger.StartUp(config.LogLevel);
+					Logger.StartUp(new Logger.Config
+					{
+						LogLevel = config.LogLevel,
+						WriteToConsole = true,
+						WriteToFile = false,
+						WriteToBuffer = false
+					});
 				}
 			}
 			catch (Exception e)
@@ -515,7 +530,7 @@ namespace StepManiaChartGenerator
 					return;
 				}
 
-				song = await reader.Load();
+				song = await reader.LoadAsync(CancellationToken.None);
 			}
 			catch (Exception e)
 			{
