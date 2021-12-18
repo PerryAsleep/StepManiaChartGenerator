@@ -559,9 +559,10 @@ $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; heigh
 			foreach (var chartCol in ChartColumnInfo)
 				firstLaneX += chartCol.Width;
 
-			var previousTimeSignaturePosition = new MetricPosition();
+			var previousTimeSignatureIntegerPosition = 0;
 			var previousTimeSignatureY = ArrowW * 0.5;
-			var currentTimeSignature = new Fraction(4, 4);
+			var previousTimeSignatureMeasure = 0;
+			var currentTimeSignature = new Fraction(SMCommon.NumBeatsPerMeasure, SMCommon.NumBeatsPerMeasure);
 			var yPerBeat = (double) BeatYSeparation;
 
 			var lastHoldStarts = new int[chart.NumInputs];
@@ -573,39 +574,38 @@ $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; heigh
 
 			foreach (var chartEvent in chart.Layers[0].Events)
 			{
-				double eventY =
-					previousTimeSignatureY
-					+ (chartEvent.Position.Measure - previousTimeSignaturePosition.Measure) * currentTimeSignature.Numerator * yPerBeat
-					+ chartEvent.Position.Beat * yPerBeat
-					+ (chartEvent.Position.SubDivision.Denominator == 0
-						? 0
-						: chartEvent.Position.SubDivision.ToDouble() * yPerBeat);
+				double eventY = ArrowW * 0.5 + ((double)chartEvent.IntegerPosition / SMCommon.MaxValidDenominator) * BeatYSeparation;
 
-				while (currentExpressedChartSearchNode != null && currentExpressedChartSearchNode.Position < chartEvent.Position)
+				while (currentExpressedChartSearchNode != null && currentExpressedChartSearchNode.Position < chartEvent.IntegerPosition)
 					currentExpressedChartSearchNode = currentExpressedChartSearchNode.GetNextNode();
-				while (currentPerformedChartNode != null && currentPerformedChartNode.Position < chartEvent.Position)
+				while (currentPerformedChartNode != null && currentPerformedChartNode.Position < chartEvent.IntegerPosition)
 					currentPerformedChartNode = currentPerformedChartNode.Next;
 				while (currentExpressedMineIndex < ExpressedChart.MineEvents.Count
-				       && ExpressedChart.MineEvents[currentExpressedMineIndex].Position < chartEvent.Position)
+				       && ExpressedChart.MineEvents[currentExpressedMineIndex].Position < chartEvent.IntegerPosition)
 					currentExpressedMineIndex++;
 
 				if (chartEvent is TimeSignature ts)
 				{
 					// Write measure markers up until this time signature change
+
+					var numMeasures = (ts.IntegerPosition - previousTimeSignatureIntegerPosition)
+						/ ((currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure) / currentTimeSignature.Denominator);
+
 					WriteMeasures(
 						chartXPosition,
 						previousTimeSignatureY,
 						yPerBeat,
 						currentTimeSignature,
-						previousTimeSignaturePosition.Measure,
-						chartEvent.Position.Measure - previousTimeSignaturePosition.Measure,
+						previousTimeSignatureMeasure,
+						numMeasures,
 						chart.NumInputs);
 
 					// Update time signature tracking
 					previousTimeSignatureY = eventY;
 					currentTimeSignature = ts.Signature;
-					yPerBeat = BeatYSeparation * (4.0 / currentTimeSignature.Denominator);
-					previousTimeSignaturePosition = chartEvent.Position;
+					yPerBeat = BeatYSeparation * ((double)SMCommon.NumBeatsPerMeasure / currentTimeSignature.Denominator);
+					previousTimeSignatureMeasure += numMeasures;
+					previousTimeSignatureIntegerPosition = ts.IntegerPosition;
 				}
 
 				// Chart column values. Excluding measures which are handled in WriteMeasures.
@@ -644,10 +644,10 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 
 					var foot = InvalidFoot;
 					if (originalChart)
-						foot = GetFootForArrow(ltn.Lane, ltn.Position, currentExpressedChartSearchNode);
+						foot = GetFootForArrow(ltn.Lane, ltn.IntegerPosition, currentExpressedChartSearchNode);
 					else
-						foot = GetFootForArrow(ltn.Lane, ltn.Position, currentPerformedChartNode);
-					WriteArrow(ltn.Lane, foot, firstLaneX, eventY, ltn.Position);
+						foot = GetFootForArrow(ltn.Lane, ltn.IntegerPosition, currentPerformedChartNode);
+					WriteArrow(ltn.Lane, foot, firstLaneX, eventY, ltn.IntegerPosition);
 				}
 				else if (chartEvent is LaneHoldStartNote lhsn)
 				{
@@ -656,10 +656,10 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 
 					var foot = InvalidFoot;
 					if (originalChart)
-						foot = GetFootForArrow(lhsn.Lane, lhsn.Position, currentExpressedChartSearchNode);
+						foot = GetFootForArrow(lhsn.Lane, lhsn.IntegerPosition, currentExpressedChartSearchNode);
 					else
-						foot = GetFootForArrow(lhsn.Lane, lhsn.Position, currentPerformedChartNode);
-					WriteArrow(lhsn.Lane, foot, firstLaneX, eventY, lhsn.Position);
+						foot = GetFootForArrow(lhsn.Lane, lhsn.IntegerPosition, currentPerformedChartNode);
+					WriteArrow(lhsn.Lane, foot, firstLaneX, eventY, lhsn.IntegerPosition);
 
 					lastHoldStarts[lhsn.Lane] = (int) eventY;
 					lastHoldWasRoll[lhsn.Lane] =
@@ -681,7 +681,7 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 						{
 							var mineEvents = new List<ExpressedChart.MineEvent>();
 							while (currentExpressedMineIndex < ExpressedChart.MineEvents.Count
-							       && ExpressedChart.MineEvents[currentExpressedMineIndex].Position <= chartEvent.Position)
+							       && ExpressedChart.MineEvents[currentExpressedMineIndex].Position <= chartEvent.IntegerPosition)
 							{
 								mineEvents.Add(ExpressedChart.MineEvents[currentExpressedMineIndex]);
 								currentExpressedMineIndex++;
@@ -696,22 +696,22 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 						}
 
 						// Write the mine.
-						WriteMine(ln.Lane, firstLaneX, eventY, ln.Position);
+						WriteMine(ln.Lane, firstLaneX, eventY);
 					}
 				}
 			}
 
 			// Write the final measure markers
 			var numMeasuresToWrite =
-				chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].Position.Measure
-				- previousTimeSignaturePosition.Measure
+				(chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].IntegerPosition - previousTimeSignatureIntegerPosition) 
+				/ (currentTimeSignature.Numerator * (SMCommon.MaxValidDenominator * (SMCommon.NumBeatsPerMeasure / currentTimeSignature.Denominator)))
 				+ 1;
 			WriteMeasures(
 				chartXPosition,
 				previousTimeSignatureY,
 				yPerBeat,
 				currentTimeSignature,
-				previousTimeSignaturePosition.Measure,
+				previousTimeSignatureMeasure,
 				numMeasuresToWrite,
 				chart.NumInputs);
 		}
@@ -842,7 +842,7 @@ $@"			<p class=""exp_text"" style=""top:{(int) (y - ChartTextH * .5)}px; left:{c
 			}
 		}
 
-		private void WriteMine(int arrow, int firstLaneX, double y, MetricPosition position)
+		private void WriteMine(int arrow, int firstLaneX, double y)
 		{
 			var x = firstLaneX + (arrow * ArrowW);
 
@@ -851,7 +851,7 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 ");
 		}
 
-		private int GetFootForArrow(int arrow, MetricPosition position, ExpressedChart.ChartSearchNode node)
+		private int GetFootForArrow(int arrow, int position, ExpressedChart.ChartSearchNode node)
 		{
 			while (node != null && node.Position == position)
 			{
@@ -884,7 +884,7 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 			return InvalidFoot;
 		}
 
-		private int GetFootForArrow(int arrow, MetricPosition position, PerformedChart.PerformanceNode node)
+		private int GetFootForArrow(int arrow, int position, PerformedChart.PerformanceNode node)
 		{
 			while (node != null && node.Position == position)
 			{
@@ -918,11 +918,11 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 			return InvalidFoot;
 		}
 
-		private void WriteArrow(int arrow, int foot, int firstLaneX, double y, MetricPosition position)
+		private void WriteArrow(int arrow, int foot, int firstLaneX, double y, int integerPosition)
 		{
 			var rotClass = ArrowClassStrings[arrow % 4];
 			var x = firstLaneX + arrow * ArrowW;
-			var fraction = position.SubDivision.Reduce();
+			var fraction = new Fraction(integerPosition % SMCommon.MaxValidDenominator, SMCommon.MaxValidDenominator).Reduce();
 
 			string imgClass;
 			switch (fraction.Denominator)

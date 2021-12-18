@@ -547,8 +547,11 @@ namespace StepManiaChartGenerator
 			{
 				FilePath = saveFile,
 				Song = song,
-				MeasureSpacingBehavior = SMWriterBase.MeasureSpacingBehavior.UseSubDivisionDenominatorAsMeasureSpacing,
-				PropertyEmissionBehavior = SMWriterBase.PropertyEmissionBehavior.MatchSource
+				MeasureSpacingBehavior = SMWriterBase.MeasureSpacingBehavior.UseSourceExtraOriginalMeasurePosition,
+				PropertyEmissionBehavior = SMWriterBase.PropertyEmissionBehavior.MatchSource,
+				WriteBPMsFromExtras = true,
+				WriteStopsFromExtras = true,
+				WriteTimeSignaturesFromExtras = true
 			};
 			var fileFormat = FileFormat.GetFileFormatByExtension(songArgs.FileInfo.Extension);
 			switch (fileFormat.Type)
@@ -664,6 +667,7 @@ namespace StepManiaChartGenerator
 					var events = performedChart.CreateSMChartEvents();
 					CopyNonPerformanceEvents(chart.Layers[0].Events, events);
 					events.Sort(new SMEventComparer());
+					CopyOriginalMeasurePositionExtras(chart.Layers[0].Events, events);
 
 					// Sanity check on note counts.
 					if (events.Count != chart.Layers[0].Events.Count)
@@ -691,9 +695,9 @@ namespace StepManiaChartGenerator
 							while (i < events.Count && i < chart.Layers[0].Events.Count)
 							{
 								if (events[i].SourceType != chart.Layers[0].Events[i].SourceType
-								    || events[i].Position != chart.Layers[0].Events[i].Position)
+								    || events[i].IntegerPosition != chart.Layers[0].Events[i].IntegerPosition)
 								{
-									firstDiscrepancyPosition = chart.Layers[0].Events[i].Position;
+									firstDiscrepancyPosition = chart.Layers[0].Events[i].MetricPosition;
 									break;
 								}
 
@@ -970,6 +974,51 @@ namespace StepManiaChartGenerator
 			{
 				if (e is TimeSignature || e is TempoChange || e is Stop)
 					dest.Add(e);
+			}
+		}
+
+		/// <summary>
+		/// Copies the TagFumenNoteOriginalMeasurePosition values from the SourceExtras on the given
+		/// source Event List to the corresponding events in the dest list.
+		/// Assumes both source and dest are sorted and the dest Events were generated from the
+		/// source events and occur at the same IntegerPositions.
+		/// </summary>
+		/// <param name="source">Event List to copy from.</param>
+		/// <param name="dest">Event List to copy to.</param>
+		private static void CopyOriginalMeasurePositionExtras(List<Event> source, List<Event> dest)
+		{
+			var sourceIndex = 0;
+			var destIndex = 0;
+			var sourceCount = source.Count;
+			var destCount = dest.Count;
+
+			// It is possible for a generated chart to have fewer events than the source
+			// chart due to edge cases with mine placement, so we need to keep track of
+			// the indices separately.
+			while (sourceIndex < sourceCount)
+			{
+				
+				var row = source[sourceIndex].IntegerPosition;
+				
+				// Some events like TempoChanges do not have Extras for the original position.
+				source[sourceIndex].Extras.TryGetSourceExtra(TagFumenNoteOriginalMeasurePosition, out Fraction f);
+				while (sourceIndex < sourceCount && source[sourceIndex].IntegerPosition == row)
+				{
+					sourceIndex++;
+					if (f == null)
+					{
+						source[sourceIndex].Extras.TryGetSourceExtra(TagFumenNoteOriginalMeasurePosition, out f);
+					}
+				}
+
+				while (destIndex < destCount && dest[destIndex].IntegerPosition == row)
+				{
+					if (f != null)
+					{
+						dest[destIndex].Extras.AddDestExtra(TagFumenNoteOriginalMeasurePosition, f);
+					}
+					destIndex++;
+				}
 			}
 		}
 
