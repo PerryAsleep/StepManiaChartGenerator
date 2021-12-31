@@ -997,7 +997,6 @@ namespace StepManiaChartGenerator
 			// the indices separately.
 			while (sourceIndex < sourceCount)
 			{
-				
 				var row = source[sourceIndex].IntegerPosition;
 				
 				// Some events like TempoChanges do not have Extras for the original position.
@@ -1005,7 +1004,7 @@ namespace StepManiaChartGenerator
 				while (sourceIndex < sourceCount && source[sourceIndex].IntegerPosition == row)
 				{
 					sourceIndex++;
-					if (f == null)
+					if (f == null && sourceIndex < sourceCount)
 					{
 						source[sourceIndex].Extras.TryGetSourceExtra(TagFumenNoteOriginalMeasurePosition, out f);
 					}
