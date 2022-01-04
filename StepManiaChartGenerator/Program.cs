@@ -549,8 +549,12 @@ namespace StepManiaChartGenerator
 				Song = song,
 				MeasureSpacingBehavior = SMWriterBase.MeasureSpacingBehavior.UseSourceExtraOriginalMeasurePosition,
 				PropertyEmissionBehavior = SMWriterBase.PropertyEmissionBehavior.MatchSource,
-				WriteBPMsFromExtras = true,
+				WriteTemposFromExtras = true,
 				WriteStopsFromExtras = true,
+				WriteDelaysFromExtras = true,
+				WriteWarpsFromExtras = true,
+				WriteScrollsFromExtras = true,
+				WriteSpeedsFromExtras = true,
 				WriteTimeSignaturesFromExtras = true
 			};
 			var fileFormat = FileFormat.GetFileFormatByExtension(songArgs.FileInfo.Extension);
@@ -964,7 +968,6 @@ namespace StepManiaChartGenerator
 
 		/// <summary>
 		/// Copies the non-performance events from one List of Events to another.
-		/// Non-performance events are: TimeSignature, TempoChange, Stop.
 		/// </summary>
 		/// <param name="source">Event List to copy from.</param>
 		/// <param name="dest">Event List to copy to.</param>
@@ -972,7 +975,12 @@ namespace StepManiaChartGenerator
 		{
 			foreach (var e in source)
 			{
-				if (e is TimeSignature || e is TempoChange || e is Stop)
+				if (e is TimeSignature
+				    || e is Tempo
+				    || e is Stop
+				    || e is Warp
+				    || e is ScrollRate
+				    || e is ScrollRateInterpolation)
 					dest.Add(e);
 			}
 		}

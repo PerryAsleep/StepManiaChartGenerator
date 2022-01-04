@@ -623,7 +623,7 @@ $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; heigh
 					colVal = $"{stop.LengthMicros / 1000000.0}";
 					colX += ChartColumnInfo[(int) ChartColumns.Stop].X;
 				}
-				else if (chartEvent is TempoChange tc)
+				else if (chartEvent is Tempo tc)
 				{
 					colVal = $"{tc.TempoBPM}";
 					colX += ChartColumnInfo[(int) ChartColumns.BPM].X;
