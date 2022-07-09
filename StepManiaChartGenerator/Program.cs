@@ -555,7 +555,11 @@ namespace StepManiaChartGenerator
 				WriteWarpsFromExtras = true,
 				WriteScrollsFromExtras = true,
 				WriteSpeedsFromExtras = true,
-				WriteTimeSignaturesFromExtras = true
+				WriteTimeSignaturesFromExtras = true,
+				WriteTickCountsFromExtras = true,
+				WriteLabelsFromExtras = true,
+				WriteFakesFromExtras = true,
+				WriteCombosFromExtras = true,
 			};
 			var fileFormat = FileFormat.GetFileFormatByExtension(songArgs.FileInfo.Extension);
 			switch (fileFormat.Type)
