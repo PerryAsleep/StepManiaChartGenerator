@@ -984,7 +984,11 @@ namespace StepManiaChartGenerator
 				    || e is Stop
 				    || e is Warp
 				    || e is ScrollRate
-				    || e is ScrollRateInterpolation)
+				    || e is ScrollRateInterpolation
+				    || e is TickCount
+				    || e is Label
+				    || e is FakeSegment
+				    || e is Multipliers)
 					dest.Add(e);
 			}
 		}
