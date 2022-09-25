@@ -10,7 +10,7 @@
 		"LogFlushIntervalSeconds": 20,
 		"LogBufferSizeBytes": 10240,
 		"LogToConsole": true,
-	}
+	},
 
 	"RegexTimeoutSeconds": 10.0,
 	"CloseAutomaticallyWhenComplete": false,
@@ -47,7 +47,7 @@
 		{
 			"DefaultBracketParsingMethod": "Balanced",
 			"BracketParsingDetermination": "ChooseMethodDynamically",
-			"MinLevelForBrackets": 9,
+			"MinLevelForBrackets": 7,
 			"UseAggressiveBracketsWhenMoreSimultaneousNotesThanCanBeCoveredWithoutBrackets": true,
 			// Interpret charts with three brackets per minute or more as charts which should aggressively interpret bracketable jumps as brackets.
 			"BalancedBracketsPerMinuteForAggressiveBrackets": 3.0,
