@@ -620,7 +620,7 @@ $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; heigh
 				}
 				else if (chartEvent is Stop stop)
 				{
-					colVal = $"{Utils.ToSeconds(stop.LengthMicros)}";
+					colVal = $"{stop.LengthSeconds}";
 					colX += ChartColumnInfo[(int) ChartColumns.Stop].X;
 				}
 				else if (chartEvent is Tempo tc)
