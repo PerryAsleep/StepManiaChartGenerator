@@ -704,7 +704,7 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 			// Write the final measure markers
 			var numMeasuresToWrite =
 				(chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].IntegerPosition - previousTimeSignatureIntegerPosition) 
-				/ (currentTimeSignature.Numerator * (SMCommon.MaxValidDenominator * (SMCommon.NumBeatsPerMeasure / currentTimeSignature.Denominator)))
+				/ ((currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure) / currentTimeSignature.Denominator)
 				+ 1;
 			WriteMeasures(
 				chartXPosition,
