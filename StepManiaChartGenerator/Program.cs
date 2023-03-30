@@ -154,7 +154,7 @@ namespace StepManiaChartGenerator
 				Exit(false);
 
 			// Create StepGraphs.
-			var stepGraphCreationSuccess = await LoadPadDataAndCreateStepGraphs();
+			var stepGraphCreationSuccess = await LoadPadDataAndStepGraphs();
 			if (!stepGraphCreationSuccess)
 				Exit(false);
 
@@ -190,7 +190,7 @@ namespace StepManiaChartGenerator
 		/// <returns>
 		/// True if no errors were generated and false otherwise.
 		/// </returns>
-		private static async Task<bool> LoadPadDataAndCreateStepGraphs()
+		private static async Task<bool> LoadPadDataAndStepGraphs()
 		{
 			// If the types are the same, just create one StepGraph.
 			if (Config.Instance.InputChartType == Config.Instance.OutputChartType)
@@ -201,16 +201,15 @@ namespace StepManiaChartGenerator
 					return false;
 
 				// Create the StepGraph and use it for both the InputStepGraph and the OutputStepGraph.
-				LogInfo("Creating StepGraph.");
-				InputStepGraph = StepGraph.CreateStepGraph(padData, padData.StartingPositions[0][0][L],
-					padData.StartingPositions[0][0][R]);
+				LogInfo("Loading StepGraph.");
+				InputStepGraph = await LoadStepGraph(Config.Instance.InputChartType, padData);
 				OutputStepGraph = InputStepGraph;
 				if (!CreateOutputStartNodes())
 					return false;
-				LogInfo("Finished creating StepGraph.");
+				LogInfo("Finished loading StepGraph.");
 			}
 
-			// If the types are separate, create two graphLs.
+			// If the types are separate, create two graphs.
 			else
 			{
 				// Load the PadData for both the input and output type.
@@ -222,24 +221,14 @@ namespace StepManiaChartGenerator
 				if (inputPadData == null || outputPadData == null)
 					return false;
 
-				LogInfo("Creating StepGraphs.");
+				LogInfo("Loading StepGraphs.");
 
 				// Create each graph on their own thread as these can take a few seconds.
-				var inputGraphTask = Task.Factory.StartNew(() =>
-				{
-					InputStepGraph = StepGraph.CreateStepGraph(
-						inputPadData,
-						inputPadData.StartingPositions[0][0][L],
-						inputPadData.StartingPositions[0][0][R]);
-				});
-				var outputGraphTask = Task.Factory.StartNew(() =>
-				{
-					OutputStepGraph = StepGraph.CreateStepGraph(
-						outputPadData,
-						outputPadData.StartingPositions[0][0][L],
-						outputPadData.StartingPositions[0][0][R]);
-				});
+				var inputGraphTask = LoadStepGraph(Config.Instance.InputChartType, inputPadData);
+				var outputGraphTask = LoadStepGraph(Config.Instance.OutputChartType, outputPadData);
 				await Task.WhenAll(inputGraphTask, outputGraphTask);
+				InputStepGraph = await inputGraphTask;
+				OutputStepGraph = await outputGraphTask;
 
 				if (!CreateOutputStartNodes())
 					return false;
@@ -267,6 +256,22 @@ namespace StepManiaChartGenerator
 		}
 
 		/// <summary>
+		/// Loads the StepGraph for the given stepsType.
+		/// </summary>
+		/// <param name="stepsType">Stepmania StepsType to load the StepGraph for.</param>
+		/// <returns>Loaded StepGraph or null if any errors were generated.</returns>
+		private static async Task<StepGraph> LoadStepGraph(string stepsType, PadData padData)
+		{
+			var fileName = $"{stepsType}.fsg";
+			LogInfo($"Loading StepGraph from {fileName}.");
+			var stepGraph = await StepGraph.LoadAsync(fileName, padData);
+			if (stepGraph == null)
+				return null;
+			LogInfo($"Finished loading {stepsType} StepGraph.");
+			return stepGraph;
+		}
+
+		/// <summary>
 		/// Creates the output start nodes and stores them in OutputStartNodes.
 		/// </summary>
 		/// <returns>
@@ -275,7 +280,7 @@ namespace StepManiaChartGenerator
 		private static bool CreateOutputStartNodes()
 		{
 			// Add the root node as the first tier.
-			OutputStartNodes.Add(new List<GraphNode> {OutputStepGraph.Root});
+			OutputStartNodes.Add(new List<GraphNode> {OutputStepGraph.GetRoot()});
 
 			// Loop over the remaining tiers.
 			for (var tier = 1; tier < OutputStepGraph.PadData.StartingPositions.Length; tier++)

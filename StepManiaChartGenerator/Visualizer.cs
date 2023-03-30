@@ -69,6 +69,8 @@ namespace StepManiaChartGenerator
 			"Invert In Front",
 			"Invert In Back",
 			"Foot Swap",
+			"Stretch",
+
 			"Br H New T New",
 			"Br H New T Same",
 			"Br H Same T New",
@@ -77,10 +79,45 @@ namespace StepManiaChartGenerator
 			"Br H New T Swap",
 			"Br H Swap T Same",
 			"Br H Swap T New",
+			"Br H Swap T Swap",
+
+			"Br XF H New T New",
+			"Br XF H New T Same",
+			"Br XF H Same T New",
+			"Br XB H New T New",
+			"Br XB H New T Same",
+			"Br XB H Same T New",
+
+			"Br IF H New T New",
+			"Br IF H New T Same",
+			"Br IF H Same T New",
+			"Br IB H New T New",
+			"Br IB H New T Same",
+			"Br IB H Same T New",
+
+			"Br Str H New T New",
+			"Br Str H New T Same",
+			"Br Str H Same T New",
+
 			"Br 1 H Same",
 			"Br 1 H New",
+			"Br 1 H Swap",
 			"Br 1 T Same",
 			"Br 1 T New",
+			"Br 1 T Swap",
+
+			"Br 1 XF H New",
+			"Br 1 XF T New",
+			"Br 1 XB H New",
+			"Br 1 XB T New",
+
+			"Br 1 IF H New",
+			"Br 1 IF T New",
+			"Br 1 IB H New",
+			"Br 1 IB T New",
+
+			"Br 1 Str H New",
+			"Br 1 Str T New",
 		};
 
 		private StreamWriter StreamWriter;
@@ -728,7 +765,7 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 				if (!first)
 					mineSB.Append("<br>");
 
-				mineSB.Append($"{ArrowNames[mine.OriginalArrow]}: ");
+				mineSB.Append($"{ArrowNames[mine.OriginalArrow % 4]}: ");
 				switch (mine.Type)
 				{
 					case MineType.NoArrow:
