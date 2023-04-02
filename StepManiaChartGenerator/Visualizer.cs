@@ -894,20 +894,11 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 			{
 				if (node.PreviousLink != null && !node.PreviousLink.GraphLink.IsRelease())
 				{
-					// If this step is a footswap we need to ignore the other foot, which may still be resting on this arrow.
-					var previousStepLink = node.GetPreviousStepLink();
-					var footSwapFoot = InvalidFoot;
-					var footSwapPortion = DefaultFootPortion;
-					var footSwap = previousStepLink?.GraphLink.IsFootSwap(out footSwapFoot, out footSwapPortion) ?? false;
-					if (footSwap && node.GraphNode.State[footSwapFoot, footSwapPortion].Arrow == arrow)
-						return footSwapFoot;
-
-					// No footswap on the given arrow.
 					for (var f = 0; f < NumFeet; f++)
 					{
 						for (var p = 0; p < NumFootPortions; p++)
 						{
-							if (node.GraphNode.State[f, p].Arrow == arrow)
+							if (node.GraphNode.State[f, p].Arrow == arrow && node.GraphNode.State[f, p].State != GraphArrowState.Lifted)
 							{
 								return f;
 							}
@@ -930,17 +921,11 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 					var previousStepLink = spn.GraphLinkInstance;
 					if (previousStepLink != null && !previousStepLink.GraphLink.IsRelease())
 					{
-						// If this step is a footswap we need to ignore the other foot, which may still be resting on this arrow.
-						var footSwap = previousStepLink.GraphLink.IsFootSwap(out var footSwapFoot, out var footSwapPortion);
-						if (footSwap && spn.GraphNodeInstance.Node.State[footSwapFoot, footSwapPortion].Arrow == arrow)
-							return footSwapFoot;
-
-						// No footswap on the given arrow.
 						for (var f = 0; f < NumFeet; f++)
 						{
 							for (var p = 0; p < NumFootPortions; p++)
 							{
-								if (spn.GraphNodeInstance.Node.State[f, p].Arrow == arrow)
+								if (spn.GraphNodeInstance.Node.State[f, p].Arrow == arrow && spn.GraphNodeInstance.Node.State[f, p].State != GraphArrowState.Lifted)
 								{
 									return f;
 								}
