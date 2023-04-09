@@ -52,7 +52,7 @@
 			// Interpret charts with three brackets per minute or more as charts which should aggressively interpret bracketable jumps as brackets.
 			"BalancedBracketsPerMinuteForAggressiveBrackets": 3.0,
 			// Interpret charts with one bracket every minute or less as charts which should not have brackets.
-			// Many non-technical charts have jumps which patterns which can reasonably be done by bracketing. With balanced
+			// Many non-technical charts have jumps with patterns which can reasonably be done by bracketing. With balanced
 			// parsing, these charts would produce brackets. This threshold helps keeps non-technical charts bracket-free.
 			"BalancedBracketsPerMinuteForNoBrackets": 1.0,
 		},
@@ -73,45 +73,49 @@
 		// Balanced default settings.
 		"Default":
 		{
-			"DesiredArrowWeights": {
+			"ArrowWeights":
+			{
 				"dance-single": [25, 25, 25, 25],
-				// This distribution was determined by parsing doubles charts from many packs.
-				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6]
+				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],
 			},
-		
-			// 16ths at 170
-			"IndividualStepTighteningMinTimeSeconds": 0.176471,
-			// 16ths at 125
-			"IndividualStepTighteningMaxTimeSeconds": 0.24,
-		
-			"LateralTighteningPatternLength": 5,
-			"LateralTighteningRelativeNPS": 1.65,
-			"LateralTighteningAbsoluteNPS": 12.0,
-			"LateralTighteningSpeed": 3.0,
+
+			"StepTightening":
+			{
+				"TravelSpeedMinTimeSeconds": 0.176471,	// 16ths at 170
+				"TravelSpeedMaxTimeSeconds": 0.24,		// 16ths at 125
+				"TravelDistanceMin": 2.0,
+				"TravelDistanceMax": 3.0,
+				"StretchDistanceMin": 3.0,
+				"StretchDistanceMax": 4.0,
+			},
+
+			"LateralTightening":
+			{
+				"PatternLength": 5,
+				"RelativeNPS": 1.65,
+				"AbsoluteNPS": 12.0,
+				"Speed": 3.0,
+			},
+
+			"Facing":
+			{
+				"MaxInwardPercentage": 1.0,
+				"MaxOutwardPercentage": 1.0,
+			},
 		},
 
-		// Stamina settings are the same as default settings with a lower threshold for
-		// IndividualStepTighteningMinTimeSeconds. This lower threshold would tighten up
+		// Stamina settings are the same as default settings with a higher threshold for
+		// StepTightening.TravelSpeedMaxTimeSeconds. This higher threshold would tighten up
 		// normal charts too aggressively but for stamina charts it is better to err on
 		// tight steps, especially for doubles. Even bpms in the low 110s feel bad when
 		// streaming 16ths and having to move more than a bracket distance.
 		"Stamina":
 		{
-			"DesiredArrowWeights": {
-				"dance-single": [25, 25, 25, 25],
-				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6]
+			"StepTightening":
+			{
+				"TravelSpeedMaxTimeSeconds": 0.303,		// 16ths at 99
 			},
-		
-			// 16ths at 170
-			"IndividualStepTighteningMinTimeSeconds": 0.176471,
-			// 16ths at 99
-			"IndividualStepTighteningMaxTimeSeconds": 0.303,
-		
-			"LateralTighteningPatternLength": 5,
-			"LateralTighteningRelativeNPS": 1.65,
-			"LateralTighteningAbsoluteNPS": 12.0,
-			"LateralTighteningSpeed": 3.0,
-		}
+		},
 	},
 
 	"StepTypeReplacements" :
@@ -123,25 +127,54 @@
 		"InvertFront": [ "InvertFront" ],
 		"InvertBehind": [ "InvertBehind" ],
 		"FootSwap": [ "FootSwap" ],
+		"NewArrowStretch": [ "NewArrowStretch" ],
 
 		"BracketHeelNewToeNew":[ "BracketHeelNewToeNew" ],
-		// Allow Toes to be performed as Heels and vice versa with brackets involving one new portion and one same portion.
 		"BracketHeelNewToeSame":[ "BracketHeelNewToeSame", "BracketHeelSameToeNew" ],
-		// Allow Toes to be performed as Heels and vice versa with brackets involving one new portion and one same portion.
 		"BracketHeelSameToeNew":[ "BracketHeelSameToeNew", "BracketHeelNewToeSame" ],
 		"BracketHeelSameToeSame":[ "BracketHeelSameToeSame" ],
-
-		// Allow Toes to be performed as Heels and vice versa with swap brackets.
 		"BracketHeelSameToeSwap":[ "BracketHeelSameToeSwap", "BracketHeelSwapToeSame" ],
 		"BracketHeelNewToeSwap":[ "BracketHeelNewToeSwap", "BracketHeelSwapToeNew" ],
 		"BracketHeelSwapToeSame":[ "BracketHeelSwapToeSame", "BracketHeelSameToeSwap" ],
 		"BracketHeelSwapToeNew":[ "BracketHeelSwapToeNew", "BracketHeelNewToeSwap" ],
+		"BracketHeelSwapToeSwap":[ "BracketHeelSwapToeSwap"],
+
+		"BracketCrossoverFrontHeelNewToeNew":[ "BracketCrossoverFrontHeelNewToeNew" ],
+		"BracketCrossoverFrontHeelNewToeSame":[ "BracketCrossoverFrontHeelNewToeSame", "BracketCrossoverFrontHeelSameToeNew" ],
+		"BracketCrossoverFrontHeelSameToeNew":[ "BracketCrossoverFrontHeelSameToeNew", "BracketCrossoverFrontHeelNewToeSame" ],
+		"BracketCrossoverBackHeelNewToeNew":[ "BracketCrossoverBackHeelNewToeNew" ],
+		"BracketCrossoverBackHeelNewToeSame":[ "BracketCrossoverBackHeelNewToeSame", "BracketCrossoverBackHeelSameToeNew" ],
+		"BracketCrossoverBackHeelSameToeNew":[ "BracketCrossoverBackHeelSameToeNew", "BracketCrossoverBackHeelNewToeSame" ],
+
+		"BracketInvertFrontHeelNewToeNew": [ "BracketInvertFrontHeelNewToeNew" ],
+		"BracketInvertFrontHeelNewToeSame": [ "BracketInvertFrontHeelNewToeSame", "BracketInvertFrontHeelSameToeNew" ],
+		"BracketInvertFrontHeelSameToeNew": [ "BracketInvertFrontHeelSameToeNew", "BracketInvertFrontHeelNewToeSame" ],
+		"BracketInvertBackHeelNewToeNew": [ "BracketInvertBackHeelNewToeNew" ],
+		"BracketInvertBackHeelNewToeSame": [ "BracketInvertBackHeelNewToeSame", "BracketInvertBackHeelSameToeNew" ],
+		"BracketInvertBackHeelSameToeNew": [ "BracketInvertBackHeelSameToeNew", "BracketInvertBackHeelNewToeSame" ],
+
+		"BracketStretchHeelNewToeNew": [ "BracketStretchHeelNewToeNew" ],
+		"BracketStretchHeelNewToeSame": [ "BracketStretchHeelNewToeSame", "BracketStretchHeelSameToeNew" ],
+		"BracketStretchHeelSameToeNew": [ "BracketStretchHeelSameToeNew", "BracketStretchHeelNewToeSame" ],
 		
-		"BracketOneArrowHeelSame":[ "BracketOneArrowHeelSame" ],
-		// Allow Toes to be performed has Heels and vice versa with new bracket steps.
-		"BracketOneArrowHeelNew":[ "BracketOneArrowHeelNew", "BracketOneArrowToeNew" ],
-		"BracketOneArrowToeSame":[ "BracketOneArrowToeSame" ],
-		// Allow Toes to be performed has Heels and vice versa with new bracket steps.
-		"BracketOneArrowToeNew":[ "BracketOneArrowToeNew", "BracketOneArrowHeelNew" ],
+		"BracketOneArrowHeelSame": [ "BracketOneArrowHeelSame" ],
+		"BracketOneArrowHeelNew": [ "BracketOneArrowHeelNew", "BracketOneArrowToeNew" ],
+		"BracketOneArrowHeelSwap": ["BracketOneArrowHeelSwap", "BracketOneArrowToeSwap"],
+		"BracketOneArrowToeSame": [ "BracketOneArrowToeSame" ],
+		"BracketOneArrowToeNew": [ "BracketOneArrowToeNew", "BracketOneArrowHeelNew" ],
+		"BracketOneArrowToeSwap": ["BracketOneArrowToeSwap", "BracketOneArrowHeelSwap"],
+
+		"BracketCrossoverFrontOneArrowHeelNew": [ "BracketCrossoverFrontOneArrowHeelNew", "BracketCrossoverFrontOneArrowToeNew" ],
+		"BracketCrossoverFrontOneArrowToeNew": [ "BracketCrossoverFrontOneArrowToeNew", "BracketCrossoverFrontOneArrowHeelNew" ],
+		"BracketCrossoverBackOneArrowHeelNew": [ "BracketCrossoverBackOneArrowHeelNew", "BracketCrossoverBackOneArrowToeNew" ],
+		"BracketCrossoverBackOneArrowToeNew": [ "BracketCrossoverBackOneArrowToeNew", "BracketCrossoverBackOneArrowHeelNew" ],
+
+		"BracketInvertFrontOneArrowHeelNew": [ "BracketInvertFrontOneArrowHeelNew", "BracketInvertFrontOneArrowToeNew" ],
+		"BracketInvertFrontOneArrowToeNew": [ "BracketInvertFrontOneArrowToeNew", "BracketInvertFrontOneArrowHeelNew" ],
+		"BracketInvertBackOneArrowHeelNew": [ "BracketInvertBackOneArrowHeelNew", "BracketInvertBackOneArrowToeNew" ],
+		"BracketInvertBackOneArrowToeNew": [ "BracketInvertBackOneArrowToeNew", "BracketInvertBackOneArrowHeelNew" ],
+
+		"BracketStretchOneArrowHeelNew": [ "BracketStretchOneArrowHeelNew", "BracketStretchOneArrowToeNew" ],
+		"BracketStretchOneArrowToeNew": [ "BracketStretchOneArrowToeNew", "BracketStretchOneArrowHeelNew" ],
 	},
 }

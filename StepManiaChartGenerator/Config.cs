@@ -209,6 +209,18 @@ namespace StepManiaChartGenerator
 		/// </summary>
 		private void Init()
 		{
+			// Set the non-default configs to be overrides of the default.
+			if (!string.IsNullOrEmpty(DefaultPerformedChartConfig)
+				&& PerformedChartConfigs.ContainsKey(DefaultPerformedChartConfig))
+			{
+				var defaultConfig = PerformedChartConfigs[DefaultPerformedChartConfig];
+				foreach (var kvp in PerformedChartConfigs)
+				{
+					if (kvp.Key != DefaultPerformedChartConfig)
+						kvp.Value.SetAsOverrideOf(defaultConfig);
+				}
+			}
+
 			// Initialize normalized weights.
 			if (PerformedChartConfigs != null)
 			{
@@ -321,7 +333,7 @@ namespace StepManiaChartGenerator
 				{
 					foreach (var kvp in PerformedChartConfigs)
 					{
-						if (!kvp.Value.ValidateDesiredArrowWeights(OutputChartType, smChartType, smChartTypeValid, kvp.Key))
+						if (!kvp.Value.ValidateArrowWeights(OutputChartType, smChartType, smChartTypeValid, kvp.Key))
 							errors = true;
 					}
 				}
