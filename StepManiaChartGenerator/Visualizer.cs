@@ -70,6 +70,7 @@ namespace StepManiaChartGenerator
 			"Invert In Back",
 			"Foot Swap",
 			"Stretch",
+			"Swing",
 
 			"Br H New T New",
 			"Br H New T Same",
@@ -80,6 +81,7 @@ namespace StepManiaChartGenerator
 			"Br H Swap T Same",
 			"Br H Swap T New",
 			"Br H Swap T Swap",
+			"Br Swing",
 
 			"Br XF H New T New",
 			"Br XF H New T Same",
