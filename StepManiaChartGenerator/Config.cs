@@ -158,11 +158,6 @@ namespace StepManiaChartGenerator
 		[JsonInclude] public Dictionary<string, PerformedChartConfig> PerformedChartConfigs;
 
 		/// <summary>
-		/// Which StepTypes are valid for use in a PerformedChart when encountering the key StepType.
-		/// </summary>
-		[JsonInclude] public Dictionary<StepType, HashSet<StepType>> StepTypeReplacements;
-
-		/// <summary>
 		/// Cached value for whether the output directory is the same as the input directory.
 		/// </summary>
 		private bool OutputDirectoryEqualsDirectory = false;
@@ -489,18 +484,6 @@ namespace StepManiaChartGenerator
 						errors = true;
 					}
 				}
-			}
-
-			// Warn on any missing StepTypeReplacements.
-			var stepTypes = Enum.GetValues(typeof(StepType)).Cast<StepType>().ToList();
-			foreach (var stepType in stepTypes)
-			{
-				if (!StepTypeReplacements.ContainsKey(stepType) || StepTypeReplacements[stepType].Count == 0)
-					LogWarn($"No StepTypeReplacements for \"{stepType:G}\"."
-					        + " Steps of this type will ignored when generating Performed Charts."
-					        + " This will likely result in a failures to generate Performed Charts."
-					        + " To ignore this type of step, include an entry for it in StepTypeReplacements and map"
-					        + " it to a type of step to use as a replacement.");
 			}
 
 			if (!LoggerConfig.Validate())
