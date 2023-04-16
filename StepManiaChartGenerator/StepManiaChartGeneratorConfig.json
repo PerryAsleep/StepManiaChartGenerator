@@ -127,8 +127,18 @@
 		"InvertFront": [ "InvertFront" ],
 		"InvertBehind": [ "InvertBehind" ],
 		"FootSwap": [ "FootSwap" ],
-		"NewArrowStretch": [ "NewArrowStretch" ],
 		"Swing": [ "Swing" ],
+
+		"NewArrowStretch": [ "NewArrowStretch" ],
+		"CrossoverFrontStretch": [ "CrossoverFrontStretch" ],
+		"CrossoverBehindStretch": [ "CrossoverBehindStretch" ],
+		"InvertFrontStretch": [ "InvertFrontStretch" ],
+		"InvertBehindStretch": [ "InvertBehindStretch" ],
+
+		"FootSwapCrossoverFront": [ "FootSwapCrossoverFront" ],
+		"FootSwapCrossoverBehind": [ "FootSwapCrossoverBehind" ],
+		"FootSwapInvertFront": [ "FootSwapInvertFront" ],
+		"FootSwapInvertBehind": [ "FootSwapInvertBehind" ],
 
 		"BracketHeelNewToeNew":[ "BracketHeelNewToeNew" ],
 		"BracketHeelNewToeSame":[ "BracketHeelNewToeSame", "BracketHeelSameToeNew" ],

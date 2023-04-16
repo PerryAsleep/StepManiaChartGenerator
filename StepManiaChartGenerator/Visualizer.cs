@@ -69,8 +69,18 @@ namespace StepManiaChartGenerator
 			"Invert In Front",
 			"Invert In Back",
 			"Foot Swap",
-			"Stretch",
 			"Swing",
+			
+			"Stretch",
+			"Stretch Crossover F",
+			"Stretch Crossover B",
+			"Stretch Invert F",
+			"Stretch Invert B",
+
+			"Swap XF",
+			"Swap XB",
+			"Swap IF",
+			"Swap IB",
 
 			"Br H New T New",
 			"Br H New T Same",
