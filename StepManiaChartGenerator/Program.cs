@@ -158,9 +158,6 @@ namespace StepManiaChartGenerator
 			if (!stepGraphCreationSuccess)
 				Exit(false);
 
-			// Cache the replacement GraphLinks from the OutputStepGraph.
-			PerformedChart.CacheGraphLinks(OutputStepGraph.FindAllGraphLinks(), Config.Instance.StepTypeReplacements);
-
 			// Find and process all charts.
 			await FindAndProcessCharts();
 
@@ -681,50 +678,6 @@ namespace StepManiaChartGenerator
 					CopyNonPerformanceEvents(chart.Layers[0].Events, events);
 					events.Sort(new SMEventComparer());
 					CopyOriginalMeasurePositionExtras(chart.Layers[0].Events, events);
-
-					// Sanity check on note counts.
-					if (events.Count != chart.Layers[0].Events.Count)
-					{
-						var mineString = NoteChars[(int) NoteType.Mine].ToString();
-						// Disregard discrepancies in mine counts
-						var newChartNonMineEventCount = 0;
-						foreach (var newEvent in events)
-						{
-							if (newEvent.SourceType != mineString)
-								newChartNonMineEventCount++;
-						}
-
-						var oldChartNonMineEventCount = 0;
-						foreach (var oldEvent in chart.Layers[0].Events)
-						{
-							if (oldEvent.SourceType != mineString)
-								oldChartNonMineEventCount++;
-						}
-
-						if (newChartNonMineEventCount != oldChartNonMineEventCount)
-						{
-							MetricPosition firstDiscrepancyPosition = null;
-							var i = 0;
-							while (i < events.Count && i < chart.Layers[0].Events.Count)
-							{
-								if (events[i].SourceType != chart.Layers[0].Events[i].SourceType
-								    || events[i].IntegerPosition != chart.Layers[0].Events[i].IntegerPosition)
-								{
-									firstDiscrepancyPosition = chart.Layers[0].Events[i].MetricPosition;
-									break;
-								}
-
-								i++;
-							}
-
-							LogError(
-								"Programmer error. Discrepancy in non-mine Event counts."
-								+ $" Old: {oldChartNonMineEventCount}, New: {newChartNonMineEventCount}."
-								+ $" First discrepancy position: {firstDiscrepancyPosition}.",
-								songArgs.FileInfo, songArgs.RelativePath, song, chart);
-							continue;
-						}
-					}
 
 					// Create a new Chart for these Events.
 					var newChart = new Chart

@@ -533,12 +533,14 @@ $@"		<div style=""height: 164px; margin-block-start: 0.0em; margin-block-end: 0.
 			var originalChartTitle =
 				$"{OriginalChart.Type} {OriginalChart.DifficultyType}: Level {OriginalChart.DifficultyRating}";
 			if (!string.IsNullOrEmpty(OriginalChart.Description))
-				originalChartTitle += $", {OriginalChart.Description} ({originalChartTotalSteps} steps)";
+				originalChartTitle += $", {OriginalChart.Description}";
+			originalChartTitle += $" ({originalChartTotalSteps} steps)";
 
 			var generatedChartTitle =
 				$"{GeneratedChart.Type} {GeneratedChart.DifficultyType}: Level {GeneratedChart.DifficultyRating}";
 			if (!string.IsNullOrEmpty(GeneratedChart.Description))
-				generatedChartTitle += $", {GeneratedChart.Description} ({generatedChartTotalSteps} steps)";
+				generatedChartTitle += $", {GeneratedChart.Description}";
+			generatedChartTitle += $" ({generatedChartTotalSteps} steps)";
 
 			StreamWriter.Write(
 $@"		<div id=""chartHeaders"" style=""z-index:10000000; border:none; margin-block-start: 0.0em; margin-block-end: 0.0em;"">
