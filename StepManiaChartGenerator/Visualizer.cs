@@ -8,6 +8,7 @@ using Fumen.ChartDefinition;
 using Fumen.Converters;
 using StepManiaLibrary;
 using static StepManiaLibrary.Constants;
+using StepManiaLibrary.PerformedChart;
 
 namespace StepManiaChartGenerator
 {
@@ -926,11 +927,11 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 			return InvalidFoot;
 		}
 
-		private int GetFootForArrow(int arrow, int position, PerformedChart.PerformanceNode node)
+		private int GetFootForArrow(int arrow, int position, PerformanceNode node)
 		{
 			while (node != null && node.Position == position)
 			{
-				if (node is PerformedChart.StepPerformanceNode spn)
+				if (node is StepPerformanceNode spn)
 				{
 					var previousStepLink = spn.GraphLinkInstance;
 					if (previousStepLink != null && !previousStepLink.GraphLink.IsRelease())

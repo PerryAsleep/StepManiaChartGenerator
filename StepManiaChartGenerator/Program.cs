@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using static StepManiaLibrary.Constants;
+using StepManiaLibrary.PerformedChart;
 using static Fumen.Converters.SMCommon;
 using Fumen;
 using Fumen.Converters;

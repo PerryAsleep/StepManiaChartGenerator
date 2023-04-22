@@ -152,9 +152,9 @@ namespace StepManiaChartGenerator
 		[JsonInclude] public Dictionary<string, ExpressedChartConfig> ExpressedChartConfigs;
 
 		/// <summary>
-		/// Dictionary of identifier to PerformedChartConfig.
+		/// Dictionary of identifier to PerformedChart Config.
 		/// </summary>
-		[JsonInclude] public Dictionary<string, PerformedChartConfig> PerformedChartConfigs;
+		[JsonInclude] public Dictionary<string, StepManiaLibrary.PerformedChart.Config> PerformedChartConfigs;
 
 		/// <summary>
 		/// Cached value for whether the output directory is the same as the input directory.
@@ -551,13 +551,13 @@ namespace StepManiaChartGenerator
 		}
 
 		/// <summary>
-		/// Gets the PerformedChartConfig to use for the Chart represented by the given FileInfo
+		/// Gets the PerformedChart Config to use for the Chart represented by the given FileInfo
 		/// and difficulty.
 		/// </summary>
 		/// <param name="file">FileInfo for the file containing the Chart.</param>
 		/// <param name="difficulty">Difficulty string of the Chart.</param>
-		/// <returns>PerformedChartConfig to use and its identifier.</returns>
-		public (PerformedChartConfig, string) GetPerformedChartConfig(FileInfo file, string difficulty)
+		/// <returns>PerformedChart Config to use and its identifier.</returns>
+		public (StepManiaLibrary.PerformedChart.Config, string) GetPerformedChartConfig(FileInfo file, string difficulty)
 		{
 			// Check for rules specific to this file and difficulty.
 			if (PerformedChartConfigRules != null && PerformedChartConfigRules.Length > 0)
