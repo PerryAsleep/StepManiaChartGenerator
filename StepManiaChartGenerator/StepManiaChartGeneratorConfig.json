@@ -28,6 +28,8 @@
 	"OutputVisualizations": false,
 	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
+	"WarnOnDroppedSteps": true,
+
 	"DefaultExpressedChartConfig": "BalancedDynamic",
 	"DefaultPerformedChartConfig": "Default",
 

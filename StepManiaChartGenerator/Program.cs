@@ -627,6 +627,9 @@ namespace StepManiaChartGenerator
 					events.Sort(new SMEventComparer());
 					CopyOriginalMeasurePositionExtras(chart.Layers[0].Events, events);
 
+					// Warn when dropping steps.
+					WarnOnDroppedSteps(chart.Layers[0].Events, events, song, songArgs, chart);
+
 					// Create a new Chart for these Events.
 					var newChart = new Chart
 					{
@@ -703,6 +706,90 @@ namespace StepManiaChartGenerator
 
 			// Add new charts.
 			song.Charts.AddRange(newCharts);
+		}
+
+		/// <summary>
+		/// Warns when steps were dropped if configured to do so.
+		/// </summary>
+		private static void WarnOnDroppedSteps(List<Event> sourceEvents, List<Event> destEvents, Song song, SongArgs songArgs, Chart chart)
+		{
+			if (!Config.Instance.WarnOnDroppedSteps || destEvents.Count == sourceEvents.Count)
+				return;
+
+			var mineString = NoteChars[(int)NoteType.Mine].ToString();
+			var positionsOfMissingSteps = new List<int>();
+			var sourceEventIndex = 0;
+			var destEventIndex = 0;
+			var numDroppedMines = 0;
+			while (true)
+			{
+				var newPosition = sourceEvents[sourceEventIndex].IntegerPosition;
+
+				var numSourceSteps = 0;
+				var numSourceMines = 0;
+				while (sourceEventIndex < sourceEvents.Count && sourceEvents[sourceEventIndex].IntegerPosition == newPosition)
+				{
+					if (sourceEvents[sourceEventIndex].SourceType != mineString)
+						numSourceSteps++;
+					else
+						numSourceMines++;
+					sourceEventIndex++;
+				}
+
+				var numDestSteps = 0;
+				var numDestMines = 0;
+				while (destEventIndex < destEvents.Count && destEvents[destEventIndex].IntegerPosition == newPosition)
+				{
+					if (destEvents[destEventIndex].SourceType != mineString)
+						numDestSteps++;
+					else
+						numDestMines++;
+					destEventIndex++;
+				}
+
+				if (numDestSteps != numSourceSteps)
+					positionsOfMissingSteps.Add(newPosition);
+				numDroppedMines += (numSourceMines - numDestMines);
+
+				if (sourceEventIndex >= sourceEvents.Count)
+					break;
+			}
+
+			if (positionsOfMissingSteps.Count > 0)
+			{
+				var sb = new StringBuilder();
+				var first = true;
+				foreach (var pos in positionsOfMissingSteps)
+				{
+					if (!first)
+						sb.Append(", ");
+					sb.Append(pos.ToString());
+					first = false;
+				}
+				if (positionsOfMissingSteps.Count > 1)
+				{
+					LogWarn($"Dropped {positionsOfMissingSteps.Count} steps at positions: [{sb}].",
+						songArgs.FileInfo, songArgs.RelativePath, song, chart);
+				}
+				else
+				{
+					LogWarn($"Dropped {positionsOfMissingSteps.Count} step at position {sb}.",
+						songArgs.FileInfo, songArgs.RelativePath, song, chart);
+				}
+			}
+			if (numDroppedMines > 0)
+			{
+				if (numDroppedMines > 1)
+				{
+					LogWarn($"Dropped {numDroppedMines} mines.",
+						songArgs.FileInfo, songArgs.RelativePath, song, chart);
+				}
+				else
+				{
+					LogWarn($"Dropped {numDroppedMines} mine.",
+						songArgs.FileInfo, songArgs.RelativePath, song, chart);
+				}
+			}
 		}
 
 		/// <summary>

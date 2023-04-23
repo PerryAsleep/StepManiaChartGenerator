@@ -123,6 +123,11 @@ namespace StepManiaChartGenerator
 		[JsonInclude] public string VisualizationsDirectory;
 
 		/// <summary>
+		/// Whether or not to warn when steps are dropped during conversion.
+		/// </summary>
+		[JsonInclude] public bool WarnOnDroppedSteps = true;
+
+		/// <summary>
 		/// Identifier of the default ExpressedChartConfig to use.
 		/// Expected that this identifier is a key in ExpressedChartConfigs.
 		/// </summary>
