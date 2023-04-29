@@ -54,6 +54,11 @@ namespace StepManiaChartGenerator
 		private static StepGraph OutputStepGraph;
 
 		/// <summary>
+		/// StepTypeFallbacks to use for PerformedCharts.
+		/// </summary>
+		private static StepTypeFallbacks StepTypeFallbacks;
+
+		/// <summary>
 		/// Supported file formats for reading and writing.
 		/// </summary>
 		private static readonly List<FileFormatType> SupportedFileFormats = new List<FileFormatType>
@@ -147,6 +152,14 @@ namespace StepManiaChartGenerator
 			var stepGraphCreationSuccess = await LoadPadDataAndStepGraphs();
 			if (!stepGraphCreationSuccess)
 				Exit(false);
+
+			// Load the default StepTypeFallbacks.
+			if (!InputStepGraph.PadData.CanFitWithin(OutputStepGraph.PadData))
+			{
+				StepTypeFallbacks = await StepTypeFallbacks.Load(StepTypeFallbacks.DefaultFallbacksFileName);
+				if (StepTypeFallbacks == null)
+					Exit(false);
+			}
 
 			// Find and process all charts.
 			await FindAndProcessCharts();
@@ -608,6 +621,7 @@ namespace StepManiaChartGenerator
 					var performedChart = PerformedChart.CreateFromExpressedChart(
 						OutputStepGraph,
 						pcc,
+						StepTypeFallbacks,
 						expressedChart,
 						GeneratePerformedChartRandomSeed(songArgs.FileInfo.Name),
 						GetLogIdentifier(songArgs.FileInfo, songArgs.RelativePath, song, chart));
