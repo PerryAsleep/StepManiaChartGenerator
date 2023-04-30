@@ -93,7 +93,6 @@
 
 			"LateralTightening":
 			{
-				"PatternLength": 5,
 				"RelativeNPS": 1.65,
 				"AbsoluteNPS": 12.0,
 				"Speed": 3.0,
