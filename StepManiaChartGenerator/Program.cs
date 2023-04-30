@@ -54,6 +54,17 @@ namespace StepManiaChartGenerator
 		private static StepGraph OutputStepGraph;
 
 		/// <summary>
+		/// GraphNodes to use as roots for trying to write output Charts.
+		/// Outer List is sorted by preference of Nodes at that level. Level 0 contains the most preferable root GraphNodes.
+		/// Inner Lists contain all GraphNodes of equal preference.
+		/// Example for a doubles StepGraph:
+		///  Tier 0 is both middles.
+		///  Tier 1 is one middle and one up/down.
+		///  etc.
+		/// </summary>
+		private static readonly List<List<GraphNode>> OutputStartNodes = new List<List<GraphNode>>();
+
+		/// <summary>
 		/// StepTypeFallbacks to use for PerformedCharts.
 		/// </summary>
 		private static StepTypeFallbacks StepTypeFallbacks;
@@ -204,6 +215,8 @@ namespace StepManiaChartGenerator
 				LogInfo("Loading StepGraph.");
 				InputStepGraph = await LoadStepGraph(Config.Instance.InputChartType, padData);
 				OutputStepGraph = InputStepGraph;
+				if (!CreateOutputStartNodes())
+					return false;
 				LogInfo("Finished loading StepGraph.");
 			}
 
@@ -227,6 +240,8 @@ namespace StepManiaChartGenerator
 				await Task.WhenAll(inputGraphTask, outputGraphTask);
 				InputStepGraph = await inputGraphTask;
 				OutputStepGraph = await outputGraphTask;
+				if (!CreateOutputStartNodes())
+					return false;
 				LogInfo("Finished creating StepGraphs.");
 			}
 
@@ -263,6 +278,41 @@ namespace StepManiaChartGenerator
 				return null;
 			LogInfo($"Finished loading {stepsType} StepGraph.");
 			return stepGraph;
+		}
+
+		/// <summary>
+		/// Creates the output start nodes and stores them in OutputStartNodes.
+		/// </summary>
+		/// <returns>
+		/// True if all output start nodes were added successfully and false otherwise.
+		/// </returns>
+		private static bool CreateOutputStartNodes()
+		{
+			// Add the root node as the first tier.
+			OutputStartNodes.Add(new List<GraphNode> { OutputStepGraph.GetRoot() });
+
+			// Loop over the remaining tiers.
+			for (var tier = 1; tier < OutputStepGraph.PadData.StartingPositions.Length; tier++)
+			{
+				var nodesAtTier = new List<GraphNode>();
+				foreach (var pos in OutputStepGraph.PadData.StartingPositions[tier])
+				{
+					var node = OutputStepGraph.FindGraphNode(pos[L], GraphArrowState.Resting, pos[R], GraphArrowState.Resting);
+					if (node == null)
+					{
+						LogError(
+							$"Could not find a node in the {Config.Instance.OutputChartType} StepGraph for StartingPosition with"
+							+ $" left on {pos[L]} and right on {pos[R]}.");
+						return false;
+					}
+
+					nodesAtTier.Add(node);
+				}
+
+				OutputStartNodes.Add(nodesAtTier);
+			}
+
+			return true;
 		}
 
 		/// <summary>
@@ -621,6 +671,7 @@ namespace StepManiaChartGenerator
 					var performedChart = PerformedChart.CreateFromExpressedChart(
 						OutputStepGraph,
 						pcc,
+						OutputStartNodes,
 						StepTypeFallbacks,
 						expressedChart,
 						GeneratePerformedChartRandomSeed(songArgs.FileInfo.Name),
