@@ -1,6 +1,6 @@
 # Configuration
 
-ChartConverter's behavior can be configured via the `config.json` file in the application's install directory. Comments and trailing commas are supported.
+ChartConverter's behavior can be configured via the `StepManiaChartGeneratorConfig.json` file in the application's install directory. Comments and trailing commas are supported.
 
 ## Example config.json
 
