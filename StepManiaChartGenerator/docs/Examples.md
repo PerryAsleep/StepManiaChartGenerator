@@ -1,7 +1,9 @@
 # Examples
+
 Below are some examples of singles charts that have been converted into doubles charts.
 
 ## Technical Charts
+
 ### [Barracuda](http://htmlpreview.github.io/?https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Visualizations/Barracuda/Barracuda-Challenge-ssc.html) [11] (Valex's Magical 4-Arrow Adventure 10)
 The original chart is authored by J. Berkowitz. This chart has crossovers, inverts, and footswaps.
 
