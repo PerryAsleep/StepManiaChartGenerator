@@ -23,7 +23,7 @@ smx_team
 
 ## Config
 
-The application's behavior can be controlled via a [Config](Config.md) file. The config file informs the application, among other things, where to read and write charts, what types of charts to use, and how to convert them. The application comes with a [config.json](../config.json) file with sensible defaults, but it should be updated before running to at least control where to read and write charts.
+The application's behavior can be controlled via a [Config](Config.md) file. The config file informs the application, among other things, where to read and write charts, what types of charts to use, and how to convert them. The application comes with a [config.json](../StepManiaChartGeneratorConfig.json) file with sensible defaults, but it should be updated before running to at least control where to read and write charts.
 
 ## ExpressedCharts
 
