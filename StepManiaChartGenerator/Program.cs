@@ -1061,29 +1061,6 @@ namespace StepManiaChartGenerator
 		}
 
 		/// <summary>
-		/// Copies the non-performance events from one List of Events to another.
-		/// </summary>
-		/// <param name="source">Event List to copy from.</param>
-		/// <param name="dest">Event List to copy to.</param>
-		private static void CopyNonPerformanceEvents(List<Event> source, List<Event> dest)
-		{
-			foreach (var e in source)
-			{
-				if (e is TimeSignature
-				    || e is Tempo
-				    || e is Stop
-				    || e is Warp
-				    || e is ScrollRate
-				    || e is ScrollRateInterpolation
-				    || e is TickCount
-				    || e is Label
-				    || e is FakeSegment
-				    || e is Multipliers)
-					dest.Add(e);
-			}
-		}
-
-		/// <summary>
 		/// Copies the TagFumenNoteOriginalMeasurePosition values from the SourceExtras on the given
 		/// source Event List to the corresponding events in the dest list.
 		/// Assumes both source and dest are sorted and the dest Events were generated from the
