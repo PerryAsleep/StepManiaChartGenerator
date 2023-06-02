@@ -142,7 +142,7 @@ namespace StepManiaChartGenerator
 			Logger.StartUp(new Logger.Config
 			{
 				WriteToConsole = true,
-				LogLevel = LogLevel.Error
+				Level = LogLevel.Error
 			});
 
 			// Load Config.
@@ -335,7 +335,7 @@ namespace StepManiaChartGenerator
 					var logFilePath = Fumen.Path.Combine(config.LogDirectory, logFileName);
 					Logger.StartUp(new Logger.Config
 					{
-						LogLevel = config.LogLevel,
+						Level = config.LogLevel,
 						WriteToConsole = config.LogToConsole,
 						WriteToFile = config.LogToFile,
 						LogFilePath = logFilePath,
@@ -348,7 +348,7 @@ namespace StepManiaChartGenerator
 				{
 					Logger.StartUp(new Logger.Config
 					{
-						LogLevel = config.LogLevel,
+						Level = config.LogLevel,
 						WriteToConsole = true,
 						WriteToFile = false,
 						WriteToBuffer = false
