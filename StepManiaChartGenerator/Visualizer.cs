@@ -10,6 +10,8 @@ using StepManiaLibrary;
 using static StepManiaLibrary.Constants;
 using StepManiaLibrary.PerformedChart;
 
+// ReSharper disable StringLiteralTypo
+
 namespace StepManiaChartGenerator
 {
 	// TODO: Major cleanup. This class is quick and dirty.
@@ -38,7 +40,7 @@ namespace StepManiaChartGenerator
 			TimeSignature,
 			BPM,
 			Stop,
-			Measure
+			Measure,
 		}
 
 		private enum SourceChartExpressionColumns
@@ -46,13 +48,13 @@ namespace StepManiaChartGenerator
 			Mines,
 			Cost,
 			LeftFoot,
-			RightFoot
+			RightFoot,
 		}
 
 		private enum DestChartExpressionColumns
 		{
 			LeftFoot,
-			RightFoot
+			RightFoot,
 		}
 
 		private class ColumnInfo
@@ -65,10 +67,10 @@ namespace StepManiaChartGenerator
 		private static readonly ColumnInfo[] ChartColumnInfo;
 		private static readonly ColumnInfo[] SourceChartExpressionColumnInfo;
 		private static readonly ColumnInfo[] DestChartExpressionColumnInfo;
-		private static string[] ArrowNames = {"L", "D", "U", "R"};
-		private static string[] ArrowClassStrings = {"left", null, "up", "right"};
+		private static readonly string[] ArrowNames = { "L", "D", "U", "R" };
+		private static readonly string[] ArrowClassStrings = { "left", null, "up", "right" };
 
-		private static string[] StepTypeStrings =
+		private static readonly string[] StepTypeStrings =
 		{
 			"Same Arrow",
 			"New Arrow",
@@ -78,7 +80,7 @@ namespace StepManiaChartGenerator
 			"Invert In Back",
 			"Foot Swap",
 			"Swing",
-			
+
 			"Stretch",
 			"Stretch Crossover F",
 			"Stretch Crossover B",
@@ -147,7 +149,6 @@ namespace StepManiaChartGenerator
 		private readonly string ExpressedChartConfigName;
 		private readonly Chart DestChart;
 		private readonly PerformedChart PerformedChart;
-		private readonly string PerformedChartConfigName;
 		private readonly string SongPath;
 		private readonly string SaveFile;
 		private readonly string SrcPath;
@@ -157,32 +158,34 @@ namespace StepManiaChartGenerator
 		private readonly int DestChartX;
 		private readonly int DestExpressedChartX;
 
-		private double[] LastSourceExpressionPosition = new double[NumFeet];
-		private double[] LastDestExpressionPosition = new double[NumFeet];
+		private readonly double[] LastSourceExpressionPosition = new double[NumFeet];
+		private readonly double[] LastDestExpressionPosition = new double[NumFeet];
 
 		static Visualizer()
 		{
 			var x = 0;
 			ChartColumnInfo = new ColumnInfo[Enum.GetNames(typeof(ChartColumns)).Length];
-			ChartColumnInfo[(int) ChartColumns.TimeSignature] = new ColumnInfo {Name = "Time", Width = ChartColW, X = x};
-			x += ChartColumnInfo[(int) ChartColumns.TimeSignature].Width;
-			ChartColumnInfo[(int) ChartColumns.BPM] = new ColumnInfo {Name = "BPM", Width = ChartColW, X = x};
-			x += ChartColumnInfo[(int) ChartColumns.BPM].Width;
-			ChartColumnInfo[(int) ChartColumns.Stop] = new ColumnInfo {Name = "Stop", Width = ChartColW, X = x};
-			x += ChartColumnInfo[(int) ChartColumns.Stop].Width;
-			ChartColumnInfo[(int) ChartColumns.Measure] = new ColumnInfo {Name = "Meas", Width = ChartColW, X = x};
+			ChartColumnInfo[(int)ChartColumns.TimeSignature] = new ColumnInfo { Name = "Time", Width = ChartColW, X = x };
+			x += ChartColumnInfo[(int)ChartColumns.TimeSignature].Width;
+			ChartColumnInfo[(int)ChartColumns.BPM] = new ColumnInfo { Name = "BPM", Width = ChartColW, X = x };
+			x += ChartColumnInfo[(int)ChartColumns.BPM].Width;
+			ChartColumnInfo[(int)ChartColumns.Stop] = new ColumnInfo { Name = "Stop", Width = ChartColW, X = x };
+			x += ChartColumnInfo[(int)ChartColumns.Stop].Width;
+			ChartColumnInfo[(int)ChartColumns.Measure] = new ColumnInfo { Name = "Meas", Width = ChartColW, X = x };
 
 			x = 0;
 			SourceChartExpressionColumnInfo = new ColumnInfo[Enum.GetNames(typeof(SourceChartExpressionColumns)).Length];
-			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Mines] = new ColumnInfo {Name = "Mines", Width = MinesColW, X = x};
+			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Mines] =
+				new ColumnInfo { Name = "Mines", Width = MinesColW, X = x };
 			x += SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Mines].Width;
-			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Cost] = new ColumnInfo {Name = "Cost", Width = CostColW, X = x};
+			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Cost] =
+				new ColumnInfo { Name = "Cost", Width = CostColW, X = x };
 			x += SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Cost].Width;
 			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.LeftFoot] =
-				new ColumnInfo {Name = "Left Foot", Width = ExpressionColW, X = x};
+				new ColumnInfo { Name = "Left Foot", Width = ExpressionColW, X = x };
 			x += SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.LeftFoot].Width;
 			SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.RightFoot] =
-				new ColumnInfo {Name = "Right Foot", Width = ExpressionColW, X = x};
+				new ColumnInfo { Name = "Right Foot", Width = ExpressionColW, X = x };
 
 			x = 0;
 			DestChartExpressionColumnInfo = new ColumnInfo[Enum.GetNames(typeof(DestChartExpressionColumns)).Length];
@@ -196,7 +199,7 @@ namespace StepManiaChartGenerator
 		// TODO: Support more StepsTypes for visualizations.
 		public static bool IsStepsTypeSupported(string stepsType)
 		{
-			return !string.IsNullOrEmpty(stepsType) && stepsType == "dance-single" || stepsType == "dance-double";
+			return (!string.IsNullOrEmpty(stepsType) && stepsType == "dance-single") || stepsType == "dance-double";
 		}
 
 		/// <summary>
@@ -211,7 +214,7 @@ namespace StepManiaChartGenerator
 			Directory.CreateDirectory(VisualizationDir);
 
 			// Copy the src assets to the new directory.
-			var sourceDir = Fumen.Path.Combine(new[] {AppDomain.CurrentDomain.BaseDirectory, "html", "src"});
+			var sourceDir = Fumen.Path.Combine(new[] { AppDomain.CurrentDomain.BaseDirectory, "html", "src" });
 			var targetDir = GetSrcDir();
 			Directory.CreateDirectory(targetDir);
 			foreach (var file in Directory.GetFiles(sourceDir))
@@ -233,7 +236,6 @@ namespace StepManiaChartGenerator
 			ExpressedChart expressedChart,
 			string expressedChartConfigName,
 			PerformedChart performedChart,
-			string performedChartConfigName,
 			Chart destChart)
 		{
 			SongPath = songPath;
@@ -243,19 +245,18 @@ namespace StepManiaChartGenerator
 			ExpressedChart = expressedChart;
 			ExpressedChartConfigName = expressedChartConfigName;
 			PerformedChart = performedChart;
-			PerformedChartConfigName = performedChartConfigName;
 			DestChart = destChart;
 
 			SourceExpressedChartX = 0;
 			foreach (var chartColInfo in ChartColumnInfo)
 				SourceExpressedChartX += chartColInfo.Width;
-			SourceExpressedChartX += (sourceChart.NumInputs * ArrowW);
+			SourceExpressedChartX += sourceChart.NumInputs * ArrowW;
 
 			DestChartX = SourceExpressedChartX;
 			foreach (var expressedColInfo in SourceChartExpressionColumnInfo)
 				DestChartX += expressedColInfo.Width;
 
-			DestExpressedChartX = DestChartX + (DestChart.NumInputs * ArrowW);
+			DestExpressedChartX = DestChartX + DestChart.NumInputs * ArrowW;
 			foreach (var chartColInfo in ChartColumnInfo)
 				DestExpressedChartX += chartColInfo.Width;
 
@@ -502,9 +503,9 @@ $@"		<div style=""height: 164px; margin-block-start: 0.0em; margin-block-end: 0.
 				destChartCols++;
 			}
 
-			sourceChartWidth += (SourceChart.NumInputs * ArrowW);
+			sourceChartWidth += SourceChart.NumInputs * ArrowW;
 			sourceChartCols += SourceChart.NumInputs;
-			destChartWidth += (DestChart.NumInputs * ArrowW);
+			destChartWidth += DestChart.NumInputs * ArrowW;
 			destChartCols += DestChart.NumInputs;
 
 			var originalChartNotePercentages = new int[SourceChart.NumInputs];
@@ -596,7 +597,7 @@ $@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}p
 			{
 				var percentage = originalChartTotalSteps == 0
 					? 0
-					: Math.Round(originalChartNotePercentages[a] / (double) originalChartTotalSteps * 100);
+					: Math.Round(originalChartNotePercentages[a] / (double)originalChartTotalSteps * 100);
 				StreamWriter.Write(
 $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{ArrowNames[a % 4]} ({percentage}%)</th>
 ");
@@ -620,7 +621,7 @@ $@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}p
 			{
 				var percentage = generatedChartTotalSteps == 0
 					? 0
-					: Math.Round(generatedChartNotePercentages[a] / (double) generatedChartTotalSteps * 100);
+					: Math.Round(generatedChartNotePercentages[a] / (double)generatedChartTotalSteps * 100);
 				StreamWriter.Write(
 $@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{ArrowNames[a % 4]} ({percentage}%)</th>
 ");
@@ -656,7 +657,7 @@ $@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBord
 			var previousTimeSignatureY = ArrowW * 0.5;
 			var previousTimeSignatureMeasure = 0;
 			var currentTimeSignature = new Fraction(SMCommon.NumBeatsPerMeasure, SMCommon.NumBeatsPerMeasure);
-			var yPerBeat = (double) BeatYSeparation;
+			var yPerBeat = (double)BeatYSeparation;
 
 			var lastHoldStarts = new int[chart.NumInputs];
 			var lastHoldWasRoll = new bool[chart.NumInputs];
@@ -667,9 +668,10 @@ $@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBord
 
 			foreach (var chartEvent in chart.Layers[0].Events)
 			{
-				double eventY = ArrowW * 0.5 + ((double)chartEvent.IntegerPosition / SMCommon.MaxValidDenominator) * BeatYSeparation;
+				var eventY = ArrowW * 0.5 + (double)chartEvent.IntegerPosition / SMCommon.MaxValidDenominator * BeatYSeparation;
 
-				while (currentExpressedChartSearchNode != null && currentExpressedChartSearchNode.Position < chartEvent.IntegerPosition)
+				while (currentExpressedChartSearchNode != null &&
+				       currentExpressedChartSearchNode.Position < chartEvent.IntegerPosition)
 					currentExpressedChartSearchNode = currentExpressedChartSearchNode.GetNextNode();
 				while (currentPerformedChartNode != null && currentPerformedChartNode.Position < chartEvent.IntegerPosition)
 					currentPerformedChartNode = currentPerformedChartNode.Next;
@@ -682,7 +684,8 @@ $@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBord
 					// Write measure markers up until this time signature change
 
 					var numMeasures = (ts.IntegerPosition - previousTimeSignatureIntegerPosition)
-						/ ((currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure) / currentTimeSignature.Denominator);
+					                  / (currentTimeSignature.Numerator * SMCommon.MaxValidDenominator *
+						                  SMCommon.NumBeatsPerMeasure / currentTimeSignature.Denominator);
 
 					WriteMeasures(
 						chartXPosition,
@@ -703,29 +706,29 @@ $@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBord
 
 				// Chart column values. Excluding measures which are handled in WriteMeasures.
 				var colX = chartXPosition;
-				var colW = ChartColumnInfo[(int) ChartColumns.TimeSignature].Width;
-				var colY = (int) (eventY - ChartTextH * .5);
+				var colW = ChartColumnInfo[(int)ChartColumns.TimeSignature].Width;
+				var colY = (int)(eventY - ChartTextH * .5);
 				string colVal = null;
 				if (chartEvent is TimeSignature tse)
 				{
 					colVal = $"{tse.Signature.Numerator}/{tse.Signature.Denominator}";
-					colX += ChartColumnInfo[(int) ChartColumns.TimeSignature].X;
+					colX += ChartColumnInfo[(int)ChartColumns.TimeSignature].X;
 				}
 				else if (chartEvent is Stop stop)
 				{
 					colVal = $"{stop.LengthSeconds}";
-					colX += ChartColumnInfo[(int) ChartColumns.Stop].X;
+					colX += ChartColumnInfo[(int)ChartColumns.Stop].X;
 				}
 				else if (chartEvent is Tempo tc)
 				{
 					colVal = $"{tc.TempoBPM}";
-					colX += ChartColumnInfo[(int) ChartColumns.BPM].X;
+					colX += ChartColumnInfo[(int)ChartColumns.BPM].X;
 				}
 
 				if (colVal != null)
 				{
 					StreamWriter.Write(
-$@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;"">{colVal}</p>
+						$@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;"">{colVal}</p>
 ");
 				}
 
@@ -737,7 +740,7 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 					else
 						WriteDestExpression(currentPerformedChartNode, eventY);
 
-					var foot = InvalidFoot;
+					int foot;
 					if (sourceChart)
 						foot = GetFootForArrow(ltn.Lane, ltn.IntegerPosition, currentExpressedChartSearchNode);
 					else
@@ -751,16 +754,16 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 					else
 						WriteDestExpression(currentPerformedChartNode, eventY);
 
-					var foot = InvalidFoot;
+					int foot;
 					if (sourceChart)
 						foot = GetFootForArrow(lhsn.Lane, lhsn.IntegerPosition, currentExpressedChartSearchNode);
 					else
 						foot = GetFootForArrow(lhsn.Lane, lhsn.IntegerPosition, currentPerformedChartNode);
 					WriteArrow(lhsn.Lane, foot, firstLaneX, eventY, lhsn.IntegerPosition);
 
-					lastHoldStarts[lhsn.Lane] = (int) eventY;
+					lastHoldStarts[lhsn.Lane] = (int)eventY;
 					lastHoldWasRoll[lhsn.Lane] =
-						lhsn.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.RollStart].ToString();
+						lhsn.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.RollStart].ToString();
 				}
 				else if (chartEvent is LaneHoldEndNote lhen)
 				{
@@ -773,7 +776,7 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 				}
 				else if (chartEvent is LaneNote ln)
 				{
-					if (ln.SourceType == SMCommon.NoteChars[(int) SMCommon.NoteType.Mine].ToString())
+					if (ln.SourceType == SMCommon.NoteChars[(int)SMCommon.NoteType.Mine].ToString())
 					{
 						// Write any expressed mine events for mines at this position.
 						if (sourceChart)
@@ -802,8 +805,9 @@ $@"			<p class=""exp_text"" style=""top:{colY}px; left:{colX}px; width:{colW}px;
 
 			// Write the final measure markers
 			var numMeasuresToWrite =
-				(chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].IntegerPosition - previousTimeSignatureIntegerPosition) 
-				/ ((currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure) / currentTimeSignature.Denominator)
+				(chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].IntegerPosition - previousTimeSignatureIntegerPosition)
+				/ (currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure /
+				   currentTimeSignature.Denominator)
 				+ 1;
 			WriteMeasures(
 				chartXPosition,
@@ -866,17 +870,31 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - h * .5)}px; left:{x}px; width
 			string suffix;
 			switch (n % 100)
 			{
-				case 11: suffix = "th"; break;
-				case 12: suffix = "th"; break;
-				case 13: suffix = "th"; break;
+				case 11:
+					suffix = "th";
+					break;
+				case 12:
+					suffix = "th";
+					break;
+				case 13:
+					suffix = "th";
+					break;
 				default:
 				{
 					switch (n % 10)
 					{
-						case 1: suffix = "st"; break;
-						case 2: suffix = "nd"; break;
-						case 3: suffix = "rd"; break;
-						default: suffix = "th"; break;
+						case 1:
+							suffix = "st";
+							break;
+						case 2:
+							suffix = "nd";
+							break;
+						case 3:
+							suffix = "rd";
+							break;
+						default:
+							suffix = "th";
+							break;
 					}
 
 					break;
@@ -901,8 +919,9 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - h * .5)}px; left:{x}px; width
 						// Left Foot
 						if (LastSourceExpressionPosition[L] < y && node.PreviousLink.GraphLink.Links[L, p].Valid)
 						{
-							var leftX = SourceExpressedChartX + SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.LeftFoot].X;
-							var stepStr = StepTypeStrings[(int) node.PreviousLink.GraphLink.Links[L, p].Step];
+							var leftX = SourceExpressedChartX +
+							            SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.LeftFoot].X;
+							var stepStr = StepTypeStrings[(int)node.PreviousLink.GraphLink.Links[L, p].Step];
 							if (node.PreviousLink.GraphLink.IsJump())
 								stepStr = "[Jump] " + stepStr;
 							StreamWriter.Write(
@@ -915,8 +934,9 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - ChartTextH * .5)}px; left:{le
 						// Right Foot
 						if (LastSourceExpressionPosition[R] < y && node.PreviousLink.GraphLink.Links[R, p].Valid)
 						{
-							var rightX = SourceExpressedChartX + SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.RightFoot].X;
-							var stepStr = StepTypeStrings[(int) node.PreviousLink.GraphLink.Links[R, p].Step];
+							var rightX = SourceExpressedChartX +
+							             SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.RightFoot].X;
+							var stepStr = StepTypeStrings[(int)node.PreviousLink.GraphLink.Links[R, p].Step];
 							if (node.PreviousLink.GraphLink.IsJump())
 								stepStr = "[Jump] " + stepStr;
 							StreamWriter.Write(
@@ -930,7 +950,8 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - ChartTextH * .5)}px; left:{ri
 					// Cost
 					if (writeCost)
 					{
-						var costX = SourceExpressedChartX + SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Cost].X;
+						var costX = SourceExpressedChartX +
+						            SourceChartExpressionColumnInfo[(int)SourceChartExpressionColumns.Cost].X;
 						StreamWriter.Write(
 $@"			<p class=""exp_text"" style=""top:{(int) (y - ChartTextH * .5)}px; left:{costX}px; width:{CostColW}px;"">{node.Cost}</p>
 ");
@@ -953,6 +974,7 @@ $@"			<p class=""exp_text"" style=""top:{(int) (y - ChartTextH * .5)}px; left:{c
 				{
 					prevLink = stepNode.GraphLinkInstance;
 				}
+
 				if (prevLink != null && !prevLink.GraphLink.IsRelease())
 				{
 					for (var p = 0; p < NumFootPortions; p++)
@@ -960,7 +982,8 @@ $@"			<p class=""exp_text"" style=""top:{(int) (y - ChartTextH * .5)}px; left:{c
 						// Left Foot
 						if (LastDestExpressionPosition[L] < y && prevLink.GraphLink.Links[L, p].Valid)
 						{
-							var leftX = DestExpressedChartX + DestChartExpressionColumnInfo[(int)DestChartExpressionColumns.LeftFoot].X;
+							var leftX = DestExpressedChartX +
+							            DestChartExpressionColumnInfo[(int)DestChartExpressionColumns.LeftFoot].X;
 							var stepStr = StepTypeStrings[(int)prevLink.GraphLink.Links[L, p].Step];
 							if (prevLink.GraphLink.IsJump())
 								stepStr = "[Jump] " + stepStr;
@@ -973,7 +996,8 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - ChartTextH * .5)}px; left:{le
 						// Right Foot
 						if (LastDestExpressionPosition[R] < y && prevLink.GraphLink.Links[R, p].Valid)
 						{
-							var rightX = DestExpressedChartX + DestChartExpressionColumnInfo[(int)DestChartExpressionColumns.RightFoot].X;
+							var rightX = DestExpressedChartX +
+							             DestChartExpressionColumnInfo[(int)DestChartExpressionColumns.RightFoot].X;
 							var stepStr = StepTypeStrings[(int)prevLink.GraphLink.Links[R, p].Step];
 							if (prevLink.GraphLink.IsJump())
 								stepStr = "[Jump] " + stepStr;
@@ -984,13 +1008,14 @@ $@"			<p class=""exp_text"" style=""top:{(int)(y - ChartTextH * .5)}px; left:{ri
 						}
 					}
 				}
+
 				node = node.Next;
 			}
 		}
 
 		private void WriteMine(int arrow, int firstLaneX, double y)
 		{
-			var x = firstLaneX + (arrow * ArrowW);
+			var x = firstLaneX + arrow * ArrowW;
 
 			StreamWriter.Write(
 $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z-index:{(int)y};""/>
@@ -1007,7 +1032,8 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 					{
 						for (var p = 0; p < NumFootPortions; p++)
 						{
-							if (node.GraphNode.State[f, p].Arrow == arrow && node.GraphNode.State[f, p].State != GraphArrowState.Lifted)
+							if (node.GraphNode.State[f, p].Arrow == arrow &&
+							    node.GraphNode.State[f, p].State != GraphArrowState.Lifted)
 							{
 								return f;
 							}
@@ -1034,7 +1060,8 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 						{
 							for (var p = 0; p < NumFootPortions; p++)
 							{
-								if (spn.GraphNodeInstance.Node.State[f, p].Arrow == arrow && spn.GraphNodeInstance.Node.State[f, p].State != GraphArrowState.Lifted)
+								if (spn.GraphNodeInstance.Node.State[f, p].Arrow == arrow &&
+								    spn.GraphNodeInstance.Node.State[f, p].State != GraphArrowState.Lifted)
 								{
 									return f;
 								}
@@ -1059,14 +1086,30 @@ $@"			<img class=""mine"" style=""top:{(int)(y - ArrowW * 0.5)}px; left:{x}px; z
 			switch (fraction.Denominator)
 			{
 				case 0:
-				case 1: imgClass = "quarter"; break;
-				case 2: imgClass = "eighth"; break;
-				case 3: imgClass = "twelfth"; break;
-				case 4: imgClass = "sixteenth"; break;
-				case 6: imgClass = "twentyfourth"; break;
-				case 8: imgClass = "thirtysecond"; break;
-				case 12: imgClass = "fourtyeighth"; break;
-				default: imgClass = "sixtyfourth"; break;
+				case 1:
+					imgClass = "quarter";
+					break;
+				case 2:
+					imgClass = "eighth";
+					break;
+				case 3:
+					imgClass = "twelfth";
+					break;
+				case 4:
+					imgClass = "sixteenth";
+					break;
+				case 6:
+					imgClass = "twentyfourth";
+					break;
+				case 8:
+					imgClass = "thirtysecond";
+					break;
+				case 12:
+					imgClass = "fourtyeighth";
+					break;
+				default:
+					imgClass = "sixtyfourth";
+					break;
 			}
 
 			string classStr;
@@ -1104,15 +1147,16 @@ $@"			<img class=""{cap}"" style=""top:{(int)endY}px; left:{x}px; z-index:{(int)
 ");
 		}
 
-		private void WriteMeasures(int x, double startY, double yPerBeat, Fraction timeSignature, int currentMeasure, int numMeasures, int numArrows)
+		private void WriteMeasures(int x, double startY, double yPerBeat, Fraction timeSignature, int currentMeasure,
+			int numMeasures, int numArrows)
 		{
 			var barX = x;
 			foreach (var chartCol in ChartColumnInfo)
 				barX += chartCol.Width;
 			var barW = numArrows * ArrowW;
 
-			var mmX = x + ChartColumnInfo[(int) ChartColumns.Measure].X;
-			var mmW = ChartColumnInfo[(int) ChartColumns.Measure].Width;
+			var mmX = x + ChartColumnInfo[(int)ChartColumns.Measure].X;
+			var mmW = ChartColumnInfo[(int)ChartColumns.Measure].Width;
 			var mmH = ChartTextH;
 
 			for (var m = 0; m < numMeasures; m++)

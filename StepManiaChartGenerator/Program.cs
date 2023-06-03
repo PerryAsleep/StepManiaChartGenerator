@@ -37,6 +37,7 @@ namespace StepManiaChartGenerator
 		/// Regular expression for parsing the deprecated version out of a Chart's Description field.
 		/// </summary>
 		private const string FumenGeneratedFormattedDeprecatedVersionRegexPattern = @"^\[FG v([0-9]+)\.([0-9]+)\].*";
+
 		/// <summary>
 		/// Regular expression for parsing the semantic version out of a Chart's Description field.
 		/// </summary>
@@ -77,7 +78,7 @@ namespace StepManiaChartGenerator
 		/// Supported file formats for reading and writing.
 		/// </summary>
 		private static readonly List<FileFormatType> SupportedFileFormats = new List<FileFormatType>
-			{FileFormatType.SM, FileFormatType.SSC};
+			{ FileFormatType.SM, FileFormatType.SSC };
 
 		/// <summary>
 		/// Time of the start of the export.
@@ -142,7 +143,7 @@ namespace StepManiaChartGenerator
 			Logger.StartUp(new Logger.Config
 			{
 				WriteToConsole = true,
-				Level = LogLevel.Error
+				Level = LogLevel.Error,
 			});
 
 			// Load Config.
@@ -154,6 +155,7 @@ namespace StepManiaChartGenerator
 			var loggerSuccess = CreateLogger();
 
 			// Validate Config, even if creating the logger failed. This will still log errors to the console.
+			// ReSharper disable once PossibleNullReferenceException
 			if (!config.Validate() || !loggerSuccess)
 				Exit(false);
 
@@ -272,6 +274,7 @@ namespace StepManiaChartGenerator
 		/// Loads the StepGraph for the given stepsType.
 		/// </summary>
 		/// <param name="stepsType">Stepmania StepsType to load the StepGraph for.</param>
+		/// <param name="padData">PadData for the given StepsType.</param>
 		/// <returns>Loaded StepGraph or null if any errors were generated.</returns>
 		private static async Task<StepGraph> LoadStepGraph(string stepsType, PadData padData)
 		{
@@ -341,7 +344,7 @@ namespace StepManiaChartGenerator
 						LogFilePath = logFilePath,
 						LogFileFlushIntervalSeconds = config.LogFlushIntervalSeconds,
 						LogFileBufferSizeBytes = config.LogBufferSizeBytes,
-						WriteToBuffer = false
+						WriteToBuffer = false,
 					});
 				}
 				else if (config.LogToConsole)
@@ -351,7 +354,7 @@ namespace StepManiaChartGenerator
 						Level = config.LogLevel,
 						WriteToConsole = true,
 						WriteToFile = false,
-						WriteToBuffer = false
+						WriteToBuffer = false,
 					});
 				}
 			}
@@ -446,7 +449,7 @@ namespace StepManiaChartGenerator
 					var subDirs = Directory.GetDirectories(currentDir);
 					// Reverse sort the subdirectories since we use a queue to pop.
 					// Sorting helps the user get a rough idea of progress, and makes it easier to tell if a song pack is complete.
-					Array.Sort(subDirs, (a, b) => String.Compare(b, a, StringComparison.CurrentCultureIgnoreCase));
+					Array.Sort(subDirs, (a, b) => string.Compare(b, a, StringComparison.CurrentCultureIgnoreCase));
 					foreach (var str in subDirs)
 						dirs.Push(str);
 				}
@@ -516,7 +519,7 @@ namespace StepManiaChartGenerator
 						FileInfo = fi,
 						CurrentDir = currentDir,
 						RelativePath = relativePath,
-						SaveDir = saveDir
+						SaveDir = saveDir,
 					}));
 				}
 
@@ -583,10 +586,10 @@ namespace StepManiaChartGenerator
 			switch (fileFormat.Type)
 			{
 				case FileFormatType.SM:
-					new SMWriter(config).Save();
+					await new SMWriter(config).SaveAsync();
 					break;
 				case FileFormatType.SSC:
-					new SSCWriter(config).Save();
+					await new SSCWriter(config).SaveAsync();
 					break;
 				default:
 					LogError("Unsupported file format. Cannot save.", songArgs.FileInfo, songArgs.RelativePath);
@@ -716,9 +719,9 @@ namespace StepManiaChartGenerator
 						Extras = chart.Extras,
 						Type = Config.Instance.OutputChartType,
 						NumPlayers = 1,
-						NumInputs = OutputStepGraph.NumArrows
+						NumInputs = OutputStepGraph.NumArrows,
 					};
-					newChart.Layers.Add(new Layer {Events = events});
+					newChart.Layers.Add(new Layer { Events = events });
 					newCharts.Add(newChart);
 
 					LogInfo(
@@ -746,7 +749,6 @@ namespace StepManiaChartGenerator
 								expressedChart,
 								eccName,
 								performedChart,
-								pccName,
 								newChart
 							);
 							visualizer.Write();
@@ -780,7 +782,8 @@ namespace StepManiaChartGenerator
 		/// <summary>
 		/// Warns when steps were dropped if configured to do so.
 		/// </summary>
-		private static void WarnOnDroppedSteps(List<Event> sourceEvents, List<Event> destEvents, Song song, SongArgs songArgs, Chart chart)
+		private static void WarnOnDroppedSteps(List<Event> sourceEvents, List<Event> destEvents, Song song, SongArgs songArgs,
+			Chart chart)
 		{
 			if (!Config.Instance.WarnOnDroppedSteps || destEvents.Count == sourceEvents.Count)
 				return;
@@ -818,7 +821,7 @@ namespace StepManiaChartGenerator
 
 				if (numDestSteps != numSourceSteps)
 					positionsOfMissingSteps.Add(newPosition);
-				numDroppedMines += (numSourceMines - numDestMines);
+				numDroppedMines += numSourceMines - numDestMines;
 
 				if (sourceEventIndex >= sourceEvents.Count)
 					break;
@@ -835,6 +838,7 @@ namespace StepManiaChartGenerator
 					sb.Append(pos.ToString());
 					first = false;
 				}
+
 				if (positionsOfMissingSteps.Count > 1)
 				{
 					LogWarn($"Dropped {positionsOfMissingSteps.Count} steps at positions: [{sb}].",
@@ -846,6 +850,7 @@ namespace StepManiaChartGenerator
 						songArgs.FileInfo, songArgs.RelativePath, song, chart);
 				}
 			}
+
 			if (numDroppedMines > 0)
 			{
 				if (numDroppedMines > 1)
@@ -996,16 +1001,16 @@ namespace StepManiaChartGenerator
 				return false;
 
 			// Try the semantic version
-			var match = Regex.Match(chart.Description, FumenGeneratedFormattedSemanticVersionRegexPattern, RegexOptions.IgnoreCase);
+			var match = Regex.Match(chart.Description, FumenGeneratedFormattedSemanticVersionRegexPattern,
+				RegexOptions.IgnoreCase);
 			if (match.Success && match.Groups.Count == 4
-				&& match.Groups[1].Captures.Count == 1
-				&& match.Groups[2].Captures.Count == 1
-				&& match.Groups[3].Captures.Count == 1)
+			                  && match.Groups[1].Captures.Count == 1
+			                  && match.Groups[2].Captures.Count == 1
+			                  && match.Groups[3].Captures.Count == 1)
 			{
-				int major, minor, patch;
-				if (int.TryParse((match.Groups[1].Captures[0].Value), out major)
-					&& int.TryParse((match.Groups[2].Captures[0].Value), out minor)
-					&& int.TryParse((match.Groups[3].Captures[0].Value), out patch))
+				if (int.TryParse(match.Groups[1].Captures[0].Value, out var major)
+				    && int.TryParse(match.Groups[2].Captures[0].Value, out var minor)
+				    && int.TryParse(match.Groups[3].Captures[0].Value, out var patch))
 				{
 					version = new SemanticVersion(major, minor, patch);
 					return true;
@@ -1015,17 +1020,17 @@ namespace StepManiaChartGenerator
 			// Try the old deprecated version
 			match = Regex.Match(chart.Description, FumenGeneratedFormattedDeprecatedVersionRegexPattern, RegexOptions.IgnoreCase);
 			if (match.Success && match.Groups.Count == 3
-				&& match.Groups[1].Captures.Count == 1
-				&& match.Groups[2].Captures.Count == 1)
+			                  && match.Groups[1].Captures.Count == 1
+			                  && match.Groups[2].Captures.Count == 1)
 			{
-				int major, minor;
-				if (int.TryParse((match.Groups[1].Captures[0].Value), out major)
-					&& int.TryParse((match.Groups[2].Captures[0].Value), out minor))
+				if (int.TryParse(match.Groups[1].Captures[0].Value, out var major)
+				    && int.TryParse(match.Groups[2].Captures[0].Value, out var minor))
 				{
 					version = new SemanticVersion(major, minor, 0);
 					return true;
 				}
 			}
+
 			return false;
 		}
 
@@ -1081,7 +1086,7 @@ namespace StepManiaChartGenerator
 			while (sourceIndex < sourceCount)
 			{
 				var row = source[sourceIndex].IntegerPosition;
-				
+
 				// Some events like TempoChanges do not have Extras for the original position.
 				source[sourceIndex].Extras.TryGetSourceExtra(TagFumenNoteOriginalMeasurePosition, out Fraction f);
 				while (sourceIndex < sourceCount && source[sourceIndex].IntegerPosition == row)
@@ -1099,6 +1104,7 @@ namespace StepManiaChartGenerator
 					{
 						dest[destIndex].Extras.AddDestExtra(TagFumenNoteOriginalMeasurePosition, f);
 					}
+
 					destIndex++;
 				}
 			}
