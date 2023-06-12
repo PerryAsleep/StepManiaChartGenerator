@@ -77,19 +77,19 @@
 		{
 			"ArrowWeights":
 			{
-				"dance-single": [25, 25, 25, 25],					// Determined without parsing charts.
-				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],		// Determined by parsing a large number of community-made charts.
-				"dance-solo": [13, 12, 25, 25, 12, 13],				// Determined without parsing charts.
-				"dance-threepanel": [25, 50, 25],					// Determined without parsing charts.
+				"dance-single": [25, 25, 25, 25],						// Determined without parsing charts.
+				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],			// Determined by parsing a large number of community-made charts.
+				"dance-solo": [13, 12, 25, 25, 12, 13],					// Determined without parsing charts.
+				"dance-threepanel": [25, 50, 25],						// Determined without parsing charts.
 
-				"pump_single": [17, 16, 34, 16, 17],				// TODO: Determine actual values from parsing charts.
-				"pump_halfdouble": [],								// TODO: Determine actual values from parsing charts.
-				"pump_double": [],									// TODO: Determine actual values from parsing charts.
+				"pump-single": [17, 16, 34, 16, 17],					// Determined without parsing charts.
+				"pump-halfdouble": [25, 12, 13, 13, 12, 25],			// Determined without parsing charts.
+				"pump-double": [4, 4, 17, 12, 13, 13, 12, 17, 4, 4],	// Determined without parsing charts.
 
-				"smx_beginner": [25, 50, 25],						// Determined without parsing charts.
-				"smx_single": [25, 21, 8, 21, 25],					// Determined by parsing a small number of SMX charts.
-				"smx_dual": [8, 17, 25, 25, 17, 8],					// Determined without parsing charts.
-				"smx_full": [6, 8, 7, 8, 22, 22, 8, 7, 8, 6],		// Determined by parsing a small number of SMX charts.
+				"smx-beginner": [25, 50, 25],							// Determined without parsing charts.
+				"smx-single": [25, 21, 8, 21, 25],						// Determined by parsing a small number of SMX charts.
+				"smx-dual": [8, 17, 25, 25, 17, 8],						// Determined without parsing charts.
+				"smx-full": [6, 8, 7, 8, 22, 22, 8, 7, 8, 6],			// Determined by parsing a small number of SMX charts.
 			},
 
 			"StepTightening":
