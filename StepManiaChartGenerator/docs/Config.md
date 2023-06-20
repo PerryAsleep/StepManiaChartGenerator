@@ -81,6 +81,17 @@ ChartConverter's behavior can be configured via the `StepManiaChartGeneratorConf
 			{
 				"dance-single": [25, 25, 25, 25],
 				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],
+				"dance-solo": [13, 12, 25, 25, 12, 13],
+				"dance-threepanel": [25, 50, 25],
+
+				"pump-single": [17, 16, 34, 16, 17],
+				"pump-halfdouble": [25, 12, 13, 13, 12, 25],
+				"pump-double": [4, 4, 17, 12, 13, 13, 12, 17, 4, 4],
+
+				"smx-beginner": [25, 50, 25],
+				"smx-single": [25, 21, 8, 21, 25],
+				"smx-dual": [8, 17, 25, 25, 17, 8],
+				"smx-full": [6, 8, 7, 8, 22, 22, 8, 7, 8, 6],
 			},
 
 			"StepTightening":
