@@ -300,7 +300,8 @@ $@"<head>
 	<style>
 body {{
   font-family: Arial;
-  background: #f3f3f3;
+  background: #1e1e1e;
+  color: #dcdcdc;
   border: none;
   padding: none;
   margin: 0px;
@@ -433,15 +434,15 @@ p {{
 }}
 .m_mark {{
 	position:absolute;
-	height:10px;
+	height:2px;
 	border:none;
-	background: #929292;
+	background: #eaeaea;
 }}
 .b_mark {{
 	position:absolute;
-	height:6px;
+	height:1px;
 	border:none;
-	background: #929292;
+	background: #d3d3d3;
 }}
 #holdbody {{
 	border: none;
@@ -478,8 +479,8 @@ p {{
 			StreamWriter.Write(
 $@"		<div style=""height: 164px; margin-block-start: 0.0em; margin-block-end: 0.0em;"">
 			<img style=""float: left; width: {BannerW}x; height: {BannerH}px; margin-block-start: 0.0em; margin-block-end: 0.0em;"" src=""{img}""/>
-			<h1 style=""text-align: left; font-size: 50px; margin-block-start: 0.0em; margin-block-end: 0.0em;"">{title}{subtitle}</h1>
-			<h3 style=""text-align: left; font-size: 30px; margin-block-start: 0.0em; margin-block-end: 0.0em;"">{artist}</h3>
+			<h1 style=""text-align: left; font-size: 50px; color:#ffffff; margin-block-start: 0.0em; margin-block-end: 0.0em;"">{title}{subtitle}</h1>
+			<h3 style=""text-align: left; font-size: 30px; color:#ffffff; margin-block-start: 0.0em; margin-block-end: 0.0em;"">{artist}</h3>
 		</div>
 ");
 		}
@@ -576,12 +577,12 @@ $@"		<div style=""height: 164px; margin-block-start: 0.0em; margin-block-end: 0.
 
 			StreamWriter.Write(
 $@"		<div id=""chartHeaders"" style=""z-index:10000000; border:none; margin-block-start: 0.0em; margin-block-end: 0.0em;"">
-			<table style=""border-collapse: collapse; background: #dbdbdb; width: {fullWidth}px;"">
+			<table style=""border-collapse: collapse; background: #252526; width: {fullWidth}px;"">
 				<tr>
-					<th colspan=""{sourceChartCols}"" style=""table-layout: fixed; width: {sourceChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{sourceChartTitle}</th>
-					<th colspan=""{sourceExpressedChartCols}"" style=""table-layout: fixed; width: {sourceExpressedChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">Source Expression [{ExpressedChartConfigName}] (BracketParsingMethod: {ExpressedChart.GetBracketParsingMethod():G})</th>
-					<th colspan=""{destChartCols}"" style=""table-layout: fixed; width: {destChartWidth}x; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{destChartTitle}</th>
-					<th colspan=""{destExpressedChartCols}"" style=""table-layout: fixed; width: {destExpressedChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">Destination Expression</th>
+					<th colspan=""{sourceChartCols}"" style=""table-layout: fixed; width: {sourceChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{sourceChartTitle}</th>
+					<th colspan=""{sourceExpressedChartCols}"" style=""table-layout: fixed; width: {sourceExpressedChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">Source Expression [{ExpressedChartConfigName}] (BracketParsingMethod: {ExpressedChart.GetBracketParsingMethod():G})</th>
+					<th colspan=""{destChartCols}"" style=""table-layout: fixed; width: {destChartWidth}x; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{destChartTitle}</th>
+					<th colspan=""{destExpressedChartCols}"" style=""table-layout: fixed; width: {destExpressedChartWidth}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">Destination Expression</th>
 				</tr>
 				<tr>
 ");
@@ -589,7 +590,7 @@ $@"		<div id=""chartHeaders"" style=""z-index:10000000; border:none; margin-bloc
 			foreach (var chartCol in ChartColumnInfo)
 			{
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{chartCol.Name}</th>
+$@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{chartCol.Name}</th>
 ");
 			}
 
@@ -599,21 +600,21 @@ $@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}p
 					? 0
 					: Math.Round(originalChartNotePercentages[a] / (double)originalChartTotalSteps * 100);
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{ArrowNames[a % 4]} ({percentage}%)</th>
+$@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{ArrowNames[a % 4]} ({percentage}%)</th>
 ");
 			}
 
 			foreach (var expressionCol in SourceChartExpressionColumnInfo)
 			{
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{expressionCol.Name}</th>
+$@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{expressionCol.Name}</th>
 ");
 			}
 
 			foreach (var chartCol in ChartColumnInfo)
 			{
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{chartCol.Name}</th>
+$@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{chartCol.Name}</th>
 ");
 			}
 
@@ -623,14 +624,14 @@ $@"					<th style=""table-layout: fixed; width: {chartCol.Width - TableBorderW}p
 					? 0
 					: Math.Round(generatedChartNotePercentages[a] / (double)generatedChartTotalSteps * 100);
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{ArrowNames[a % 4]} ({percentage}%)</th>
+$@"					<th style=""table-layout: fixed; width: {ArrowW - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{ArrowNames[a % 4]} ({percentage}%)</th>
 ");
 			}
 
 			foreach (var expressionCol in DestChartExpressionColumnInfo)
 			{
 				StreamWriter.Write(
-$@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid black"">{expressionCol.Name}</th>
+$@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBorderW}px; height: {colH}px; padding: 0px; border: {TableBorderW}px solid white"">{expressionCol.Name}</th>
 ");
 			}
 
