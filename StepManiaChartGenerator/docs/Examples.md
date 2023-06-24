@@ -2,6 +2,8 @@
 
 Below are some examples of singles charts that have been converted into doubles charts.
 
+Vidoes were taken on v1.0.0 exports and visualizations have been updated with v2.0.0 exports, so they may differ slightly.
+
 ## Technical Charts
 
 ### [Barracuda](http://htmlpreview.github.io/?https://github.com/PerryAsleep/Fumen/blob/main/StepManiaChartGenerator/docs/Visualizations/Barracuda/Barracuda-Challenge-ssc.html) [11] (Valex's Magical 4-Arrow Adventure 10)
