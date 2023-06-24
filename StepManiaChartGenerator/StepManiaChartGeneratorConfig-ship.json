@@ -1,5 +1,5 @@
 // See the configuration guide for details:
-// https://github.com/PerryAsleep/Fumen/blob/master/StepManiaChartGenerator/docs/Config.md
+// https://github.com/PerryAsleep/Fumen/blob/main/StepManiaChartGenerator/docs/Config.md
 {
 	// Logger configuration.
 	"LoggerConfig":
@@ -100,6 +100,8 @@
 				"TravelDistanceMax": 3.0,
 				"StretchDistanceMin": 3.0,
 				"StretchDistanceMax": 4.0,
+				"DistanceCompensationX": 0.0,
+				"DistanceCompensationY": 0.5,
 			},
 
 			"LateralTightening":
