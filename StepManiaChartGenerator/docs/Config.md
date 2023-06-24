@@ -98,10 +98,12 @@ ChartConverter's behavior can be configured via the `StepManiaChartGeneratorConf
 			{
 				"TravelSpeedMinTimeSeconds": 0.176471,	// 16ths at 170
 				"TravelSpeedMaxTimeSeconds": 0.24,		// 16ths at 125
-				"TravelDistanceMin": 2.5,
+				"TravelDistanceMin": 2.25,
 				"TravelDistanceMax": 3.0,
 				"StretchDistanceMin": 3.0,
 				"StretchDistanceMax": 4.0,
+				"DistanceCompensationX": 0.0,
+				"DistanceCompensationY": 0.5,
 			},
 
 			"LateralTightening":
