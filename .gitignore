@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Fumen
+message.txt
+StepManiaChartGeneratorConfig-*.json
+!StepManiaChartGeneratorConfig.json
+!StepManiaChartGeneratorConfig-ship.json
+
 # User-specific files
 *.rsuser
 *.suo
