@@ -6,8 +6,11 @@ It understands most technical moves including crossovers, inverted steps (a.k.a 
 
 ## Examples
 
-[<img src="StepManiaChartGenerator/docs/Images/conversion-example.png" width="100%"/>](Images/conversion-example.png)
-*Example conversion of a dance-double chart to a variety of other chart types.*
+*Screnshots from [GrooveAuthor](https://github.com/PerryAsleep/GrooveAuthor) of a dance-double chart converted to a variety of other chart types.*
+[<img src="StepManiaChartGenerator/docs/Images/conversion-example.png" width="100%"/>](StepManiaChartGenerator/docs/Images/conversion-example.png)
+
+*Visualization of a dance-single chart converted to a dance-double chart.*
+[<img src="StepManiaChartGenerator/docs/visualization-example.png" width="100%"/>](https://perryasleep.github.io/StepManiaChartGenerator/StepManiaChartGenerator/docs/Visualizations/(NG%20-%2011)%20Zora/zora-Challenge-sm.html)
 
 See the [Examples](StepManiaChartGenerator/docs/Examples.md) page for [Visualizations](StepManiaChartGenerator/docs/Visualizations.md) of how charts are converted and some videos of generated doubles charts being played.
 
