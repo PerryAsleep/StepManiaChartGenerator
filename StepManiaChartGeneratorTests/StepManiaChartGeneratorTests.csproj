@@ -53,16 +53,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fumen\Fumen.csproj">
-      <Project>{3829baad-4cd4-45d0-812f-efdf3b733ae9}</Project>
-      <Name>Fumen</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StepManiaChartGenerator\StepManiaChartGenerator.csproj">
       <Project>{e9c2b7dc-e05d-4930-a36f-33637d726456}</Project>
       <Name>StepManiaChartGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StepManiaLibrary\Fumen\Fumen\Fumen.csproj">
+      <Project>{752e7a93-42d4-4d60-8f40-ed049cffaf96}</Project>
+      <Name>Fumen</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
