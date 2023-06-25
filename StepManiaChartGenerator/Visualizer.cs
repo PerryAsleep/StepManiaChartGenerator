@@ -29,8 +29,8 @@ namespace StepManiaChartGenerator
 		private const int ExpressionColW = 256;
 
 		private const int BeatYSeparation = ArrowW * 2;
-		private const int MeasureMarkerH = 10;
-		private const int BeatMarkerH = 6;
+		private const int MeasureMarkerH = 2;
+		private const int BeatMarkerH = 1;
 		private const int ChartTextH = 20;
 
 		private static string VisualizationDir;
@@ -434,13 +434,13 @@ p {{
 }}
 .m_mark {{
 	position:absolute;
-	height:2px;
+	height:{MeasureMarkerH}px;
 	border:none;
 	background: #eaeaea;
 }}
 .b_mark {{
 	position:absolute;
-	height:1px;
+	height:{BeatMarkerH}px;
 	border:none;
 	background: #d3d3d3;
 }}
