@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaLibraryTests", "St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaChartGeneratorTests", "StepManiaChartGeneratorTests\StepManiaChartGeneratorTests.csproj", "{4C432230-AA56-4D1F-9D19-5A17551465A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageBuild", "PackageBuild\PackageBuild.csproj", "{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4C432230-AA56-4D1F-9D19-5A17551465A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C432230-AA56-4D1F-9D19-5A17551465A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C432230-AA56-4D1F-9D19-5A17551465A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
