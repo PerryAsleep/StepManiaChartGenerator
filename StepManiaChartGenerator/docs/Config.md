@@ -217,13 +217,13 @@ See [ExpressedChart Configuration](https://github.com/PerryAsleep/StepManiaLibra
 	- **FileRegex**: String type. [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) for matching a chart's file name with full path.
 	- **DifficultyRegex**: String type. [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) for matching StepMania [DifficultyNames](https://github.com/stepmania/stepmania/blob/6a645b4710dd6a89a5f22a2d849e86a98af5c9a3/src/Difficulty.cpp#L12) for a chart. `"."` will match all difficulties.
 	- **Config**: String type. Identifier of the `ExpressedChartConfig` object within the `ExpressedChartConfigs` object to use.
-- **ExpressedChartConfigs**: Object type. A Dictionary of string keys representing `ExpressedChartConfig` identifiers to `ExpressedChartConfig` objects. 
+- **ExpressedChartConfigs**: Object type. A Dictionary of string keys representing `ExpressedChartConfig` identifiers to `ExpressedChartConfig` objects.
 
 ## Performed Chart Behavior Configuration
 
 See [PerformedChart Configuration](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-configuration).
 
-[PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/PerformedChart.md) behavior is controlled through `PerformedChartConfig` objects. A `DefaultPerformedChartConfig` must be specified. Multiple `PerformedChartConfigs` may exist, and `PerformedChartConfigRules` can be used to control which charts use which `PerformedChartConfig`.
+[PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/PerformedChart.md) behavior is controlled through [PerformedChartConfig](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-configuration) objects. A `DefaultPerformedChartConfig` must be specified. Multiple `PerformedChartConfigs` may exist, and `PerformedChartConfigRules` can be used to control which charts use which `PerformedChartConfig`.
 
 All `PerformedChartConfigs` other than the `DefaultPerformedChartConfig` may omit parameters. Omitted parameters will fallback to those specified in the `DefaultPerformedChartConfig`.
 
