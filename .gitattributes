@@ -1,4 +1,10 @@
 ###############################################################################
+# Disable linguist consideration of html visualizations so github doesn't show
+# the project as containing html source.
+###############################################################################
+*.html linguist-vendored=false
+
+###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
