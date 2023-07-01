@@ -1,5 +1,4 @@
-// See the configuration guide for details:
-// https://github.com/PerryAsleep/Fumen/blob/main/StepManiaChartGenerator/docs/Config.md
+// See docs/Config.md for details.
 {
 	// Logger configuration.
 	"LoggerConfig":
@@ -94,40 +93,84 @@
 
 			"StepTightening":
 			{
-				"TravelSpeedMinTimeSeconds": 0.176471,	// 16ths at 170
-				"TravelSpeedMaxTimeSeconds": 0.24,		// 16ths at 125
-				"TravelDistanceMin": 2.25,
-				"TravelDistanceMax": 3.0,
-				"StretchDistanceMin": 3.0,
-				"StretchDistanceMax": 4.0,
+				// Do not modify the x dimension for distance measurements.
 				"DistanceCompensationX": 0.0,
+				// Subtract a half arrow from the y dimension for distance measurements.
 				"DistanceCompensationY": 0.5,
+				
+				// Enable distance tightening.
+				"DistanceTighteningEnabled": true,
+				// Start limiting steps moving at 2.25 arrow lengths.
+				"DistanceMin": 2.25,
+				// Stop increasing costs for moves at 3 arrow lengths.
+				"DistanceMax": 3.0,
+
+				// Enable speed tightening.
+				"SpeedTighteningEnabled": true,
+				// Stop increasing costs at 16th notes at 170bpm.
+				"SpeedMinTimeSeconds": 0.176471,
+				// Start limiting at 16th notes at 125bpm.
+				"SpeedMaxTimeSeconds": 0.24,
+
+				// Enable stretch tightening.
+				"StretchTighteningEnabled": true,
+				// Start limiting stretch moving at 3 arrow lengths.
+				"StretchDistanceMin": 3.0,
+				// Stop increasing costs for stretch moves at 4 arrow lengths.
+				"StretchDistanceMax": 4.0,
 			},
 
 			"LateralTightening":
 			{
+				// Enable lateral tightening.
+				"Enabled": true,
+				// Penalize lateral movement steps that are 1.65 times as dense as the chart average.
 				"RelativeNPS": 1.65,
+				// Penalize lateral movement steps that are over 12 notes per second.
 				"AbsoluteNPS": 12.0,
+				// The body must be moving at least 3 arrow widths per second for lateral tightening to penalize steps.
 				"Speed": 3.0,
 			},
 
 			"Facing":
 			{
+				// Do not penalize inward facing steps.
 				"MaxInwardPercentage": 1.0,
+				"InwardPercentageCutoff": 0.5,
+				// Do not penalize outward facing steps.
 				"MaxOutwardPercentage": 1.0,
+				"OutwardPercentageCutoff": 0.5,
+			},
+
+			"Transitions":
+			{
+				// Do not enable transition limits.
+				"Enabled": false,
 			},
 		},
-
-		// Stamina settings are the same as default settings with a higher threshold for
-		// StepTightening.TravelSpeedMaxTimeSeconds. This higher threshold would tighten up
-		// normal charts too aggressively but for stamina charts it is better to err on
-		// tight steps, especially for doubles. Even bpms in the low 110s feel bad when
-		// streaming 16ths and having to move more than a bracket distance.
 		"Stamina":
 		{
 			"StepTightening":
 			{
+				// This higher threshold would tighten up
+				// normal charts too aggressively but for stamina charts it is better to err on
+				// tight steps, especially for doubles. Even bpms in the low 110s feel bad when
+				// streaming 16ths and having to move more than a bracket distance.
 				"TravelSpeedMaxTimeSeconds": 0.303,		// 16ths at 99
+			},
+
+			"Transitions":
+			{
+				// Limit transitions for stamina charts.
+				"Enabled": true,
+				// Prefer steps which do not transition more than once every two measures.
+				"StepsPerTransitionMin": 32,
+				// Do not penalize slow transitions.
+				"StepsPerTransitionMax": 1024,
+				// Don't limit transitions for narrow ChartTypes.
+				"MinimumPadWidth": 5,
+				// Consider a transition to be moving from one half of the pads to the other half.
+				"TransitionCutoffPercentage": 0.5,
 			},
 		},
 	},

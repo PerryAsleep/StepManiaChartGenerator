@@ -2,15 +2,15 @@
 
 `StepManiaChartGenerator` is an application for converting [StepMania](https://www.stepmania.com/) charts into other types of StepMania charts that maintain the qualities of the original charts and feel natural.
 
-It understands most technical moves including crossovers, inverted steps (a.k.a Afronova walks), footswaps, brackets, and stretch, and it offers fine controls for tuning generated charts.
+It understands technical moves including crossovers, inverted steps (a.k.a Afronova walks), footswaps, brackets, and stretch, and it offers fine controls for tuning generated charts.
 
 ## Examples
 
-*Screnshots from [GrooveAuthor](https://github.com/PerryAsleep/GrooveAuthor) of a dance-double chart converted to a variety of other chart types.*
 [<img src="StepManiaChartGenerator/docs/Images/conversion-example.png" width="100%"/>](StepManiaChartGenerator/docs/Images/conversion-example.png)
+*Screenshots from [GrooveAuthor](https://github.com/PerryAsleep/GrooveAuthor) of a dance-double chart converted to a variety of other chart types.*
 
-*Visualization of a dance-single chart converted to a dance-double chart.*
 [<img src="StepManiaChartGenerator/docs/visualization-example.png" width="100%"/>](https://perryasleep.github.io/StepManiaChartGenerator/StepManiaChartGenerator/docs/Visualizations/(NG%20-%2011)%20Zora/zora-Challenge-sm.html)
+*Visualization of a dance-single chart converted to a dance-double chart.*
 
 See the [Examples](StepManiaChartGenerator/docs/Examples.md) page for [Visualizations](StepManiaChartGenerator/docs/Visualizations.md) of how charts are converted and some videos of generated doubles charts being played.
 
