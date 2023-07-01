@@ -1,21 +1,21 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumen", "StepManiaLibrary\Fumen\Fumen\Fumen.csproj", "{752E7A93-42D4-4D60-8F40-ED049CFFAF96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FumenTests", "StepManiaLibrary\Fumen\FumenTests\FumenTests.csproj", "{6129C91B-F26B-423F-97EC-B4D4A7ECB631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FumenTests", "StepManiaLibrary\Fumen\FumenTests\FumenTests.csproj", "{6129C91B-F26B-423F-97EC-B4D4A7ECB631}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaLibrary", "StepManiaLibrary\StepManiaLibrary\StepManiaLibrary.csproj", "{0442A9A8-0AD1-4275-9575-B30E71F2A57E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepManiaLibrary", "StepManiaLibrary\StepManiaLibrary\StepManiaLibrary.csproj", "{0442A9A8-0AD1-4275-9575-B30E71F2A57E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaChartGenerator", "StepManiaChartGenerator\StepManiaChartGenerator.csproj", "{E9C2B7DC-E05D-4930-A36F-33637D726456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepManiaChartGenerator", "StepManiaChartGenerator\StepManiaChartGenerator.csproj", "{E9C2B7DC-E05D-4930-A36F-33637D726456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaLibraryTests", "StepManiaLibrary\StepManiaLibraryTests\StepManiaLibraryTests.csproj", "{1D6C7634-1F39-4FC0-B8F3-97FD0A9544E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepManiaLibraryTests", "StepManiaLibrary\StepManiaLibraryTests\StepManiaLibraryTests.csproj", "{1D6C7634-1F39-4FC0-B8F3-97FD0A9544E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepManiaChartGeneratorTests", "StepManiaChartGeneratorTests\StepManiaChartGeneratorTests.csproj", "{4C432230-AA56-4D1F-9D19-5A17551465A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepManiaChartGeneratorTests", "StepManiaChartGeneratorTests\StepManiaChartGeneratorTests.csproj", "{4C432230-AA56-4D1F-9D19-5A17551465A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageBuild", "PackageBuild\PackageBuild.csproj", "{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackageBuild", "PackageBuild\PackageBuild.csproj", "{9631FBCC-8AB1-44F2-A29E-6A1287F5F790}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

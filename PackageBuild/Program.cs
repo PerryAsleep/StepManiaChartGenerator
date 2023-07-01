@@ -12,7 +12,7 @@ const string relativeReadme = $"..\\..\\..\\..\\{readmeName}";
 const string relativeDocsPath = $"..\\..\\..\\..\\{appName}\\docs";
 const string relativeLibraryDocsPath = "..\\..\\..\\..\\StepManiaLibrary\\StepManiaLibrary\\docs";
 const string relativeSlnPath = $"{relativeProjectRoot}\\{appName}.sln";
-const string relativeExeFolderPath = $"{relativeProjectRoot}\\{projectName}\\bin\\Release";
+const string relativeExeFolderPath = $"{relativeProjectRoot}\\{projectName}\\bin\\Release\\net7.0";
 const string relativeExePath = $"{relativeExeFolderPath}\\{appName}.exe";
 const string relativeReleasesFolderPath = $"{relativeProjectRoot}\\Releases";
 
@@ -99,27 +99,35 @@ if (string.IsNullOrEmpty(sevenZipPath))
 }
 
 // Rebuild project.
-Console.WriteLine($"Rebuilding {projectName} project.");
+// This is split into separate Clean and Build steps to work around an issue in Visual Studio
+// where Rebuild commands fail due to deleting and not restoring nuget packages.
+Console.WriteLine($"Cleaning {projectName} project.");
 var process = new Process();
 process.StartInfo.FileName = devEnvPath;
-process.StartInfo.Arguments = $"{relativeSlnPath} /Rebuild Release /Project {projectName}";
+process.StartInfo.Arguments = $"{relativeSlnPath} /Clean Release /Project {projectName}";
 process.Start();
 process.WaitForExit();
 if (process.ExitCode != 0)
 {
-	Console.WriteLine($"Rebuilding {projectName} failed with error code {process.ExitCode}.");
+	Console.WriteLine($"Cleaning {projectName} failed with error code {process.ExitCode}.");
+	return 1;
+}
+
+Console.WriteLine($"Building {projectName} project.");
+process = new Process();
+process.StartInfo.FileName = devEnvPath;
+process.StartInfo.Arguments = $"{relativeSlnPath} /Build Release /Project {projectName}";
+process.Start();
+process.WaitForExit();
+if (process.ExitCode != 0)
+{
+	Console.WriteLine($"Building {projectName} failed with error code {process.ExitCode}.");
 	return 1;
 }
 
 // Get version.
-var version = AssemblyName.GetAssemblyName(relativeExePath).Version;
-if (version == null)
-{
-	Console.WriteLine($"Unable to determine {appName} version.");
-	return 1;
-}
-
-Console.WriteLine($"{appName} version is {version.Major}.{version.Minor}.{version.Build}.");
+var versionInfo = FileVersionInfo.GetVersionInfo(relativeExePath);
+Console.WriteLine($"{appName} version is {versionInfo.FileMajorPart}.{versionInfo.FileMinorPart}.{versionInfo.FileBuildPart}.");
 
 // Copy Release product to temp directory with desired folder name for packaging.
 var tempDirectory = Path.Combine(Path.GetTempPath(), appName);
@@ -144,7 +152,7 @@ Directory.CreateDirectory(destinationDocsLibraryDir);
 CopyDirectory(relativeLibraryDocsPath, destinationDocsLibraryDir);
 
 // Remove existing release package
-var packageFile = $"{relativeReleasesFolderPath}\\{appName}-v{version.Major}.{version.Minor}.{version.Build}.zip";
+var packageFile = $"{relativeReleasesFolderPath}\\{appName}-v{versionInfo.FileMajorPart}.{versionInfo.FileMinorPart}.{versionInfo.FileBuildPart}.zip";
 if (File.Exists(packageFile))
 {
 	Console.WriteLine($"Deleting existing package file: {packageFile}");
