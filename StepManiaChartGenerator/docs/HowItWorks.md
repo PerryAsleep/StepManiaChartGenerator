@@ -1,10 +1,10 @@
 # How It Works
 
-## PadData
+## PadData and StepGraphs
 
 The application understands how the dance pads are laid out based on [PadData](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PadData.md) files. It understands how to perform moves on a pad through [StepGraphs](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepGraphs.md) that define how each [StepType](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTypes.md) can move between every valid position on the pads.
 
-The application comes with `PadData` and `StepGraph` files for the following [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ChartType.md), though more can be added using the [PadDataGenerator](https://github.com/PerryAsleep/PadDataGenerator) application.
+The application comes with [PadData](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PadData.md) and [StepGraph](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepGraphs.md) files for the following [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ChartType.md), though more can be added using the [PadDataGenerator](https://github.com/PerryAsleep/PadDataGenerator) application.
 
 ```C#
 dance_single
@@ -21,7 +21,7 @@ smx_full
 smx_team
 ```
 
-## Config
+## Configuration
 
 The application's behavior can be controlled via a [Config](Config.md) file. The config file informs the application, among other things, where to read and write charts, what types of charts to use, and how to convert them. The application comes with a [StepManiaChartGeneratorConfig.json](../StepManiaChartGeneratorConfig.json) file with sensible defaults, but it should be updated before running to at least control where to read and write charts.
 
@@ -31,8 +31,8 @@ When converting a chart, the application will load an input chart and then parse
 
 ## PerformedCharts
 
-Once the `ExpressedChart` has been determined, a [PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md) is generated for the output [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ChartType.md), which defines the best way to execute the `ExpressedChart` on the output `ChartType` using specific arrows. This is then converted to a StepMania `sm` or `ssc` file and written back to disk.
+Once the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ExpressedChart.md) has been determined, a [PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md) is generated for the output [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ChartType.md), which defines the best way to execute the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ExpressedChart.md) on the output [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ChartType.md) using specific arrows. This is then converted to a StepMania `sm` or `ssc` file and written back to disk.
 
 ## Visualizations
 
-The application can optionally output html [Visualizations](Visualizations.md) of the `ExpressedChart` and the `PerformedChart`. This is primarily meant for debugging.
+The application can optionally output html [Visualizations](Visualizations.md) of the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ExpressedChart.md) and the [PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md). This is primarily meant for debugging.
