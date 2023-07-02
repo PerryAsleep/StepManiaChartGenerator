@@ -22,7 +22,7 @@ See the [Examples](StepManiaChartGenerator/docs/Examples.md) page for [Visualiza
 
 ## Configuration
 
-See the [Configuration](StepManiaChartGenerator/docs/Config.md) Guide.
+See the [Configuration](StepManiaChartGenerator/docs/Config.md) guide.
 
 ## Usage
 
@@ -30,11 +30,15 @@ Double-click `StepManiaChartGenerator.exe`.
 
 ## How It Works
 
-See the [How It Works](StepManiaChartGenerator/docs/HowItWorks.md) Page.
+See the [How It Works](StepManiaChartGenerator/docs/HowItWorks.md) page.
+
+## Frequently Asked Questions.
+
+See the [Frequently Asked Questions](StepManiaChartGenerator/docs/FAQ.md) page.
 
 ## Known Issues and Unsupported Features
 
-See the [Known Issues and Unsupported Features](StepManiaChartGenerator/docs/KnownIssues.md) Page.
+See the [Known Issues and Unsupported Features](StepManiaChartGenerator/docs/KnownIssues.md) page.
 
 ## Building From Source
 
