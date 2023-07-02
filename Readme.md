@@ -18,6 +18,8 @@ See the [Examples](StepManiaChartGenerator/docs/Examples.md) page for [Visualiza
 
 `StepManiaChartGenerator` is available for Windows. Download the latest version of `StepManiaChartGenerator.zip` from the [Releases](https://github.com/PerryAsleep/StepManiaChartGenerator/releases) page and extract it to a desired location.
 
+`StepManiaChartGenerator` requires [.Net Runtime 7.0.8](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
+
 ## Configuration
 
 See the [Configuration](StepManiaChartGenerator/docs/Config.md) Guide.
