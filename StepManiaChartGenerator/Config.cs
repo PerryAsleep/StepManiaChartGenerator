@@ -188,11 +188,9 @@ namespace StepManiaChartGenerator
 
 			try
 			{
-				using (var openStream = File.OpenRead(Fumen.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FileName)))
-				{
-					Instance = await JsonSerializer.DeserializeAsync<Config>(openStream, options);
-					Instance?.Init();
-				}
+				await using var openStream = File.OpenRead(Fumen.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FileName));
+				Instance = await JsonSerializer.DeserializeAsync<Config>(openStream, options);
+				Instance?.Init();
 			}
 			catch (Exception e)
 			{
@@ -536,7 +534,7 @@ namespace StepManiaChartGenerator
 		public (ExpressedChartConfig, string) GetExpressedChartConfig(FileInfo file, string difficulty)
 		{
 			// Check for rules specific to this file and difficulty.
-			if (ExpressedChartConfigRules != null && ExpressedChartConfigRules.Length > 0)
+			if (ExpressedChartConfigRules?.Length > 0)
 			{
 				// Loop in reverse order to prioritize later matches.
 				for (var i = ExpressedChartConfigRules.Length - 1; i >= 0; i--)
@@ -564,7 +562,7 @@ namespace StepManiaChartGenerator
 		public (StepManiaLibrary.PerformedChart.Config, string) GetPerformedChartConfig(FileInfo file, string difficulty)
 		{
 			// Check for rules specific to this file and difficulty.
-			if (PerformedChartConfigRules != null && PerformedChartConfigRules.Length > 0)
+			if (PerformedChartConfigRules?.Length > 0)
 			{
 				// Loop in reverse order to prioritize later matches.
 				for (var i = PerformedChartConfigRules.Length - 1; i >= 0; i--)

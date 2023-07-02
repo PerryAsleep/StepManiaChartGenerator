@@ -806,7 +806,7 @@ $@"					<th style=""table-layout: fixed; width: {expressionCol.Width - TableBord
 
 			// Write the final measure markers
 			var numMeasuresToWrite =
-				(chart.Layers[0].Events[chart.Layers[0].Events.Count - 1].IntegerPosition - previousTimeSignatureIntegerPosition)
+				(chart.Layers[0].Events[^1].IntegerPosition - previousTimeSignatureIntegerPosition)
 				/ (currentTimeSignature.Numerator * SMCommon.MaxValidDenominator * SMCommon.NumBeatsPerMeasure /
 				   currentTimeSignature.Denominator)
 				+ 1;

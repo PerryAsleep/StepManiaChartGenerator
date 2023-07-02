@@ -26,7 +26,7 @@ namespace StepManiaChartGenerator
 		/// <summary>
 		/// Version. Recorded into a Chart's Description field using FumenGeneratedFormattedVersion.
 		/// </summary>
-		private static readonly SemanticVersion Version = new SemanticVersion(2, 0, 0);
+		private static readonly SemanticVersion Version = new (2, 0, 0);
 
 		/// <summary>
 		/// Format for recording the Version into a Chart's Description field.
@@ -67,7 +67,7 @@ namespace StepManiaChartGenerator
 		///  Tier 1 is one middle and one up/down.
 		///  etc.
 		/// </summary>
-		private static readonly List<List<GraphNode>> OutputStartNodes = new List<List<GraphNode>>();
+		private static readonly List<List<GraphNode>> OutputStartNodes = new ();
 
 		/// <summary>
 		/// StepTypeFallbacks to use for PerformedCharts.
@@ -77,7 +77,7 @@ namespace StepManiaChartGenerator
 		/// <summary>
 		/// Supported file formats for reading and writing.
 		/// </summary>
-		private static readonly List<FileFormatType> SupportedFileFormats = new List<FileFormatType>
+		private static readonly List<FileFormatType> SupportedFileFormats = new ()
 			{ FileFormatType.SM, FileFormatType.SSC };
 
 		/// <summary>
@@ -103,7 +103,7 @@ namespace StepManiaChartGenerator
 		/// Songs may have multiple song files (e.g. an sm and an ssc file). We want to only copy
 		/// non-chart files once per song.
 		/// </summary>
-		private static readonly HashSet<string> CopiedDirectories = new HashSet<string>();
+		private static readonly HashSet<string> CopiedDirectories = new ();
 
 		/// <summary>
 		/// Arguments for processing a Song.

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
 
 const string fumenDevenv = "FUMEN_DEVENV";
 const string fumen7Z = "FUMEN_7Z";
