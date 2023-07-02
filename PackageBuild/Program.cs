@@ -151,7 +151,8 @@ Directory.CreateDirectory(destinationDocsLibraryDir);
 CopyDirectory(relativeLibraryDocsPath, destinationDocsLibraryDir);
 
 // Remove existing release package
-var packageFile = $"{relativeReleasesFolderPath}\\{appName}-v{versionInfo.FileMajorPart}.{versionInfo.FileMinorPart}.{versionInfo.FileBuildPart}.zip";
+var packageFile =
+	$"{relativeReleasesFolderPath}\\{appName}-v{versionInfo.FileMajorPart}.{versionInfo.FileMinorPart}.{versionInfo.FileBuildPart}.zip";
 if (File.Exists(packageFile))
 {
 	Console.WriteLine($"Deleting existing package file: {packageFile}");
