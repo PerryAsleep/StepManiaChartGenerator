@@ -44,10 +44,12 @@ See the [Known Issues and Unsupported Features](StepManiaChartGenerator/docs/Kno
 
 Building from source requires Windows 10 or greater and Microsoft Visual Studio Community 2022.
 
-Clone the repository and init submodules.
-```
-git clone https://github.com/PerryAsleep/StepManiaChartGenerator.git
-git submodule update --init --recursive
-```
-
-Open `StepManiaChartGenerator.sln` and build through Visual Studio.
+1. Clone the repository and init submodules.
+	```
+	git clone https://github.com/PerryAsleep/StepManiaChartGenerator.git
+	git submodule update --init --recursive
+	```
+2. If you want to run the `PackageBuild` project, set the following environment variables:
+	- Set `FUMEN_DEVENV` to the path of your Visual Studio `devenv.exe` (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe`).
+	- Set `FUMEN_7Z` to the path of a [7-Zip](https://www.7-zip.org/) executable (e.g. `C:\Program Files\7-Zip\7z.exe`).
+3. Open `StepManiaChartGenerator.sln` and build through Visual Studio.
