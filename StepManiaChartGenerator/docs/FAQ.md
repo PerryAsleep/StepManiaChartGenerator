@@ -22,6 +22,10 @@ The default [Config](Config.md) values are sensible but won't work for every env
 
 Set [InputChartType](Config.md#inputcharttype) and [OutputChartType](Config.md#outputcharttype) to the types you want. If the types you want [aren't supported](Config.md#supported-charttypes), see [Adding ChartTypes](Config.md#adding-charttypes).
 
+## I'm seeing `RegexMatchTimeoutException` errors in the logs. How do I fix this?
+
+This might happen if you have complex regular expressions or inputs for your [ExpressedChartConfigRules](Config.md#expressedchartconfigrules) or [PerformedChartConfigRules](Config.md#performedchartconfigrules). Try increasing the value for [RegexTimeoutSeconds](Config.md#regextimeoutseconds).
+
 # Adjusting Generated Charts
 
 ## How do I generate specific kinds of charts like stamina charts or tech charts?
@@ -41,6 +45,10 @@ Enable [Transition Controls](https://github.com/PerryAsleep/StepManiaLibrary/blo
 ## How do I prevent transitions during burst?
 
 See [Lateral Tightening Controls](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/LateralTighteningControls.md).
+
+## Why does my generated chart still transition more than it is set to?
+
+Transition Controls are evaluated after many other rules. See [PerformedChart Determination](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-determination) for the full order. When individual steps don't adhere to specific rules it is because the path with those steps is the lowest cost path when evaluating all rules in order. Loosening or disabling higher priority rules like [Step Tightening](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md) will result in charts which follow specified transition limits more closely.
 
 ## Why do my generated doubles tech charts sometimes get stuck on one side of the pads?
 
