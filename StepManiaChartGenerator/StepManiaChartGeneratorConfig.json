@@ -25,7 +25,7 @@
 	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
 	"WarnOnDroppedSteps": true,
-	"RegexTimeoutSeconds": 10.0,
+	"RegexTimeoutSeconds": 20.0,
 	"CloseAutomaticallyWhenComplete": false,
 
 	"DefaultExpressedChartConfig": "BalancedDynamic",
