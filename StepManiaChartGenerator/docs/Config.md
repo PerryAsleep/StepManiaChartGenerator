@@ -30,7 +30,7 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 <details>
 	<summary>Example</summary>
 
-```json
+```json5
 {
 	"LogLevel": "Info",
 	"LogToFile": true,
@@ -103,19 +103,19 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 		{
 			"ArrowWeights":
 			{
-				"dance-single": [25, 25, 25, 25],						// Determined without parsing charts.
-				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],			// Determined by parsing a large number of community-made charts.
-				"dance-solo": [13, 12, 25, 25, 12, 13],					// Determined without parsing charts.
-				"dance-threepanel": [25, 50, 25],						// Determined without parsing charts.
+				"dance-single": [25, 25, 25, 25],
+				"dance-double": [6, 12, 10, 22, 22, 12, 10, 6],
+				"dance-solo": [13, 12, 25, 25, 12, 13],
+				"dance-threepanel": [25, 50, 25],
 
-				"pump-single": [17, 16, 34, 16, 17],					// Determined without parsing charts.
-				"pump-halfdouble": [25, 12, 13, 13, 12, 25],			// Determined without parsing charts.
-				"pump-double": [4, 4, 17, 12, 13, 13, 12, 17, 4, 4],	// Determined without parsing charts.
+				"pump-single": [17, 16, 34, 16, 17],
+				"pump-halfdouble": [25, 12, 13, 13, 12, 25],
+				"pump-double": [4, 4, 17, 12, 13, 13, 12, 17, 4, 4],
 
-				"smx-beginner": [25, 50, 25],							// Determined without parsing charts.
-				"smx-single": [25, 21, 8, 21, 25],						// Determined by parsing a small number of SMX charts.
-				"smx-dual": [8, 17, 25, 25, 17, 8],						// Determined without parsing charts.
-				"smx-full": [6, 8, 7, 8, 22, 22, 8, 7, 8, 6],			// Determined by parsing a small number of SMX charts.
+				"smx-beginner": [25, 50, 25],
+				"smx-single": [25, 21, 8, 21, 25],
+				"smx-dual": [8, 17, 25, 25, 17, 8],
+				"smx-full": [6, 8, 7, 8, 22, 22, 8, 7, 8, 6],
 			},
 
 			"StepTightening":
@@ -215,7 +215,7 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 
 # Input
 
-```json
+```json5
 "InputDirectory": "C:\\Games\\StepMania 5\\Songs",
 "InputNameRegex": ".*\\.(sm|ssc)$",
 "InputChartType": "dance-single",
@@ -240,7 +240,7 @@ String type. [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standa
 
 # Output
 
-```json
+```json5
 "OutputDirectory": "C:\\Fumen\\Exports",
 "OutputChartType": "dance-double",
 "OverwriteBehavior": "IfFumenGenerated",
@@ -274,7 +274,7 @@ String type. Behavior for copying non-chart files from within a song's folder wh
 
 # Logging
 
-```json
+```json5
 "LogLevel": "Info",
 "LogToFile": true,
 "LogDirectory": "C:\\Fumen\\Logs",
@@ -309,7 +309,7 @@ Boolean type. If `true` then the application will log to the console. If `false`
 
 # Visualizations
 
-```json
+```json5
 "OutputVisualizations": true,
 "VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 ```
@@ -324,7 +324,7 @@ String type. Path to directory to generate [Visualizations](Visualizations.md) t
 
 # Miscellaneous
 
-```json
+```json5
 "WarnOnDroppedSteps": true,
 "RegexTimeoutSeconds": 20.0,
 "CloseAutomaticallyWhenComplete": false,
@@ -348,7 +348,7 @@ See also [ExpressedChart Configuration](https://github.com/PerryAsleep/StepMania
 
 [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ExpressedChart.md) behavior is controlled through [ExpressedChartConfig](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ExpressedChart.md#expressedchart-configuration) objects. A `DefaultExpressedChartConfig` must be specified. Multiple `ExpressedChartConfigs` may exist, and `ExpressedChartConfigRules` can be used to control which charts use which [ExpressedChartConfig](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ExpressedChart.md#expressedchart-configuration).
 
-```json
+```json5
 "DefaultExpressedChartConfig": "BalancedDynamic",
 "ExpressedChartConfigRules":
 [
@@ -372,7 +372,7 @@ String type. Key in `ExpressedChartConfigs` for the default object to use when n
 
 Array type. Each object in the array specifies rules for matching a particular chart and mapping it to an [ExpressedChartConfig](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ExpressedChart.md#expressedchart-configuration) object. If multiple matches exist, the match with the highest index in the array is used. Each object in the array has the following properties:
 
-```json
+```json5
 {"FileRegex": ".*(\\\\|/)MyPackWithNoBrackets.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "NoBrackets"},
 ```
 
@@ -397,7 +397,7 @@ See also [PerformedChart Configuration](https://github.com/PerryAsleep/StepMania
 
 All `PerformedChartConfigs` other than the `DefaultPerformedChartConfig` may omit parameters. Omitted parameters will fallback to those specified in the `DefaultPerformedChartConfig`.
 
-```json
+```json5
 "DefaultPerformedChartConfig": "Default",
 "PerformedChartConfigRules":
 [
@@ -421,7 +421,7 @@ String type. Key in `PerformedChartConfigs` for the default object to use when n
 
 Array type. Each object in the array specifies rules for matching a particular chart and mapping it to a [PerformedChartConfig](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-configuration) object. If multiple matches exist, the match with the highest index in the array is used. Each object in the array has the following properties:
 
-```json
+```json5
 {"FileRegex": ".*(\\\\|/)MyStaminaPack.*(\\\\|/).*", "DifficultyRegex": ".", "Config": "Stamina"},
 ```
 
