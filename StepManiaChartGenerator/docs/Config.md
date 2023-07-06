@@ -53,7 +53,7 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
 	"WarnOnDroppedSteps": true,
-	"RegexTimeoutSeconds": 10.0,
+	"RegexTimeoutSeconds": 20.0,
 	"CloseAutomaticallyWhenComplete": false,
 
 	"DefaultExpressedChartConfig": "BalancedDynamic",
@@ -120,17 +120,21 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 
 			"StepTightening":
 			{
-				// Do not modify the x dimension for distance measurements.
-				"DistanceCompensationX": 0.0,
-				// Subtract a half arrow from the y dimension for distance measurements.
-				"DistanceCompensationY": 0.5,
+				// Laterally, consider a foot moving 1/6 into a panel as the minimum distance to trigger it.
+				"LateralMinPanelDistance": 0.166667,
+				// Longitudinally, consider a foot moving 1/8 outside of a panel as the minimum distance to trigger it.
+				"LongitudinalMinPanelDistance": -0.125,
 				
 				// Enable distance tightening.
 				"DistanceTighteningEnabled": true,
-				// Start limiting steps moving at 2.25 arrow lengths.
-				"DistanceMin": 2.25,
-				// Stop increasing costs for moves at 3 arrow lengths.
-				"DistanceMax": 3.0,
+				// With the above min panel distance values, 1.4 will:
+				// - Allow a 2X1Y move.
+				// - Penalize a 2X2Y move.
+				// - Penalize a 3X move.
+				// - Penalize a bracket move moving an average of 2 panels.
+				"DistanceMin": 1.4,
+				// 2 1/3 is the cutoff for 3 panel stretch in X.
+				"DistanceMax": 2.333333,
 
 				// Enable speed tightening.
 				"SpeedTighteningEnabled": true,
@@ -138,13 +142,15 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 				"SpeedMinTimeSeconds": 0.176471,
 				// Start limiting at 16th notes at 125bpm.
 				"SpeedMaxTimeSeconds": 0.24,
+				// Do not use a distance cutoff for speed tightening.
+				"SpeedTighteningMinDistance": 0.0,
 
 				// Enable stretch tightening.
 				"StretchTighteningEnabled": true,
-				// Start limiting stretch moving at 3 arrow lengths.
-				"StretchDistanceMin": 3.0,
-				// Stop increasing costs for stretch moves at 4 arrow lengths.
-				"StretchDistanceMax": 4.0,
+				// Start limiting stretch moves at 2 1/3, which is a 3 panel move in X.
+				"StretchDistanceMin": 2.333333,
+				// Stop increasing costs for stretch moves at 3 1/3 which is a 4 panel move in X.
+				"StretchDistanceMax": 3.333333,
 			},
 
 			"LateralTightening":
@@ -175,6 +181,8 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 				"Enabled": false,
 			},
 		},
+
+		// Default stamina settings.
 		"Stamina":
 		{
 			"StepTightening":
@@ -318,7 +326,7 @@ String type. Path to directory to generate [Visualizations](Visualizations.md) t
 
 ```json
 "WarnOnDroppedSteps": true,
-"RegexTimeoutSeconds": 10.0,
+"RegexTimeoutSeconds": 20.0,
 "CloseAutomaticallyWhenComplete": false,
 ```
 
