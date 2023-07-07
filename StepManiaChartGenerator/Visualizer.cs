@@ -266,10 +266,28 @@ public class Visualizer
 		// Determine the relative src path.
 		if (string.IsNullOrEmpty(VisualizationDir))
 			throw new Exception("VisualizationDir is not set. Set with InitializeVisualizationDir.");
-		SrcPath = Fumen.Path.GetRelativePath(SaveFile, GetSrcDir());
-		SrcPath = SrcPath.Replace('\\', '/');
+		SrcPath = GetRelativeDir(GetSrcDir());
 		if (!SrcPath.EndsWith("/"))
 			SrcPath += "/";
+	}
+
+	private string GetRelativeDir(string dir)
+	{
+		try
+		{
+			var fi = new FileInfo(SaveFile);
+			if (fi.Directory != null)
+			{
+				var saveFileDir = fi.Directory.FullName;
+				dir = Fumen.Path.GetRelativePath(saveFileDir, dir);
+			}
+		}
+		catch (Exception)
+		{
+			// Ignored.
+		}
+		dir = dir.Replace('\\', '/');
+		return dir;
 	}
 
 	public void Write()
@@ -470,7 +488,8 @@ p {{
 		var title = Song.Title ?? "";
 		var img = "";
 		if (!string.IsNullOrEmpty(Song.SongSelectImage))
-			img = SongPath + Song.SongSelectImage;
+			img = GetRelativeDir(SongPath + Song.SongSelectImage);
+
 		var subtitle = "";
 		if (!string.IsNullOrEmpty(Song.SubTitle))
 			subtitle = $@"<span style=""color:#6b6b6b""> {Song.SubTitle}</span>";
