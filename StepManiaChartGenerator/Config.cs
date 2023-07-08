@@ -66,6 +66,12 @@ public class Config
 	[JsonInclude] public double RegexTimeoutSeconds = 6.0;
 
 	/// <summary>
+	/// Number of songs to process concurrently.
+	/// If less than 1 then the concurrent limit will be based on the number of logical processors.
+	/// </summary>
+	[JsonInclude] public int ConcurrentSongCount = -1;
+
+	/// <summary>
 	/// Whether the application should close automatically or wait for input when it completes.
 	/// </summary>
 	[JsonInclude] public bool CloseAutomaticallyWhenComplete;

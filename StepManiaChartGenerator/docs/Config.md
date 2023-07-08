@@ -52,8 +52,11 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 	"OutputVisualizations": true,
 	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
-	"WarnOnDroppedSteps": true,
+	// Derive the concurrent song limit from the number of logical processors.
+	"ConcurrentSongCount": -1,
 	"RegexTimeoutSeconds": 20.0,
+
+	"WarnOnDroppedSteps": true,
 	"CloseAutomaticallyWhenComplete": false,
 
 	"DefaultExpressedChartConfig": "BalancedDynamic",
@@ -194,6 +197,13 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 				"TravelSpeedMaxTimeSeconds": 0.303,		// 16ths at 99
 			},
 
+			"LateralTightening":
+			{
+				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
+				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
+				"AbsoluteNPS": 26.667,
+			},
+
 			"Transitions":
 			{
 				// Limit transitions for stamina charts.
@@ -307,6 +317,21 @@ Number (integer) type. Must be non-negative. If the log buffer accumulates this 
 
 Boolean type. If `true` then the application will log to the console. If `false` then the application will not log to the console.
 
+# Performance
+
+```json5
+"ConcurrentSongCount": -1,
+"RegexTimeoutSeconds": 20.0,
+```
+
+## `ConcurrentSongCount`
+
+Number (integer) type. Maximum number of songs to process concurrently. If omitted or less than 1 the number will be derived from the number of logical processors available. Increasing this value beyond the number of logical processors will have adverse performance effects as more memory will be used and more time will be devoted to asynchronous task management without any concurrency gains. Lowering this value below the number of logical processors will reduce the memory usage of the application but will make the program run more slowly as less work can be parallelized.
+
+## `RegexTimeoutSeconds`
+
+Number (double) type. Number of seconds to timeout after when testing [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) matches. Must be non-negative.
+
 # Visualizations
 
 ```json5
@@ -326,17 +351,12 @@ String type. Path to directory to generate [Visualizations](Visualizations.md) t
 
 ```json5
 "WarnOnDroppedSteps": true,
-"RegexTimeoutSeconds": 20.0,
 "CloseAutomaticallyWhenComplete": false,
 ```
 
 ## `WarnOnDroppedSteps`
 
 Boolean type. If `true` then log warning messages when steps are omitted due to [StepType Fallbacks](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/StepTypeFallbacks.md).
-
-## `RegexTimeoutSeconds`
-
-Number (double) type. Number of seconds to timeout after when testing [Regular Expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) matches. Must be non-negative.
 
 ## `CloseAutomaticallyWhenComplete`
 

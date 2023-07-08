@@ -24,8 +24,11 @@
 	"OutputVisualizations": false,
 	"VisualizationsDirectory": "C:\\Fumen\\Visualizations",
 
-	"WarnOnDroppedSteps": true,
+	// Derive the concurrent song limit from the number of logical processors.
+	"ConcurrentSongCount": -1,
 	"RegexTimeoutSeconds": 20.0,
+
+	"WarnOnDroppedSteps": true,
 	"CloseAutomaticallyWhenComplete": false,
 
 	"DefaultExpressedChartConfig": "BalancedDynamic",
@@ -168,6 +171,13 @@
 				"TravelSpeedMaxTimeSeconds": 0.303,		// 16ths at 99
 			},
 
+			"LateralTightening":
+			{
+				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
+				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
+				"AbsoluteNPS": 26.667,
+			},
+
 			"Transitions":
 			{
 				// Limit transitions for stamina charts.
@@ -197,6 +207,13 @@
 				// Use a min distance of 0.76, which is just over the length of a candle given
 				// a LongitudinalMinPanelDistance of -1/8.
 				"SpeedTighteningMinDistance": 0.76,
+			},
+
+			"LateralTightening":
+			{
+				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
+				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
+				"AbsoluteNPS": 26.667,
 			},
 
 			"Transitions":
@@ -229,6 +246,13 @@
 				// Use a min distance of 0.76, which is just over the length of a candle given
 				// a LongitudinalMinPanelDistance of -1/8.
 				"SpeedTighteningMinDistance": 0.76,
+			},
+
+			"LateralTightening":
+			{
+				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
+				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
+				"AbsoluteNPS": 26.667,
 			},
 
 			"Transitions":

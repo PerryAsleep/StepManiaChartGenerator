@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static StepManiaLibrary.Constants;
 using StepManiaLibrary.PerformedChart;
@@ -106,29 +107,85 @@ public class Program
 	private static readonly HashSet<string> CopiedDirectories = new();
 
 	/// <summary>
-	/// Arguments for processing a Song.
+	/// Class for holding arguments for an individual song being processed and for
+	/// managing the task to convert that song's charts.
 	/// </summary>
-	private class SongArgs
+	private class SongTaskData
 	{
 		/// <summary>
 		/// FileInfo for the Song file.
 		/// </summary>
-		public FileInfo FileInfo;
+		public readonly FileInfo FileInfo;
 
 		/// <summary>
 		/// String path of directory containing the Song file.
 		/// </summary>
-		public string CurrentDir;
+		public readonly string CurrentDir;
 
 		/// <summary>
 		/// String path to the Song file relative to the Config InputDirectory.
 		/// </summary>
-		public string RelativePath;
+		public readonly string RelativePath;
 
 		/// <summary>
 		/// String path to the directory to save the Song file to.
 		/// </summary>
-		public string SaveDir;
+		public readonly string SaveDir;
+
+		/// <summary>
+		/// Function for declaring without starting an async task to process the song.
+		/// </summary>
+		private readonly Func<Task> TaskFunc;
+
+		/// <summary>
+		/// Size of the song file in bytes.
+		/// </summary>
+		private readonly long SongSize;
+
+		/// <summary>
+		/// Async task for processing the song.
+		/// </summary>
+		private Task Task;
+
+		/// <summary>
+		/// Total number of charts converted for the song.
+		/// </summary>
+		private int NumConvertedCharts;
+
+		public SongTaskData(FileInfo fileInfo, string currentDur, string relativePath, string saveDir)
+		{
+			FileInfo = fileInfo;
+			CurrentDir = currentDur;
+			RelativePath = relativePath;
+			SaveDir = saveDir;
+			SongSize = FileInfo.Length;
+			TaskFunc = async () => await ProcessSong(this);
+		}
+
+		public void Start()
+		{
+			Task = TaskFunc();
+		}
+
+		public bool IsDone()
+		{
+			return Task?.IsCompleted ?? false;
+		}
+
+		public long GetSize()
+		{
+			return SongSize;
+		}
+
+		public void AddConvertedChartCount(int count)
+		{
+			NumConvertedCharts += count;
+		}
+
+		public int GetNumConvertedCharts()
+		{
+			return NumConvertedCharts;
+		}
 	}
 
 	/// <summary>
@@ -179,7 +236,7 @@ public class Program
 		}
 
 		// Find and process all charts.
-		await FindAndProcessCharts();
+		FindAndProcessCharts();
 
 		LogInfo("Done.");
 		Exit(true);
@@ -424,7 +481,7 @@ public class Program
 	/// Will add charts, copy the charts and non-chart files to the output directory,
 	/// and write visualizations for the conversion.
 	/// </summary>
-	private static async Task FindAndProcessCharts()
+	private static void FindAndProcessCharts()
 	{
 		if (!Directory.Exists(Config.Instance.InputDirectory))
 		{
@@ -432,8 +489,12 @@ public class Program
 			return;
 		}
 
-		var songTasks = new List<Task>();
+		var songTasks = new List<SongTaskData>();
+		var totalSongBytes = 0L;
+
 		var pathSep = System.IO.Path.DirectorySeparatorChar.ToString();
+
+		LogInfo($"Searching for songs in \"{Config.Instance.InputDirectory}\"...");
 
 		// Search through the configured InputDirectory and all subdirectories.
 		var dirs = new Stack<string>();
@@ -513,21 +574,88 @@ public class Program
 					Directory.CreateDirectory(saveDir);
 				}
 
-				// Process the song.
-				songTasks.Add(ProcessSong(new SongArgs
-				{
-					FileInfo = fi,
-					CurrentDir = currentDir,
-					RelativePath = relativePath,
-					SaveDir = saveDir,
-				}));
+				// Create a task for processing this song, but do not start it.
+				var taskData = new SongTaskData(fi, currentDir, relativePath, saveDir);
+				songTasks.Add(taskData);
+				totalSongBytes += taskData.GetSize();
 			}
-
-			// TODO: Copy the song's pack assets.
 		}
 
-		// Allow the song tasks to complete.
-		await Task.WhenAll(songTasks.ToArray());
+		// Sort by largest data first so we don't leave long songs processing at the end while other threads are idle.
+		songTasks.Sort((a, b) => b.GetSize().CompareTo(a.GetSize()));
+
+		var totalNumChartsProcessed = 0;
+		var totalProcessedBytes = 0L;
+		var totalSongCount = songTasks.Count;
+		var lastKnownRemainingCount = totalSongCount;
+		var inProgressTasks = new List<SongTaskData>();
+
+		// If the ConcurrentSongCount is not set (it is 0 or less) then use the logical processor count for the task limit.
+		var concurrentSongCount = Config.Instance.ConcurrentSongCount < 1
+			? Environment.ProcessorCount
+			: Config.Instance.ConcurrentSongCount;
+
+		// Process all song tasks.
+		var stopWatch = new Stopwatch();
+		stopWatch.Start();
+		LogInfo($"Found {totalSongCount} songs to process.");
+		while (songTasks.Count > 0 || inProgressTasks.Count > 0)
+		{
+			// See if any in progress tasks are now done.
+			var numTasksToAdd = concurrentSongCount;
+			var tasksToRemove = new List<SongTaskData>();
+			foreach (var inProgressTask in inProgressTasks)
+			{
+				if (inProgressTask.IsDone())
+				{
+					totalProcessedBytes += inProgressTask.GetSize();
+					totalNumChartsProcessed += inProgressTask.GetNumConvertedCharts();
+					tasksToRemove.Add(inProgressTask);
+				}
+				else
+				{
+					numTasksToAdd--;
+				}
+			}
+
+			// Remove completed tasks.
+			foreach (var taskToRemove in tasksToRemove)
+				inProgressTasks.Remove(taskToRemove);
+			tasksToRemove.Clear();
+
+			// Add more tasks.
+			var numTasksStarted = 0;
+			while (numTasksToAdd > 0 && songTasks.Count > 0)
+			{
+				var taskToStart = songTasks[0];
+				inProgressTasks.Add(taskToStart);
+				songTasks.RemoveAt(0);
+				taskToStart.Start();
+				numTasksToAdd--;
+				numTasksStarted++;
+			}
+
+			// If we have completed more tasks this loop, log a progress update.
+			if (lastKnownRemainingCount != songTasks.Count + inProgressTasks.Count)
+			{
+				lastKnownRemainingCount = songTasks.Count + inProgressTasks.Count;
+				var processedCount = totalSongCount - lastKnownRemainingCount;
+				var songPercent = 100.0 * ((double)processedCount / totalSongCount);
+				var bytePercent = 100.0 * ((double)totalProcessedBytes / totalSongBytes);
+				var totalProcessedMb = totalProcessedBytes / 1024.0 / 1024.0;
+				var totalSongMb = totalSongBytes / 1024.0 / 1024.0;
+				LogInfo(
+					$"Progress: {processedCount}/{totalSongCount} songs ({songPercent:F2}%). {totalProcessedMb:F2}/{totalSongMb:F2} MB ({bytePercent:F2}%).");
+			}
+
+			// If we added a lot of tasks then it means we are processing quickly and can speed up.
+			// If we added a small number of tasks then it means we are processing slowly and can wait.
+			var sleepTime = (int)Interpolation.Lerp(100, 10, 0, concurrentSongCount, numTasksStarted);
+			Thread.Sleep(sleepTime);
+		}
+
+		stopWatch.Stop();
+		LogInfo($"Processed {totalSongCount} songs and created {totalNumChartsProcessed} charts in {stopWatch.Elapsed}.");
 	}
 
 	/// <summary>
@@ -537,9 +665,11 @@ public class Program
 	/// Will add charts, copy the charts and non-chart files to the output directory,
 	/// and write visualizations for the conversion.
 	/// </summary>
-	/// <param name="songArgs">SongArgs for the song file.</param>
-	private static async Task ProcessSong(SongArgs songArgs)
+	/// <param name="songArgs">SongTaskData for the song file.</param>
+	private static async Task ProcessSong(SongTaskData songArgs)
 	{
+		LogInfo("Loading Song.", songArgs.FileInfo, songArgs.RelativePath);
+
 		// Load the song.
 		Song song;
 		try
@@ -598,14 +728,16 @@ public class Program
 
 		// Copy the non-chart files.
 		CopyNonChartFiles(songArgs.CurrentDir, songArgs.SaveDir);
+
+		// TODO: Copy the song's pack assets.
 	}
 
 	/// <summary>
 	/// Adds charts to the given song and write a visualization per chart, if configured to do so.
 	/// </summary>
 	/// <param name="song">Song to add charts to.</param>
-	/// <param name="songArgs">SongArgs for the song file.</param>
-	private static void AddCharts(Song song, SongArgs songArgs)
+	/// <param name="songArgs">SongTaskData for the song file.</param>
+	private static void AddCharts(Song song, SongTaskData songArgs)
 	{
 		LogInfo("Processing Song.", songArgs.FileInfo, songArgs.RelativePath, song);
 
@@ -762,6 +894,8 @@ public class Program
 			}
 		}
 
+		songArgs.AddConvertedChartCount(newCharts.Count);
+
 		LogInfo(
 			$"Generated {newCharts.Count} new {Config.Instance.OutputChartType} Charts (replaced {chartsIndicesToRemove.Count}).",
 			songArgs.FileInfo, songArgs.RelativePath, song);
@@ -782,7 +916,7 @@ public class Program
 	/// <summary>
 	/// Warns when steps were dropped if configured to do so.
 	/// </summary>
-	private static void WarnOnDroppedSteps(List<Event> sourceEvents, List<Event> destEvents, Song song, SongArgs songArgs,
+	private static void WarnOnDroppedSteps(List<Event> sourceEvents, List<Event> destEvents, Song song, SongTaskData songArgs,
 		Chart chart)
 	{
 		if (!Config.Instance.WarnOnDroppedSteps || destEvents.Count == sourceEvents.Count)
