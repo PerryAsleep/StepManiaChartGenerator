@@ -1,8 +1,19 @@
 # StepManiaChartGenerator
 
-`StepManiaChartGenerator` is an application for converting [StepMania](https://www.stepmania.com/) charts into other types of StepMania charts that maintain the qualities of the original charts and feel natural.
+`StepManiaChartGenerator` is an application for converting [StepMania](https://www.stepmania.com/) charts from one type to another. It generates charts that maintain the qualities of their original charts and feel natural.
 
-It understands technical moves including crossovers, inverted steps (a.k.a Afronova walks), footswaps, brackets, and stretch, and it offers fine controls for tuning generated charts.
+It understands technical moves including crossovers, inverted steps (a.k.a Afronova walks), footswaps, brackets, stretch, and double-stepping and it offers many controls for fine-tuning generated charts.
+
+## Supported Layouts
+
+`StepManiaChartGenerator` supports all major dance game single-player layouts.
+
+| ITG/DDR | PIU | SMX |
+| ----------- | ----------- | ----------- |
+| `dance_single` | `pump_single` | `smx_beginner` |
+| `dance_double` | `pump_halfdouble` | `smx_single` |
+| `dance_solo` | `pump_double` | `smx_dual` |
+| `dance_threepanel` | | `smx_full` |
 
 ## Examples
 
