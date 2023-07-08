@@ -856,6 +856,18 @@ public class Program
 				newChart.Layers.Add(new Layer { Events = events });
 				newCharts.Add(newChart);
 
+				// If the existing chart had a CHARTNAME set, update that with the version as well.
+				// There is odd behavior in Stepmania where if no explicit VERSION is set or the VERSION is under 0.74,
+				// and the DESCRIPTION does not match the CHARTNAME, then the steps will fail to load.
+				// Because we alter the DESCRIPTION to indicate the chart has been auto-generated we need to update
+				// the CHARTNAME as well to work around this issue.
+				if (newChart.Extras.TryGetSourceExtra(TagChartName, out string originalChartName))
+				{
+					// Modifying the Extras in this way will also affect the original chart because they reference the
+					// same extras, but it doesn't matter for how it is used in this application.
+					newChart.Extras.AddDestExtra(TagChartName, FormatWithVersion(originalChartName));
+				}
+
 				LogInfo(
 					$"Generated new {newChart.Type} {newChart.DifficultyType} Chart from {chart.Type} {chart.DifficultyType} Chart"
 					+ $" using ExpressedChartConfig \"{eccName}\" (BracketParsingMethod {expressedChart.GetBracketParsingMethod():G})"
