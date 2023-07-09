@@ -6,8 +6,10 @@ const string fumen7Z = "FUMEN_7Z";
 const string appName = "StepManiaChartGenerator";
 const string projectName = "StepManiaChartGenerator";
 const string readmeName = "README.md";
+const string licenseName = "LICENSE";
 const string relativeProjectRoot = "..\\..\\..\\..";
 const string relativeReadme = $"..\\..\\..\\..\\{readmeName}";
+const string relativeLicense = $"..\\..\\..\\..\\{licenseName}";
 const string relativeDocsPath = $"..\\..\\..\\..\\{appName}\\docs";
 const string relativeLibraryDocsPath = "..\\..\\..\\..\\StepManiaLibrary\\StepManiaLibrary\\docs";
 const string relativeSlnPath = $"{relativeProjectRoot}\\{appName}.sln";
@@ -141,6 +143,9 @@ CopyDirectory(relativeExeFolderPath, tempDirectory);
 var destinationReadme = Path.Combine(tempDirectory, readmeName);
 File.Copy(relativeReadme, destinationReadme);
 ReplaceTextInFile(destinationReadme, readmeDocumentationReplacements);
+
+var destinationLicense = Path.Combine(tempDirectory, licenseName);
+File.Copy(relativeLicense, destinationLicense);
 
 var destinationDocsDir = Path.Combine(tempDirectory, "docs");
 Directory.CreateDirectory(destinationDocsDir);
