@@ -5,7 +5,7 @@ const string fumen7Z = "FUMEN_7Z";
 
 const string appName = "StepManiaChartGenerator";
 const string projectName = "StepManiaChartGenerator";
-const string readmeName = "Readme.md";
+const string readmeName = "README.md";
 const string relativeProjectRoot = "..\\..\\..\\..";
 const string relativeReadme = $"..\\..\\..\\..\\{readmeName}";
 const string relativeDocsPath = $"..\\..\\..\\..\\{appName}\\docs";
