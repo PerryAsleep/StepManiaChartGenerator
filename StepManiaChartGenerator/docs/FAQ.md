@@ -40,13 +40,13 @@ This might happen if you have complex regular expressions or inputs for your [Ex
 
 ## How do I define rules for only some songs or packs, and define different rules for others?
 
-See [ExpressedChartConfigRules](Config.md#expressedchartconfigrules) for defining rules for to interpret charts differently depending on their song or pack.
+See [ExpressedChartConfigRules](Config.md#expressedchartconfigrules) for defining rules to interpret charts differently depending on their song or pack.
 
 See [PerformedChartConfigRules](Config.md#performedchartconfigrules) for defining rules for how to generate charts with different qualities based on the input song or pack.
 
 ## How do I generate charts that transition less frequently?
 
-Enable [Transition Controls](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/TransitionControls.md) and increase `StepsPerTransitionMin`.
+Enable [Transition Controls](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/TransitionControls.md) and increase [StepsPerTransitionMin](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/TransitionControls.md#stepspertransitionmin).
 
 ## How do I prevent transitions during burst?
 
@@ -54,7 +54,7 @@ See [Lateral Tightening Controls](https://github.com/PerryAsleep/StepManiaLibrar
 
 ## Why does my generated chart still transition more than it is set to?
 
-Transition Controls are evaluated after many other rules. See [PerformedChart Determination](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-determination) for the full order. When individual steps don't adhere to specific rules it is because the path with those steps is the lowest cost path when evaluating all rules in order. Loosening or disabling higher priority rules like [Step Tightening](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md) will result in charts which follow specified transition limits more closely.
+[Transition Controls](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/TransitionControls.md) are evaluated after many other rules. See [PerformedChart Determination](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md#performedchart-determination) for the full order. When individual steps don't adhere to specific rules it is because the path with those steps is the lowest cost path when evaluating all rules in order. Loosening or disabling higher priority rules like [Step Tightening](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md) will result in charts which follow specified transition limits more closely.
 
 ## Why do my generated doubles tech charts sometimes get stuck on one side of the pads?
 
@@ -73,6 +73,7 @@ Adjust the [Step Tightening Controls](https://github.com/PerryAsleep/StepManiaLi
 	- Increase [DistanceMin](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#distancemin) and [DistanceMax](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#distancemax) to generate steps which move more. Decrease them to generate steps which move less.
  - [Speed Tightening](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#speed-tightening)
 	- Increase [SpeedMinTimeSeconds](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#speedmintimeseconds) and [SpeedMaxTimeSeconds](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#speedmaxtimeseconds) to generate steps which move less. Decrease them to generate steps which move more.
+	- Increase [SpeedTighteningMinDistance](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/StepTighteningControls.md#speedtighteningmindistance) to treat slightly larger steps as equally preferable to smaller steps. This can be used for example to ensure candles are present in `dance-double` stamina charts.
 
 ## How do I limit uncomfortable patterns?
 

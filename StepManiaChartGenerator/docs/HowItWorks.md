@@ -18,12 +18,11 @@ smx_beginner
 smx_single
 smx_dual
 smx_full
-smx_team
 ```
 
 ## Configuration
 
-The application's behavior can be controlled via a [Config](Config.md) file. The config file informs the application, among other things, where to read and write charts, what types of charts to use, and how to convert them. The application comes with a [StepManiaChartGeneratorConfig.json](../StepManiaChartGeneratorConfig.json) file with sensible defaults, but it should be updated before running to at least control where to read and write charts.
+The application's behavior can be controlled via a [Config](Config.md) file. The config file informs the application, among other things, where to read and write charts, what types of charts to use, and how to convert them. The application comes with a [StepManiaChartGeneratorConfig.json](../StepManiaChartGeneratorConfig.json) file with sensible defaults, but it should be updated before running to at least control where to read and write charts, and what types of charts to convert from and to.
 
 ## ExpressedCharts
 
@@ -35,4 +34,4 @@ Once the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/m
 
 ## Visualizations
 
-The application can optionally output html [Visualizations](Visualizations.md) of the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ExpressedChart.md) and the [PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md). This is primarily meant for debugging.
+The application can optionally output `html` [Visualizations](Visualizations.md) of the [ExpressedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/ExpressedChart.md) and the [PerformedChart](https://github.com/PerryAsleep/StepManiaLibrary/blob/main/StepManiaLibrary/docs/PerformedChart.md). This is primarily meant for debugging.

@@ -23,7 +23,7 @@ Additional [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree/mai
 1) Are for one player only.
 2) Are listed in the [full ChartType list](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ChartType.md).
 
-To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ChartType.md), add a [PadData](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/PadData.md) file and a [StepGraph](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/StepGraphs.md) file for the [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ChartType.md) to the application's install directory. These files can be generated from simple input with [PadDataGenerator](https://github.com/PerryAsleep/PadDataGenerator).
+To add another [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ChartType.md), add a [PadData](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/PadData.md) file and a [StepGraph](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/StepGraphs.md) file for the [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/tree/main/StepManiaLibrary/docs/ChartType.md) to the application's install directory. These files can be generated from simple input with [PadDataGenerator](https://github.com/PerryAsleep/PadDataGenerator).
 
 # Example Configuration
 
@@ -32,12 +32,16 @@ To add another [ChartTypes](https://github.com/PerryAsleep/StepManiaLibrary/tree
 
 ```json5
 {
-	"LogLevel": "Info",
-	"LogToFile": true,
-	"LogDirectory": "C:\\Fumen\\Logs",
-	"LogFlushIntervalSeconds": 20,
-	"LogBufferSizeBytes": 10240,
-	"LogToConsole": true,
+	// Logger configuration.
+	"LoggerConfig":
+	{
+		"LogLevel": "Info",
+		"LogToFile": true,
+		"LogDirectory": "C:\\Fumen\\Logs",
+		"LogFlushIntervalSeconds": 20,
+		"LogBufferSizeBytes": 10240,
+		"LogToConsole": true,
+	},
 
 	"InputDirectory": "C:\\Games\\StepMania 5\\Songs",
 	"InputNameRegex": ".*\\.(sm|ssc)$",
@@ -285,12 +289,15 @@ String type. Behavior for copying non-chart files from within a song's folder wh
 # Logging
 
 ```json5
-"LogLevel": "Info",
-"LogToFile": true,
-"LogDirectory": "C:\\Fumen\\Logs",
-"LogFlushIntervalSeconds": 20,
-"LogBufferSizeBytes": 10240,
-"LogToConsole": true,
+"LoggerConfig":
+{
+	"LogLevel": "Info",
+	"LogToFile": true,
+	"LogDirectory": "C:\\Fumen\\Logs",
+	"LogFlushIntervalSeconds": 20,
+	"LogBufferSizeBytes": 10240,
+	"LogToConsole": true,
+},
 ```
 
 ## `LogLevel`
