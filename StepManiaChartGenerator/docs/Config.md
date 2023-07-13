@@ -198,7 +198,7 @@ To add another [ChartType](https://github.com/PerryAsleep/StepManiaLibrary/tree/
 				// normal charts too aggressively but for stamina charts it is better to err on
 				// tight steps, especially for doubles. Even bpms in the low 110s feel bad when
 				// streaming 16ths and having to move more than a bracket distance.
-				"TravelSpeedMaxTimeSeconds": 0.303,		// 16ths at 99
+				"SpeedMaxTimeSeconds": 0.303,		// 16ths at 99
 			},
 
 			"LateralTightening":
