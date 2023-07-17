@@ -6,9 +6,9 @@
 		<AssemblyTitle>StepManiaChartGenerator</AssemblyTitle>
 		<Product>StepManiaChartGenerator</Product>
 		<Copyright>Copyright ©  2023</Copyright>
-		<AssemblyVersion>2.0.0.0</AssemblyVersion>
-		<FileVersion>2.0.0.0</FileVersion>
-		<Version>2.0.0</Version>
+		<AssemblyVersion>2.0.1.0</AssemblyVersion>
+		<FileVersion>2.0.1.0</FileVersion>
+		<Version>2.0.1</Version>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
