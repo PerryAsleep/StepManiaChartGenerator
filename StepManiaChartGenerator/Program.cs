@@ -882,7 +882,7 @@ public class Program
 					Tempo = chart.Tempo,
 					DifficultyRating = chart.DifficultyRating,
 					DifficultyType = chart.DifficultyType,
-					Extras = chart.Extras,
+					Extras = new Extras(chart.Extras),
 					Type = Config.Instance.OutputChartType,
 					NumPlayers = 1,
 					NumInputs = OutputStepGraph.NumArrows,
@@ -897,8 +897,6 @@ public class Program
 				// the CHARTNAME as well to work around this issue.
 				if (newChart.Extras.TryGetSourceExtra(TagChartName, out string originalChartName))
 				{
-					// Modifying the Extras in this way will also affect the original chart because they reference the
-					// same extras, but it doesn't matter for how it is used in this application.
 					newChart.Extras.AddDestExtra(TagChartName, FormatWithVersion(originalChartName));
 				}
 
