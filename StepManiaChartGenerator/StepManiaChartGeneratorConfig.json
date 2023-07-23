@@ -173,9 +173,13 @@
 
 			"LateralTightening":
 			{
-				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
-				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
-				"AbsoluteNPS": 26.667,
+				// Disable Lateral Tightening.
+				// We do not want to tighten very fast stamina songs.
+				// We also do not want to try to tighten burst as it is not uncommon for stamina songs to
+				// only have stream for a relatively small percentage of the song. This has a side-effect
+				// of not laterally tightening actual burst (e.g. Night of the Flesh Eaters in SlowStreamz),
+				// but this is the better tradeoff as this kind of stamina chart is much is less common.
+				"Enabled": false,
 			},
 
 			"Transitions":
@@ -211,9 +215,13 @@
 
 			"LateralTightening":
 			{
-				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
-				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
-				"AbsoluteNPS": 26.667,
+				// Disable Lateral Tightening.
+				// We do not want to tighten very fast stamina songs.
+				// We also do not want to try to tighten burst as it is not uncommon for stamina songs to
+				// only have stream for a relatively small percentage of the song. This has a side-effect
+				// of not laterally tightening actual burst (e.g. Night of the Flesh Eaters in SlowStreamz),
+				// but this is the better tradeoff as this kind of stamina chart is much is less common.
+				"Enabled": false,
 			},
 
 			"Transitions":
@@ -250,9 +258,13 @@
 
 			"LateralTightening":
 			{
-				// Increase the AbsoluteNPS for stamina charts so we do not penalize transitions in very
-				// fast stamina charts. 26.667 is 16th stream at 400 bpm.
-				"AbsoluteNPS": 26.667,
+				// Disable Lateral Tightening.
+				// We do not want to tighten very fast stamina songs.
+				// We also do not want to try to tighten burst as it is not uncommon for stamina songs to
+				// only have stream for a relatively small percentage of the song. This has a side-effect
+				// of not laterally tightening actual burst (e.g. Night of the Flesh Eaters in SlowStreamz),
+				// but this is the better tradeoff as this kind of stamina chart is much is less common.
+				"Enabled": false,
 			},
 
 			"Transitions":
