@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Fumen.ChartDefinition;
 using StepManiaLibrary;
+using System.Reflection;
 
 namespace StepManiaChartGenerator;
 
@@ -24,11 +25,6 @@ namespace StepManiaChartGenerator;
 /// </summary>
 public class Program
 {
-	/// <summary>
-	/// Version. Recorded into a Chart's Description field using FumenGeneratedFormattedVersion.
-	/// </summary>
-	private static readonly SemanticVersion Version = new(2, 0, 0);
-
 	/// <summary>
 	/// Format for recording the Version into a Chart's Description field.
 	/// </summary>
@@ -85,6 +81,16 @@ public class Program
 	/// Time of the start of the export.
 	/// </summary>
 	private static DateTime ExportTime;
+
+	/// <summary>
+	/// Application Version.
+	/// </summary>
+	private static SemanticVersion Version;
+
+	/// <summary>
+	/// Formatted version string for recording in a Chart's Description field.
+	/// </summary>
+	private static string FormattedVersionString;
 
 	/// <summary>
 	/// Directory to record visualizations for this export.
@@ -216,6 +222,10 @@ public class Program
 		if (!config.Validate() || !loggerSuccess)
 			Exit(false);
 
+		// Determine the application version.
+		if (!DetermineVersion())
+			Exit(false);
+
 		// Set whether we can output visualizations based on the configured StepsTypes.
 		SetCanOutputVisualizations();
 		// Create a directory for outputting visualizations.
@@ -256,6 +266,30 @@ public class Program
 		if (!(Config.Instance?.CloseAutomaticallyWhenComplete ?? false))
 			Console.ReadLine();
 		Environment.Exit(bSuccess ? 0 : 1);
+	}
+
+	/// <summary>
+	/// Determines the application version from the executing assembly.
+	/// Sets Version and FormattedVersionString.
+	/// </summary>
+	/// <returns>True if the version was determined successfully and false otherwise.</returns>
+	private static bool DetermineVersion()
+	{
+		try
+		{
+			var assembly = Assembly.GetExecutingAssembly();
+			var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+			Version = new SemanticVersion(fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart,
+				fileVersionInfo.FileBuildPart);
+			FormattedVersionString = string.Format(FumenGeneratedFormattedVersion, Version);
+			return true;
+		}
+		catch (Exception e)
+		{
+			LogError($"Failed to determine application version: {e}");
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -1116,19 +1150,9 @@ public class Program
 	/// <returns>Formatted string with version.</returns>
 	private static string FormatWithVersion(string originalStr)
 	{
-		var formattedVersion = GetFormattedVersionStringForChart();
 		if (string.IsNullOrEmpty(originalStr))
-			return formattedVersion;
-		return $"{formattedVersion} {originalStr}";
-	}
-
-	/// <summary>
-	/// Gets the formatted version string for recording onto a Chart.
-	/// </summary>
-	/// <returns>Formatted version string for recording onto a Chart.</returns>
-	private static string GetFormattedVersionStringForChart()
-	{
-		return string.Format(FumenGeneratedFormattedVersion, Version);
+			return FormattedVersionString;
+		return $"{FormattedVersionString} {originalStr}";
 	}
 
 	/// <summary>
